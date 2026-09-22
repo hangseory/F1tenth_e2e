@@ -55,9 +55,9 @@ mode: q2
 #     (원점도 크기도 다른 별개 트랙: car2 origin [-5.45,-3.52] 116KB /
 #      car1 origin [-6.39,-3.33] 59KB). main 을 당길 때 maps·waypoints 를
 #      받지 않는 이유가 이것이다 — 받으면 조용히 남의 트랙을 가리킨다.
-map_name: 0821_clean
+map_name: 0921-2
 
-waypoints: 0821_clean_map_wp
+waypoints: 0921-2_free_wp
 #   ★ 라인을 바꾸거나 새로 만들면 **차가 그 곡률을 낼 수 있는지** 확인할 것.
 #     좌 조향 한계 20.73° → 최소회전반경 0.856m (config/vesc.yaml 참고).
 #     gen_raceline 이 생성 끝에 자동으로 검사해 "못 도는 점 N개"를 띄운다.
@@ -1135,9 +1135,9 @@ localization:
   #     AMCL 은 recovery_alpha=0 이라 거기서 못 빠져나온다. 증상은
   #     "초기중 — 남은항목: AMCL pose" 하나뿐이라 원인이 안 보인다 (08-14/15 두 번).
   #   (1호차 값은 0.0884 / 0.3786 / 0.0113 — 브랜치가 갈려 서로 안 건드린다)
-  init_x: 2.3422           # 시작 위치 초기 추정 (map 좌표)
-  init_y: -0.0947
-  init_yaw: 0.0327           # 라디안
+  init_x: 0.0              # 시작 위치 초기 추정 (map 좌표) — 0824-2 대회장
+  init_y: 0.0
+  init_yaw: 0.0               # 라디안
 
   # ── IMU yaw 융합 — odom 의 각속도를 VESC 자이로 실측으로 교체 ──
   #    상세: 개발현황.md 08/03
@@ -1244,8 +1244,8 @@ localization:
 mission:
   laps: 0                   # 이 바퀴수 완주하면 자동 정지 (0 = 무제한)
   time_limit_sec: 0         # 제한시간 초과 시 자동 정지 (0 = 무제한, q3는 120 권장)
-  start_x: 2.3422           # 출발선 x (map 좌표, RViz에서 확인)
-  start_y: -0.0947            # 출발선 y
+  start_x: 0.0              # 출발선 x (map 좌표, RViz에서 확인) — 0824-2 대회장
+  start_y: 0.0               # 출발선 y
   start_radius: 1.8       # 출발선 반경 [m]
                             # ★ 2026-08-22: 1.0 → 1.8. **레이싱라인이 원을
                             #   실제로 관통해야** 랩이 세어진다. quali 주행에서
@@ -1645,10 +1645,28 @@ joystick:
   steer_deadzone:    0.08        # L스틱 중립 유격
   arm_on_neutral:    true        # 시작 시 RT 중립 확인 전까지 스로틀 잠금 (안전)
   debug:             true        # true → RT raw→스로틀%→m/s 를 콘솔에 출력
+
+  # ── 복구용 프리셋 포즈 (2026-08-26) — [x, y, yaw(rad)] ──────────────
+  #   충돌·헛돎으로 AMCL 어긋나면: 수동(LB)으로 차를 프리셋 지점까지 몰고 가
+  #   정지 → 아래 입력으로 /initialpose 발행 → LB 로 자율. 그 자리서 AMCL 이 이어감.
+  #   ★ recovery_alpha=0 이라 놓은 위치 ±0.5m 안이어야 보정됨. 알아보기 쉬운
+  #     지점에 두는 게 핵심. 좌표는 0824-2 라인 균등분할 기본값 — ./race.sh start_pos
+  #     로 실측해 다듬을 것. 999 = 미설정(무시).
+  preset_up:    [7.1825, 0.8884, -0.3906]    # D-pad ↑
+  preset_down:  [6.3998, 4.4459, -3.0703]   # D-pad ↓
+  preset_left:  [11.7361, 1.5287, 1.6643]  # D-pad ←
+  preset_right: [2.4865, 0.6038, 0.3917]  # D-pad →
+  preset_a:     [-0.8931, 4.0546, 3.1416]   # A
+  preset_b:     [-7.1188, 1.9200, -1.4158]   # B
+  preset_x:     [-0.4306, 0.2124, -0.0500]   # X
+  preset_y:     [-4.9843, 0.0346, 0.5667]   # Y
   # ★ ./race.sh joy 전용 최고속도 (m/s). 수동으로 시원하게 몰 때 쓴다.
   #   이 줄을 지우면 speed.mapping_max 로 폴백한다.
+  #   ⚠ 차량 파일(config/vehicle_<차>.yaml)의 joystick.max_speed 가 **이긴다.**
+  #     두 차가 같은 값을 쓸 이유가 없어서다 (1호차 1.5 / 2호차 4.0).
+  #     고칠 때는 ./tune.sh joy=3 을 쓰면 알아서 맞는 파일에 쓴다.
   #   ※ mapping / mapping-joy 는 영향 없음 — 맵핑은 천천히 돌아야 품질이 좋아서
   #     race.sh 가 speed.mapping_max 를 따로 읽는다.
   #   ※ 트랙이 4.4×3.7m 라 3.0 이면 한 변을 1.5초에 지난다. 처음엔 낮게 시작할 것.
   #   ※ RT 트리거는 당긴 만큼 비례하므로, 살살 당기면 그만큼 느리다.
-  max_speed: 7
+  max_speed: 1.5

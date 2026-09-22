@@ -68,6 +68,12 @@
 #    ./tune.sh q3_start=0.6   grip_util.q3_start  quali 의 Q3 속도 램프 시작값
 #    ./tune.sh eta+=0.1       지금 yaml mode 의 η (인자 없이 ./race.sh 할 때)
 #
+#    ./tune.sh joy            joystick.max_speed  지금 값 보기
+#    ./tune.sh joy=3          joystick.max_speed=3   ./race.sh joy 수동주행 최고속도
+#      ★ 위 η 들과 달리 **비율이 아니라 m/s 그 자체**다 (0~6).
+#        자율주행(q1/q2/q3/race)에는 영향 없고, 맵핑도 speed.mapping_max 를
+#        따로 읽으므로 무관하다. RT 는 당긴 만큼 비례하니 이 값은 천장이다.
+#
 #
 #  ── 그 밖 ────────────────────────────────────────────────────
 #

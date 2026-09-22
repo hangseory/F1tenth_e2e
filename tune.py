@@ -138,6 +138,10 @@ SPEED_ALIASES = {
     # 예선 시퀀서(./race.sh quali) 전용 — 대회 때 주로 이 둘을 만진다
     'buffer':   'limits.grip_util.buffer',
     'q3_start': 'limits.grip_util.q3_start',
+    # ★ 수동 주행(./race.sh joy) 최고속도 [m/s]. 위 η 들과 달리 **비율이
+    #   아니라 속도 그 자체**다. 자율주행(q1/q2/q3/race)에는 영향이 없고,
+    #   맵핑(mapping / mapping-joy)도 speed.mapping_max 를 따로 읽어 무관하다.
+    'joy':      'joystick.max_speed',
 }
 
 # 보기(no-arg) 에 출력할 섹션 — 주행 중 만질 값들만
@@ -197,6 +201,7 @@ SPEED_GUIDE = [
     ('limits.grip_util.q2',   './race.sh q2 만'),
     ('limits.grip_util.q3',   './race.sh q3 만'),
     ('limits.grip_util.race', './race.sh race 만'),
+    ('joystick.max_speed',    './race.sh joy 수동주행 최고속도 [m/s] — 비율 아님'),
     ('limits.grip_util.buffer',
      './race.sh quali 의 buffer lap 만 (단계 사이 이동)'),
     ('limits.grip_util.q3_start',
