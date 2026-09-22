@@ -281,13 +281,21 @@ def save_overlay(map_name, raceline, v, wp_path, dist_map, origin, res, h, w):
         ymin = origin[1]; ymax = origin[1] + h * res
 
         fig, ax = plt.subplots(figsize=(13, 10))
-        ax.imshow(img, origin='lower', extent=[xmin, xmax, ymin, ymax],
+        # ★★ 2026-09-20 — **화면이 위아래로 뒤집혀 있었다.**
+        #   ROS 맵 배열은 행 0 이 **최대 y** 다 (_px 의 row = h-(y-oy)/res 가
+        #   그 규약). 그런데 origin='lower' 는 행 0 을 아래(ymin)에 그린다.
+        #   그래서 맵이 거울처럼 뒤집혀 보였고, 거기 찍은 클릭이 그대로
+        #   저장돼 **웨이포인트가 맵과 안 맞았다** (1stfloor_clean 실측:
+        #   생성된 점의 60.3% 만 자유공간 위, y 를 뒤집으면 100%).
+        #   배열을 뒤집어 규약을 맞춘다 — 등고선(dist_map)도 같은 배열이라
+        #   똑같이 뒤집어야 한다. 하나만 고치면 맵과 등고선이 어긋난다.
+        ax.imshow(np.flipud(img), origin='lower', extent=[xmin, xmax, ymin, ymax],
                   cmap='gray', alpha=0.75)
 
         # 안전 마진 등고선 (참고용)
         xs = np.linspace(xmin, xmax, dist_map.shape[1])
         ys = np.linspace(ymin, ymax, dist_map.shape[0])
-        ax.contour(xs, ys, dist_map, levels=[0.3, 0.5, 1.0],
+        ax.contour(xs, ys, np.flipud(dist_map), levels=[0.3, 0.5, 1.0],
                    colors=['red','orange','yellow'], linewidths=0.5, alpha=0.4)
 
         pts = raceline
@@ -337,13 +345,14 @@ def gui_draw(map_name, dist_map, origin, res, img, h, w, init_closed):
                     pass
 
     fig, ax = plt.subplots(figsize=(13, 10))
-    ax.imshow(img, origin='lower', extent=[xmin, xmax, ymin, ymax],
+    # ★ 위 클릭 창과 같은 이유로 뒤집는다 (2026-09-20). 상세는 그쪽 주석.
+    ax.imshow(np.flipud(img), origin='lower', extent=[xmin, xmax, ymin, ymax],
               cmap='gray', alpha=0.75)
     # 거리변환 반투명 오버레이 — 안전마진 0.3/0.5m 등고선
     xs = np.linspace(xmin, xmax, dist_map.shape[1])
     ys = np.linspace(ymin, ymax, dist_map.shape[0])
-    ax.contourf(xs, ys, dist_map, levels=[0, 0.3], colors=['red'], alpha=0.20, zorder=2)
-    ax.contour (xs, ys, dist_map, levels=[0.3, 0.5, 1.0],
+    ax.contourf(xs, ys, np.flipud(dist_map), levels=[0, 0.3], colors=['red'], alpha=0.20, zorder=2)
+    ax.contour (xs, ys, np.flipud(dist_map), levels=[0.3, 0.5, 1.0],
                 colors=['red','orange','yellow'], linewidths=0.6, alpha=0.5, zorder=3)
 
     pal = ['lime', 'magenta', 'deepskyblue', 'yellow', 'orange']
