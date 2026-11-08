@@ -54,8 +54,19 @@ def _car_min_radius(fallback=0.872):
 
 
 R_CAR_MIN = _car_min_radius()
-MAPS_DIR = os.path.join(_PKG_DIR, 'maps')
-WP_DIR   = os.path.join(_PKG_DIR, 'waypoints')
+# ── 맵/웨이포인트 경로 ────────────────────────────────────────────────────────
+# ★ RACE_WS 를 봐야 한다. 이 파일이 colcon build 디렉토리 밑의 심링크로 import
+#   되면 __file__ 기준 _PKG_DIR 은 <ws>/build/race_stack 을 가리키는데, 그쪽
+#   maps/ 는 **빌드 시점에 고정된 심링크 모음**이라 그 뒤 추가한 맵이 없다.
+#   (2026-11-08: 1108_clean 이 `./race.sh line` 에서 "맵 이미지 없음" 으로
+#    뜬 원인. gen_waypoints 계열은 2026-07-17 에 이미 이렇게 고쳐졌는데
+#    gen_raceline 만 빠져 있었다. tumftm 은 여기서 import 하므로 같이 낫는다.)
+_WP_PKG_DIR = _PKG_DIR
+if os.environ.get('RACE_WS'):
+    _WP_PKG_DIR = os.path.join(
+        os.path.expanduser(os.environ['RACE_WS']), 'src', 'race_stack')
+MAPS_DIR = os.path.join(_WP_PKG_DIR, 'maps')
+WP_DIR   = os.path.join(_WP_PKG_DIR, 'waypoints')
 
 # ══════════════════════════════════════════════════════════════════════════════
 # 1. 맵 → 트랙 경계 추출
@@ -1144,7 +1155,7 @@ def main():
                         '0814-1_clean 실측: 코너 여유 0.360→0.550m 에 랩 +0.16s')
     p.add_argument('--apex-kappa', type=float, default=0.0, dest='apex_kappa',
                    help='이 곡률[1/m]에서 --apex-extra 를 다 준다 (0=자동: 1/rmin)')
-    p.add_argument('--wallclear', type=float, default=0.18,
+    p.add_argument('--wallclear', type=float, default=0.10,
                    help='벽까지 최소 여유 (m, 차폭 제외). ★ 실측 추종오차보다 커야 '
                         '한다 — 2026-08-09 CTE p95 가 η0.5 에서 0.217m, η1.0 에서 '
                         '0.320m 였다. 옛 기본값 0.06 은 코너 정점에서 확실히 걸린다')
