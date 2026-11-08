@@ -81,6 +81,11 @@ OVERLAY_MAP = [
     #   인사할 고정 피어 목록이라, 남의 차 IP 가 들어가면 노트북 RViz 가 먹통이 된다.
     #   race_script.yaml 에 두면 두 차가 머지할 때마다 이 한 줄이 충돌한다.
     ('network.peers',      'network.peers'),
+    # ★ 주행망 대역. peers 와 같은 이유로 차량별이다 — 두 차가 서로 다른 공유기에
+    #   있을 수 있고, 공용 race_script.yaml 에 두면 한쪽을 맞추는 순간 다른 쪽이
+    #   멀티캐스트 폴백으로 떨어진다 (= 통신 0). dds_env.sh 가 이 값으로 자기 IP 를
+    #   찾아 CycloneDDS 인터페이스를 고정한다. (2026-11-08 mlcs-robotics5G 전환)
+    ('network.subnet',     'network.subnet'),
     # ★ ROS_DOMAIN_ID. 두 차를 같은 공유기에서 동시에 돌릴 때 DDS 레벨 격리.
     #   race.sh 가 dds_env.sh 를 통해 export 한다.
     ('network.domain_id',  'network.domain_id'),
