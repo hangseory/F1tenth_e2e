@@ -53,6 +53,7 @@ import shutil
 import sys
 
 import numpy as np
+import yaml
 import scipy.ndimage as ndi
 from PIL import Image
 
@@ -60,6 +61,44 @@ VAL_FREE = 254
 VAL_WALL = 0
 
 _DIR = os.path.dirname(os.path.abspath(__file__))
+
+
+def classify(a, yaml_path):
+    """픽셀값 → (자유, 벽) 마스크.
+
+    ★ 왜 `a == 254` 로는 안 되나 (2026-11-09)
+      SLAM 백엔드마다 pgm 규약이 다르다.
+
+        slam_toolbox (map_saver) : 자유 254 / 미지 205 / 벽 0   — 값 3개뿐
+        cartographer             : 자유 255 / 미지 128 / 벽은 128 **미만의
+                                   연속 점유확률** (실측 최소 3)
+
+      그래서 254 와의 정확한 일치로 자유를 찾으면 Cartographer 맵에서 자유가
+      44px 만 잡히고 "opening 후 남은 자유공간이 없습니다" 로 죽는다.
+      (1109 맵에서 실제로 걸렸다 — 벽은 3411px 로 멀쩡히 있었다)
+
+    ROS map_server 규약을 그대로 쓴다: p = (255 − v) / 255 이고
+    p > occupied_thresh 면 벽, p < free_thresh 면 자유다.
+
+    ★ 다만 미지 표식(205 · 128)은 **임계값보다 먼저** 걸러야 한다.
+      slam_toolbox 의 미지 205 는 p=0.196 이라 free_thresh 0.25 보다 작아
+      그냥 공식에 넣으면 **자유로 둔갑한다.** 두 백엔드 모두 미지를 특정
+      값으로만 쓰므로 그 값을 먼저 빼는 것이 안전하다.
+
+    이렇게 하면 slam_toolbox 맵의 결과는 예전과 **완전히 같다**
+    (1108-2 실측: 자유 25677 / 벽 3737, 그 사이 등급값 0개).
+    """
+    try:
+        with open(yaml_path) as f:
+            meta = yaml.safe_load(f) or {}
+    except OSError:
+        meta = {}
+    free_th = float(meta.get('free_thresh', 0.25))
+    occ_th = float(meta.get('occupied_thresh', 0.65))
+
+    known = (a != 205) & (a != 128)          # 미지 표식 제외
+    p = (255.0 - a.astype(np.float32)) / 255.0
+    return known & (p < free_th), known & (p > occ_th)
 
 
 def disk(r):
@@ -86,8 +125,8 @@ def main():
     out_name = args.out or (args.map + '_clean')
 
     a = np.array(Image.open(src_pgm))
-    free = (a == VAL_FREE)
-    print(f'원본 {a.shape[1]}x{a.shape[0]}px  자유 {free.sum()}  벽 {(a == VAL_WALL).sum()}')
+    free, wall = classify(a, src_yaml)
+    print(f'원본 {a.shape[1]}x{a.shape[0]}px  자유 {free.sum()}  벽 {wall.sum()}')
 
     # ① 가는 빛살 제거 → 트랙 복도의 **씨앗**
     #    여기서 나온 마스크를 그대로 쓰면 가장자리가 opening 자국으로 울퉁불퉁하다.
@@ -142,7 +181,9 @@ def main():
     prev = np.full(a.shape + (3,), 128, np.uint8)
     prev[free & ~track] = (255, 80, 80)
     prev[track] = (255, 255, 255)
-    prev[a == VAL_WALL] = (0, 0, 0)
+    # ★ `a == 0` 이 아니라 wall 마스크를 쓴다 — Cartographer 맵의 벽은 0 이
+    #   아니라 128 미만의 연속값이라 검수용 PNG 에서 벽이 통째로 안 보였다.
+    prev[wall] = (0, 0, 0)
     prev_path = os.path.join(_DIR, out_name + '_preview.png')
     Image.fromarray(prev).save(prev_path)
     print(f'검수용 PNG: {prev_path}   (빨강 = 지워진 영역)')
