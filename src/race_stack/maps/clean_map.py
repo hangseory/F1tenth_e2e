@@ -28,10 +28,6 @@ from PIL import Image
 import scipy.ndimage as ndimage
 from matplotlib.path import Path
 
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-
 VAL_FREE = 254
 VAL_WALL = 0
 VAL_UNK  = 205
@@ -124,7 +120,7 @@ def poly_mask(shape, pts):
     return path.contains_points(points).reshape(h, w)
 
 
-def apply_mask(orig, outer_pts, inner_pts, close_iter):
+def apply_mask(orig, outer_pts, inner_pts, close_iter, free_thresh=0.25, negate=False):
     """
     outer 안 & inner 밖 = 트랙 코리도
       - 코리도 안 원본 픽셀 유지 + closing
@@ -138,8 +134,13 @@ def apply_mask(orig, outer_pts, inner_pts, close_iter):
 
     track = outer_mask & ~inner_mask   # 두 폴리곤 사이 = 트랙 코리도
 
+    # ROS map YAML의 점유확률 기준을 적용한다. slam_toolbox의 254뿐 아니라
+    # Cartographer의 255 및 연속 회색값도 해석하고, 미관측 회색은 길로 만들지 않는다.
+    intensity = orig.astype(np.float64) / 255.0
+    occupancy = intensity if negate else 1.0 - intensity
+    source_free = occupancy < free_thresh
     result = np.zeros((h, w), dtype=np.uint8)        # 전체 벽으로 시작
-    result[track & (orig == VAL_FREE)] = VAL_FREE    # 코리도 자유공간 복원
+    result[track & source_free] = VAL_FREE
 
     if close_iter > 0:
         free = (result == VAL_FREE)
@@ -170,6 +171,12 @@ class MapCleaner:
         self._build_ui()
 
     def _build_ui(self):
+        # 픽셀 처리 검증은 GUI 없는 환경에서도 import할 수 있게 한다.
+        global plt
+        import matplotlib
+        matplotlib.use('TkAgg')
+        import matplotlib.pyplot as plt
+
         self.fig, self.ax = plt.subplots(figsize=(13, 9))
         plt.subplots_adjust(bottom=0.08)
 
@@ -292,7 +299,9 @@ class MapCleaner:
             print(f'마스크 적용 (외부={len(self.polys[1])}pt '
                   f'내부={len(self.polys[2])}pt closing={ci})')
         self.result = apply_mask(self.orig,
-                                  self.polys[1], self.polys[2], ci)
+                                  self.polys[1], self.polys[2], ci,
+                                  free_thresh=float(self.cfg.get('free_thresh', 0.25)),
+                                  negate=bool(self.cfg.get('negate', 0)))
         disp = np.where(self.result == VAL_FREE, 255, 0).astype(np.uint8)
         self.im.set_data(disp)
         self.fig.canvas.draw_idle()
@@ -307,6 +316,7 @@ class MapCleaner:
 
         cfg_out = dict(self.cfg)
         cfg_out['image'] = os.path.basename(self.out_base) + '.pgm'
+        cfg_out['negate'] = 0  # 정제 출력은 항상 벽=0, 자유=254로 정규화
         with open(self.out_base + '.yaml', 'w') as f:
             yaml.dump(cfg_out, f, default_flow_style=False)
         print(f'YAML 저장: {self.out_base}.yaml')

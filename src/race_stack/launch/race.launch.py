@@ -4,7 +4,7 @@ RACE_SCRIPT 환경변수(기본: ~/race_script.yaml)의 설정을 읽어
 전체 스택을 한 번에 기동한다:
 
   f1tenth_stack 브링업 (LiDAR + VESC + odom + mux)
-  → map_server + AMCL (저장된 맵 위에서 위치 추정)
+  → 선택한 위치추정기 (AMCL / slam_toolbox / Cartographer)
   → mission_manager (랩 카운트, 자동 정지)
   → safety_node (TTC 기반 AEB)
   → 컨트롤러 (모드에 따라 pure_pursuit 또는 gap_follower)
@@ -177,6 +177,14 @@ def generate_launch_description():
     race_data = _src if _src and os.path.isdir(os.path.join(_src, 'maps')) \
                 else race_share
 
+    # ★ config/ 도 maps/ 와 같은 이유로 RACE_WS 를 먼저 본다 (2026-11-08).
+    #   setup.py 의 glob('config/*.yaml') 은 **빌드 시점에 평가**되므로,
+    #   그 뒤 추가한 설정 파일은 share/ 에 심링크가 없어 "파일 없음" 이 된다.
+    #   (오늘 gen_raceline 이 build/maps 를 보던 것과 같은 함정이다)
+    race_cfg = os.path.join(_src, 'config') \
+        if _src and os.path.isdir(os.path.join(_src, 'config')) \
+        else os.path.join(race_share, 'config')
+
     map_yaml = os.path.join(race_data, 'maps', cfg['map_name'] + '.yaml')
     wp_csv = os.path.join(race_data, 'waypoints', cfg['waypoints'] + '.csv')
     amcl_yaml = os.path.join(race_share, 'config', 'amcl.yaml')
@@ -315,35 +323,149 @@ def generate_launch_description():
                 'auto_align_startup': bool(loc.get('auto_align_startup', True)),
             }])]))
 
-    # ---------- 2. 맵 서버 + AMCL + lifecycle ----------
-    nodes.append(Node(
-        package='nav2_map_server', executable='map_server', name='map_server',
-        output='screen',
-        parameters=[{'yaml_filename': map_yaml,
-                     'topic_name': 'map', 'frame_id': 'map'}]))
-    nodes.append(Node(
-        package='nav2_amcl', executable='amcl', name='amcl', output='screen',
-        parameters=[amcl_yaml,
-                    # ★ AMCL 만 마스킹된 스캔을 본다 (amcl_mask 켰을 때).
-                    #   컨트롤러·AEB·회피는 원본 그대로 — 지운 스캔으로
-                    #   장애물을 찾으면 자기가 지운 것을 못 보게 된다.
-                    {'scan_topic': amcl_input_topic.lstrip('/'),
-                     'initial_pose.x': float(loc.get('init_x', 0.0)),
-                     'initial_pose.y': float(loc.get('init_y', 0.0)),
-                     'initial_pose.yaw': float(loc.get('init_yaw', 0.0)),
-                     'set_initial_pose': True}]))
-    # lifecycle_manager 는 5초 지연 기동한다.
-    # 동시에 띄우면 manager 가 map_server 보다 먼저 Configuring 을 호출하는 경쟁이
-    # 생긴다. map_server 가 아직 lifecycle 서비스를 등록하기 전이라 전환이 실패하고,
-    # map_server/amcl 이 unconfigured 로 멈춰 /map 발행자 0 · map→odom TF 없음이 된다.
-    # (증상: RViz 에 맵이 안 뜨고 차 위치도 안 나옴. 실행할 때마다 되다 안 되다 함)
-    nodes.append(TimerAction(period=5.0, actions=[Node(
-        package='nav2_lifecycle_manager', executable='lifecycle_manager',
-        name='lifecycle_manager_localization', output='screen',
-        parameters=[{'autostart': True,
-                     'bond_timeout': 10.0,
-                     'attempt_respawn_reconnection': True,
-                     'node_names': ['map_server', 'amcl']}])]))
+    # ---------- 2. 위치추정 ----------
+    # ★ localization.mode 로 고른다 (2026-11-08 추가).
+    #     amcl          — 파티클 필터. 지금까지의 기본값. 아무것도 안 바뀐다.
+    #     slam_toolbox  — 스캔 매칭. map_server·amcl·lifecycle 3노드를 1노드로 대체.
+    #
+    #   ★ AMCL 을 **지우지 않은** 이유: 대회가 가까운데 작동하는 위치추정을
+    #     없애면 안 된다. 두 방식을 같은 트랙에서 번갈아 돌리고
+    #     localization_monitor 의 잔차로 비교해서 결정한다 — 그게 필터 교체
+    #     효과를 재는 유일한 기준선이다.
+    loc_mode = str(loc.get('mode', 'amcl')).strip().lower()
+    if loc_mode not in ('amcl', 'slam_toolbox', 'cartographer'):
+        raise RuntimeError(
+            f'localization.mode 를 모르겠다: {loc_mode!r}\n'
+            f'→ amcl | slam_toolbox | cartographer 중 하나여야 한다.')
+    print(f'[race.launch] 위치추정: {loc_mode}')
+
+    if loc_mode == 'amcl':
+        # ---------- 2a. 맵 서버 + AMCL + lifecycle ----------
+        nodes.append(Node(
+            package='nav2_map_server', executable='map_server', name='map_server',
+            output='screen',
+            parameters=[{'yaml_filename': map_yaml,
+                         'topic_name': 'map', 'frame_id': 'map'}]))
+        nodes.append(Node(
+            package='nav2_amcl', executable='amcl', name='amcl', output='screen',
+            parameters=[amcl_yaml,
+                        # ★ AMCL 만 마스킹된 스캔을 본다 (amcl_mask 켰을 때).
+                        #   컨트롤러·AEB·회피는 원본 그대로 — 지운 스캔으로
+                        #   장애물을 찾으면 자기가 지운 것을 못 보게 된다.
+                        {'scan_topic': amcl_input_topic.lstrip('/'),
+                         'initial_pose.x': float(loc.get('init_x', 0.0)),
+                         'initial_pose.y': float(loc.get('init_y', 0.0)),
+                         'initial_pose.yaw': float(loc.get('init_yaw', 0.0)),
+                         'set_initial_pose': True}]))
+        # lifecycle_manager 는 5초 지연 기동한다.
+        # 동시에 띄우면 manager 가 map_server 보다 먼저 Configuring 을 호출하는 경쟁이
+        # 생긴다. map_server 가 아직 lifecycle 서비스를 등록하기 전이라 전환이 실패하고,
+        # map_server/amcl 이 unconfigured 로 멈춰 /map 발행자 0 · map→odom TF 없음이 된다.
+        # (증상: RViz 에 맵이 안 뜨고 차 위치도 안 나옴. 실행할 때마다 되다 안 되다 함)
+        nodes.append(TimerAction(period=5.0, actions=[Node(
+            package='nav2_lifecycle_manager', executable='lifecycle_manager',
+            name='lifecycle_manager_localization', output='screen',
+            parameters=[{'autostart': True,
+                         'bond_timeout': 10.0,
+                         'attempt_respawn_reconnection': True,
+                         'node_names': ['map_server', 'amcl']}])]))
+    elif loc_mode == 'slam_toolbox':
+        # ---------- 2b. slam_toolbox 위치추정 ----------
+        # ★ map_server 와 lifecycle_manager 가 **필요 없다.** 이 노드가 /map 을
+        #   직접 발행한다 (실측 확인: /map nav_msgs/OccupancyGrid).
+        #   덤으로 위의 lifecycle 경쟁 조건과 5초 지연이 함께 사라진다.
+        #
+        # ★ /pose → /amcl_pose remap 이 이 전환의 핵심이다. 타입이 둘 다
+        #   geometry_msgs/PoseWithCovarianceStamped 로 **동일**하므로,
+        #   /amcl_pose 를 구독하는 9개 노드를 한 줄도 고치지 않는다.
+        slam_loc_yaml = os.path.join(race_cfg, 'slam_localization.yaml')
+        if not os.path.exists(slam_loc_yaml):
+            raise RuntimeError(f'설정 파일 없음: {slam_loc_yaml}')
+        # posegraph 는 확장자 없는 경로로 준다 (실제 파일은 .posegraph + .data).
+        #
+        # ★ _clean 은 posegraph 를 갖지 않는다 (2026-11-08 실제로 걸렸다).
+        #   clean_map_auto 가 원본 .pgm 에서 **파생시킨 이미지**라서, 스캔 그래프는
+        #   원본 이름(1108-2.posegraph)으로만 저장된다. map_name 이 1108-2_clean 이면
+        #   그대로는 못 찾는다.
+        #   파생본은 원본과 origin·resolution·크기가 모두 같으므로(실측 확인)
+        #   원본 posegraph 를 그대로 써도 좌표계가 어긋나지 않는다.
+        #   → 정확한 이름을 먼저 찾고, 없으면 파생 접미사를 벗겨 다시 찾는다.
+        _maps = os.path.join(race_data, 'maps')
+        _cands = [cfg['map_name']]
+        for _suf in ('_clean_loc', '_clean'):
+            if cfg['map_name'].endswith(_suf):
+                _cands.append(cfg['map_name'][:-len(_suf)])
+                break
+        pg_base = None
+        for _c in _cands:
+            if os.path.exists(os.path.join(_maps, _c + '.posegraph')):
+                pg_base = os.path.join(_maps, _c)
+                if _c != cfg['map_name']:
+                    print(f'[race.launch] posegraph: {_c}.posegraph '
+                          f'(파생본 {cfg["map_name"]} 대신 원본 — 좌표계 동일)')
+                break
+        if pg_base is None:
+            pg_base = os.path.join(_maps, cfg['map_name'])
+            raise RuntimeError(
+                f'serialized posegraph 없음: '
+                f'{" / ".join(c + ".posegraph" for c in _cands)}\n'
+                f'  찾은 곳: {_maps}\n'
+                f'  slam_toolbox 위치추정은 .pgm 이 아니라 posegraph 를 읽는다.\n'
+                f'  .pgm 에서 역산할 방법은 **없다** — 다시 측량해야 한다.\n'
+                f'→ ./race.sh mapping-joy 로 트랙을 돌고 ./race.sh savemap '
+                f'{cfg["map_name"]} 하면\n'
+                f'  .pgm 과 함께 .posegraph/.data 가 같이 저장된다.\n'
+                f'  (2026-11-08 이전에 만든 맵에는 posegraph 가 없다)\n'
+                f'→ 급하면 race_script.yaml 의 localization.mode 를 amcl 로 되돌릴 것.')
+        nodes.append(Node(
+            package='slam_toolbox', executable='localization_slam_toolbox_node',
+            name='slam_toolbox', output='screen',
+            parameters=[slam_loc_yaml,
+                        {'map_file_name': pg_base,
+                         # init_x/y/yaw 를 그대로 쓴다 → savepose 흐름이 유지된다.
+                         'map_start_pose': [float(loc.get('init_x',   0.0)),
+                                            float(loc.get('init_y',   0.0)),
+                                            float(loc.get('init_yaw', 0.0))],
+                         # ★ 허상 마스킹된 스캔을 먹인다. 스캔 매칭은 파티클
+                         #   필터보다 허상에 **더** 민감하다 — 가설 다양성이
+                         #   없어 틀린 정합으로 그대로 끌려간다.
+                         'scan_topic': amcl_input_topic}],
+            remappings=[('/pose', '/amcl_pose')]))
+
+    else:
+        # Cartographer remains active throughout driving. Its tracked base_link
+        # pose is adapted to /amcl_pose; no AMCL node runs in this branch.
+        pbstream_name = str(loc.get('cartographer_map', '')).strip()
+        if pbstream_name:
+            pbstream = os.path.expanduser(pbstream_name)
+            if not os.path.isabs(pbstream):
+                pbstream = os.path.join(race_data, 'maps', pbstream)
+        else:
+            map_name = cfg['map_name']
+            candidates = [map_name]
+            for suffix in ('_clean_loc', '_clean'):
+                if map_name.endswith(suffix):
+                    candidates.append(map_name[:-len(suffix)])
+                    break
+            pbstream = next((os.path.join(race_data, 'maps', name + '.pbstream')
+                             for name in candidates
+                             if os.path.isfile(os.path.join(race_data, 'maps', name + '.pbstream'))), '')
+        if not pbstream or not os.path.isfile(pbstream):
+            raise RuntimeError(
+                'Cartographer 주행용 .pbstream 없음. '
+                './race.sh mapping-carto-joy 로 맵을 따고 '
+                './race.sh savemap-carto <맵이름> 으로 저장하세요. '
+                'PGM/YAML 및 웨이포인트는 같은 pbstream에서 만든 맵 기준이어야 합니다.')
+        nodes.append(IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(os.path.join(
+                race_share, 'launch', 'cartographer_localization.launch.py')),
+            launch_arguments={
+                'pbstream': pbstream, 'scan_topic': amcl_input_topic,
+                'odom_topic': odom_topic,
+                'init_x': str(float(loc.get('init_x', 0.0))),
+                'init_y': str(float(loc.get('init_y', 0.0))),
+                'init_yaw': str(float(loc.get('init_yaw', 0.0))),
+            }.items()))
 
     # ---------- 2-1. 조이스틱 수동 개입 ----------
     # 자율주행 중 LB 를 누르면 사람이 조종을 가져간다. 컨트롤러만 멈추고

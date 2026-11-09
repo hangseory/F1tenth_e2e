@@ -1,0 +1,176 @@
+# ═══════════════════════════════════════════════════════════════════
+#  slam_localization.yaml — slam_toolbox **위치추정** 모드 파라미터
+#
+#  AMCL(파티클 필터) 대신 쓰는 선택지. race_script.yaml 의
+#  localization.mode: slam_toolbox 로 고르면 race.launch.py 가 이 파일을 쓴다.
+#
+#  ★ 왜 AMCL 과 교체 가능한가 — 토픽 타입이 같다 (2026-11-08 실측 확인)
+#      slam_toolbox localization 발행:  /pose  geometry_msgs/PoseWithCovarianceStamped
+#      AMCL 발행:                      /amcl_pose  (같은 타입)
+#    launch 에서 /pose → /amcl_pose 로 remap 하면 /amcl_pose 를 구독하는
+#    9개 노드(map_controller·pure_pursuit·stanley·frenet·mission_manager·
+#    localization_monitor·auto_localize·waypoint_logger·sim_bridge)를
+#    **한 줄도 고치지 않는다.**
+#    /initialpose 도 구독하므로 RViz 2D Pose Estimate · savepose 가 그대로 먹는다.
+#
+#  ★ AMCL 과 거동이 다른 점
+#    · 정지해 있어도 pose 를 계속 낸다 (AMCL 은 update_min_d 2.5cm 를 움직여야
+#      /amcl_pose 를 내고, 그 희소함 때문에 map_controller 가 50Hz 융합 장치를
+#      따로 갖고 있다. 그 장치는 그대로 둬도 무해 — 보정량만 작아진다)
+#    · 파티클 고갈이 없다 (스캔 매칭이라 가설 집합이라는 개념이 없음)
+#    · 대신 **길을 잃으면 스스로 복구하지 못한다.** AMCL 의 recovery_alpha 에
+#      해당하는 것이 없다 → /initialpose 재주입이 유일한 복구 수단이다.
+#    · 맵에 없는 물체에 **더 민감하다.** 가설 다양성이 없어 틀린 정합으로 바로
+#      끌려간다. 1호차 라이다 좌측후방 허상은 반드시 scan_guard 로 자른 스캔
+#      (/scan_amcl) 을 먹여야 한다 — launch 가 amcl_mask 분기를 재사용한다.
+#
+#  ★ 맵: .pgm 이 아니라 **serialized posegraph** 를 읽는다
+#    map_file_name 은 확장자 없는 경로이고, 실제로는 <경로>.posegraph +
+#    <경로>.data 두 파일이 필요하다. .pgm 에서 역산할 방법이 **없다.**
+#    → ./race.sh savemap 이 map_saver_cli 와 함께 serialize_map 서비스를
+#      호출하도록 고쳐두었다. 그 전에 만든 맵은 전부 재측량해야 한다.
+#
+#  ★ 이 파일은 slam_mapping.yaml 에서 파생됐다. 맵핑과 **같은 스캔 매처 설정**을
+#    써야 posegraph 가 같은 기준으로 정합된다. 공식 샘플
+#    (/opt/ros/humble/share/slam_toolbox/config/mapper_params_localization.yaml)
+#    과 맵핑용 샘플의 차이만 반영했다 — 아래 [LOC] 표시한 줄이 전부다.
+# ═══════════════════════════════════════════════════════════════════
+# ═══════════════════════════════════════════════════════════════════════
+#  slam_mapping.yaml — 매핑용 slam_toolbox 파라미터 (race_stack 소유)
+#
+#  원본은 f1tenth_stack/config/f1tenth_online_async.yaml 이었다. 그 파일은
+#  f1tenth_stack 소유라 **두 차가 공유**하고 우리가 고치면 업스트림 갱신 때
+#  덮인다. 그래서 race_stack 으로 복사해 여기서 튜닝한다.
+#  되돌리려면 mapping.launch.py 의 slam_params 를 원래 경로로 되돌리면 된다.
+#
+#  ─ 왜 고쳤나 (2026-08-10) ────────────────────────────────────────────
+#  2호차 맵이 닫히지 않고 같은 복도가 두 겹으로 겹쳐 그려졌다. 기본값은
+#  넓은 실내를 빠르게 도는 것을 전제로 잡혀 있어서, 우리처럼 **좁고 짧은
+#  트랙을 저속으로 도는** 경우엔 스캔이 너무 성기게 쌓이고 루프 후보를
+#  못 찾는다. 아래 ★ 표시가 기본값에서 바꾼 항목이다.
+#
+#  ⚠ 이 파일은 **매핑 전용**이다. 주행 중 위치추정은 AMCL 이 한다.
+# ═══════════════════════════════════════════════════════════════════════
+slam_toolbox:
+  ros__parameters:
+
+    # ── 솔버 ────────────────────────────────────────────────────────
+    solver_plugin: solver_plugins::CeresSolver
+    ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
+    ceres_preconditioner: SCHUR_JACOBI
+    ceres_trust_strategy: LEVENBERG_MARQUARDT
+    ceres_dogleg_type: TRADITIONAL_DOGLEG
+    ceres_loss_function: None
+
+    # ── 프레임 ──────────────────────────────────────────────────────
+    #   odom TF 는 imu_odom 이 낸다 (vesc.yaml 에서 vesc_to_odom.publish_tf:false).
+    #   그래서 **imu_odom 이 안 뜨면 SLAM 이 통째로 멈춘다.**
+    odom_frame: odom
+    map_frame: map
+    base_frame: laser
+    scan_topic: /scan
+    # [LOC] mapping → localization
+    mode: localization
+
+    debug_logging: false
+    throttle_scans: 1
+    transform_publish_period: 0.02
+    map_update_interval: 5.0
+    resolution: 0.05
+
+    # ★ 20.0 → 12.0
+    #   우리 LiDAR(UST-10LX 계열) 실측 최대 유효거리가 약 11.95m 다. 그보다 큰
+    #   값을 주면 존재하지 않는 원거리 빔까지 래스터에 넣어 맵이 지저분해지고,
+    #   먼 빔은 입사각이 누워 매칭 정확도를 떨어뜨린다.
+    max_laser_range: 12.0
+
+    # ★ 0.5 → 0.2
+    #   스캔을 얼마나 자주 그래프에 넣을지의 시간 하한. 저속(≤1㎧)으로 돌면
+    #   0.5s 간격은 너무 성기다 — 아래 travel 조건과 함께 스캔 밀도를 올린다.
+    minimum_time_interval: 0.2
+
+    transform_timeout: 1.0
+    tf_buffer_duration: 30.
+    stack_size_to_use: 40000000
+    # [LOC] 위치추정에선 끈다 (RViz 인터랙티브 마커 불필요)
+    enable_interactive_mode: false
+
+    # ── 스캔 매칭 (= 오도메트리 + 라이다 융합이 일어나는 곳) ──────────
+    #   ★ 별도의 융합 노드가 필요한 게 아니다. slam_toolbox 는
+    #     odom TF 를 **초기 추정**으로 받아 그 주변에서 스캔을 맞춰
+    #     보정한다. 즉 여기가 이미 융합이다. odom 이 틀리면(예: 부호 반전)
+    #     초기 추정이 엉뚱해져 매칭이 실패하므로, odom 부호부터 맞아야 한다.
+    use_scan_matching: true
+    use_scan_barycenter: true
+
+    # ★ 0.5 → 0.2 / 0.5 → 0.25
+    #   이만큼 움직이거나 돌아야 스캔을 새로 넣는다. 기본값이면 짧은 트랙에서
+    #   한 바퀴에 수십 장밖에 안 쌓여 루프 체인 조건(아래)을 못 채운다.
+    #   촘촘할수록 매칭·루프 클로징이 잘 되지만 CPU 와 맵 파일이 커진다.
+    #   젯슨 오린에서 이 정도는 여유롭다.
+    minimum_travel_distance: 0.2
+    minimum_travel_heading: 0.25
+
+    # ★ 10 → 25
+    #   현재 스캔을 맞출 때 참고하는 최근 스캔 개수. 스캔이 촘촘해진 만큼
+    #   같은 물리 거리를 보려면 개수를 늘려야 한다.
+    # [LOC] 25 → 3. 위치추정은 과거 스캔을 길게 들고 있을 이유가 없다
+    #       (공식 샘플도 맵핑 10 → 위치추정 3)
+    scan_buffer_size: 3
+    scan_buffer_maximum_scan_distance: 10.0
+
+    link_match_minimum_response_fine: 0.1
+    link_scan_maximum_distance: 1.5
+
+    # ── 루프 클로징 ─────────────────────────────────────────────────
+    do_loop_closing: true
+
+    # ★ 3.0 → 8.0  (가장 중요한 변경)
+    #   "추정 위치에서 이 반경 안" 에서만 닫을 후보를 찾는다. 한 바퀴 돌아왔을 때
+    #   누적 드리프트가 3m 를 넘으면 후보를 아예 못 찾아 **루프 클로징이 한 번도
+    #   발동하지 않는다.** 겹쳐 그려진 맵이 정확히 그 증상이다.
+    #   너무 키우면 비슷하게 생긴 다른 구간과 잘못 닫아 맵이 접힌다. 8m 는
+    #   우리 트랙 크기(수십 m)에서 오검출과 회수율의 절충이다.
+    # [LOC] 공식 샘플과 동일하게 3.0 (맵핑 8.0)
+    loop_search_maximum_distance: 3.0
+
+    # ★ 10 → 15
+    #   루프로 인정하려면 연속 스캔이 이만큼 필요하다. 스캔이 촘촘해졌으므로
+    #   개수를 올려야 예전과 비슷한 **물리적 길이**를 요구하게 된다.
+    #   (0.2m 간격 × 15 = 3m — 기본값의 0.5m × 10 = 5m 보다는 짧아 잘 걸린다)
+    # [LOC] 15 → 3
+    loop_match_minimum_chain_size: 3
+
+    loop_match_maximum_variance_coarse: 3.0
+
+    # ★ 0.35 → 0.45 / 0.45 → 0.5
+    #   루프를 받아들이는 최소 일치도. 탐색 반경을 8m 로 넓혔으니 문턱도 같이
+    #   올려야 **거짓 루프**가 늘지 않는다. 이 둘은 반드시 같이 움직여야 한다.
+    loop_match_minimum_response_coarse: 0.45
+    loop_match_minimum_response_fine: 0.5
+
+    # ── 상관 탐색 ───────────────────────────────────────────────────
+    correlation_search_space_dimension: 0.5
+    correlation_search_space_resolution: 0.01
+    correlation_search_space_smear_deviation: 0.1
+
+    loop_search_space_dimension: 8.0
+    loop_search_space_resolution: 0.05
+    loop_search_space_smear_deviation: 0.03
+
+    # ── 스캔 매처 ───────────────────────────────────────────────────
+    distance_variance_penalty: 0.5
+    angle_variance_penalty: 1.0
+    fine_search_angle_offset: 0.00349
+    coarse_search_angle_offset: 0.349
+    coarse_angle_resolution: 0.0349
+    minimum_angle_penalty: 0.9
+    minimum_distance_penalty: 0.5
+    use_response_expansion: true
+
+    # ── 아래 2개는 race.launch.py 가 런타임에 덮어쓴다 ────────────────
+    #   map_file_name  : maps/<map_name>  (확장자 없이. .posegraph + .data)
+    #   map_start_pose : [init_x, init_y, init_yaw]  ← race_script.yaml 의
+    #                    localization.init_* 를 그대로 넣는다. savepose 흐름 유지.
+    #   여기 적어두면 맵을 바꿀 때마다 두 군데를 고쳐야 하므로 적지 않는다.
+    use_map_saver: false

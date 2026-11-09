@@ -131,11 +131,18 @@ def extract_reftrack(map_name: str, safety_m: float, n_cl: int = 300,
 
     free = free_b.astype(np.uint8) * 255
     n_lbl, labels, stats, _ = cv2.connectedComponentsWithStats(free)
+    if n_lbl <= 1:
+        sys.exit(
+            f'경로 생성 중단: {map_name}에 전처리 후 주행 가능한 영역이 없습니다.\n'
+            '정리한 PGM이 거의 검은색이면 원본 맵을 수정된 clean_map.py로 다시 정리하세요.\n'
+            '외벽/내벽 사이에 흰색 트랙이 남는지 확인한 뒤 저장해야 합니다.')
     largest = 1 + np.argmax(stats[1:, cv2.CC_STAT_AREA])
     track_mask = (labels == largest).astype(np.uint8) * 255
 
     contours, hierarchy = cv2.findContours(
         track_mask, cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
+    if hierarchy is None:
+        sys.exit(f'경계 추출 실패: {map_name}에서 트랙 윤곽을 찾지 못했습니다.')
     outer_c = inner_c = None
     for c, hi in zip(contours, hierarchy[0]):
         area = cv2.contourArea(c)

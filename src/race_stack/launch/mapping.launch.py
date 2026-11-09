@@ -1,6 +1,8 @@
 """mapping.launch.py — SLAM 맵 생성 모드.
 
-f1tenth_stack 브링업(센서+VESC+mux) + slam_toolbox(online async, mapping).
+f1tenth_stack 브링업(센서+VESC+mux) + 선택한 매핑 엔진.
+backend:=cartographer 로 Cartographer 2D, 기본은 slam_toolbox.
+start_vehicle:=false 는 외부 센서/TF 또는 rosbag으로 검증할 때 쓴다.
 키보드 텔레옵은 tty가 필요해 race.sh가 포그라운드로 따로 띄운다.
 
 ★ imu_odom 도 함께 띄운다. vesc.yaml 에서 vesc_to_odom_node.publish_tf 를 껐기
@@ -11,7 +13,9 @@ import os
 
 import yaml
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.conditions import IfCondition, LaunchConfigurationEquals
+from launch.substitutions import LaunchConfiguration
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -30,7 +34,6 @@ def generate_launch_description():
     if not os.path.exists(slam_params):
         slam_params = os.path.join(f1tenth_share, 'config',
                                    'f1tenth_online_async.yaml')
-    print(f'[mapping.launch] SLAM 파라미터: {slam_params}')
 
     # race.launch.py 와 같은 경로 규약 (race.sh 가 RACE_SCRIPT 를 export 한다)
     cfg_path = os.environ.get(
@@ -62,10 +65,13 @@ def generate_launch_description():
 
     bringup = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(f1tenth_share, 'launch', 'bringup_launch.py')))
+            os.path.join(f1tenth_share, 'launch', 'bringup_launch.py')),
+        launch_arguments={'enable_joystick': LaunchConfiguration('enable_joystick')}.items(),
+        condition=IfCondition(LaunchConfiguration('start_vehicle')))
 
     imu_odom = Node(
         package='race_stack', executable='imu_odom', name='imu_odom',
+        condition=IfCondition(LaunchConfiguration('start_vehicle')),
         output='screen',
         parameters=[{
             'imu_yaw':             bool( loc.get('imu_yaw',             True)),
@@ -85,7 +91,29 @@ def generate_launch_description():
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
         name='slam_toolbox',
+        condition=LaunchConfigurationEquals('backend', 'slam_toolbox'),
         output='screen',
         parameters=[slam_params])
 
-    return LaunchDescription([bringup, imu_odom, slam])
+    cartographer = Node(
+        package='cartographer_ros', executable='cartographer_node',
+        name='cartographer_node', output='screen',
+        condition=LaunchConfigurationEquals('backend', 'cartographer'),
+        arguments=['-configuration_directory', os.path.join(race_share, 'config'),
+                   '-configuration_basename', 'cartographer_2d.lua'],
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time')}],
+        remappings=[('scan', '/scan'), ('odom', '/odom_imu')])
+    grid = Node(
+        package='cartographer_ros', executable='cartographer_occupancy_grid_node',
+        name='cartographer_occupancy_grid_node', output='screen',
+        condition=LaunchConfigurationEquals('backend', 'cartographer'),
+        parameters=[{'use_sim_time': LaunchConfiguration('use_sim_time'),
+                     'resolution': 0.05, 'publish_period_sec': 1.0}])
+    return LaunchDescription([
+        DeclareLaunchArgument('backend', default_value='slam_toolbox',
+                              choices=['slam_toolbox', 'cartographer']),
+        DeclareLaunchArgument('start_vehicle', default_value='true',
+                              description='false: external sensors/odom/TF or rosbag'),
+        DeclareLaunchArgument('enable_joystick', default_value='true'),
+        DeclareLaunchArgument('use_sim_time', default_value='false'),
+        bringup, imu_odom, slam, cartographer, grid])

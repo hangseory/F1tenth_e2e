@@ -6,6 +6,8 @@
 #    ./race.sh                 race_script.yaml의 mode대로 실행
 #    ./race.sh mapping         모드 임시 오버라이드 (yaml 안 바꿔도 됨)
 #    ./race.sh mapping-joy     조이스틱으로 SLAM 맵핑
+#    ./race.sh mapping-carto-joy  Cartographer 2D 맵핑 (조이스틱)
+#    ./race.sh savemap-carto <이름>  차를 세운 뒤 다른 창에서 저장 (매핑 종료)
 #    ── 주행 중 화면 ──
 #    현재 단계와 랩이 **맨 아랫줄에 고정**돼 보인다 (statusline.py).
 #        [Q2 2/3] 단계 3/5  이번 랩 8.3s  회피 ON  grip_util 0.60  |  최근 LAP 1 · 12.43s
@@ -103,6 +105,20 @@ export RACE_REPO="$SCRIPT_DIR"
 RACE_SCRIPT="$SCRIPT_DIR/race_script.yaml"
 PKG_SHARE_MAPS="$WS/src/race_stack/maps"
 PKG_SHARE_WP="$WS/src/race_stack/waypoints"
+
+# Saving only needs DDS and Cartographer services, not vehicle setup/battery checks.
+if [ "${1:-}" = "savemap-carto" ]; then
+    NAME=${2:?맵 이름을 주세요: ./race.sh savemap-carto my_track}
+    [[ "$NAME" =~ ^[a-zA-Z0-9][a-zA-Z0-9_-]*$ ]] || {
+        echo "맵 이름은 영문/숫자로 시작하고 영문, 숫자, _, - 만 사용하세요."; exit 1;
+    }
+    source /opt/ros/humble/setup.bash
+    source "$WS/install/setup.bash"
+    export RACE_SCRIPT
+    export RACE_VEHICLE_OVERLAY="$SCRIPT_DIR/config/.vehicle_overlay.yaml"
+    [ -f "$SCRIPT_DIR/config/dds_env.sh" ] && source "$SCRIPT_DIR/config/dds_env.sh"
+    exec ros2 run race_stack save_cartographer "$PKG_SHARE_MAPS/$NAME"
+fi
 
 # ---------- 0-1. 차량별 캘리브레이션 펼치기 ----------
 # 차가 두 대인데 저장소는 하나다. config/vesc.yaml 을 그대로 공유하면 2호차의
@@ -213,9 +229,9 @@ print(val)"; }
 STACK_PROCS="[r]ace\.launch\.py|[m]apping\.launch\.py|[u]rg_node_driver|[v]esc_driver_node|\
 [n]av2_amcl/amcl|[n]av2_map_server/map_server|[l]ifecycle_manager|[s]tanley_controller|\
 [m]ission_manager|[p]ure_pursuit|[g]ap_follower|[m]ap_controller|[s]afety_node|[a]ckermann_mux|\
-[a]ckermann_to_vesc_node|[v]esc_to_odom_node|[s]lam_toolbox|\
+[a]ckermann_to_vesc_node|[v]esc_to_odom_node|[s]lam_toolbox|[c]artographer_node|[c]artographer_occupancy_grid_node|\
 [j]oy_node|[j]oy_teleop|[s]tatic_transform_publisher|[k]eyboard_teleop|[j]oystick_teleop|\
-[w]aypoint_logger|[s]lip_friction|[i]mu_odom"
+[w]aypoint_logger|[s]lip_friction|[i]mu_odom|[c]artographer_localizer|[c]artographer_localization\.launch\.py"
 running_pids () { pgrep -f "$STACK_PROCS" 2>/dev/null || true; }
 
 kill_stack () {
@@ -456,6 +472,33 @@ case "$CMD" in
 
     echo "[race.sh] 맵 저장 → $PKG_SHARE_MAPS/$NAME"
     ros2 run nav2_map_server map_saver_cli -f "$PKG_SHARE_MAPS/$NAME" --ros-args -p map_subscribe_transient_local:=true
+
+    # ── serialized posegraph 도 같이 저장 (2026-11-08) ────────────────
+    #
+    # ★ 왜 두 가지를 저장하나 — 쓰는 쪽이 다르다.
+    #     .pgm / .yaml   : AMCL · 웨이포인트 생성(gen_raceline) · RViz · Q2 경계
+    #     .posegraph/.data : slam_toolbox 위치추정 (localization.mode: slam_toolbox)
+    #
+    #   slam_toolbox 위치추정은 점유격자(.pgm)가 아니라 **스캔 그래프**를 읽는다.
+    #   .pgm 에서 역산할 방법이 **없다** — 그래서 맵핑할 때 같이 뽑아둬야 한다.
+    #   (2026-11-08 이전에 만든 맵에는 이게 없어서 재측량이 필요하다)
+    #
+    #   같은 trajectory 에서 뽑으니 두 파일의 **좌표계가 일치**한다. 그래서
+    #   .pgm 으로 만든 웨이포인트가 posegraph 위치추정과 그대로 맞물린다.
+    #
+    #   실패해도 맵 저장 자체는 성공으로 둔다 — AMCL 로 주행하는 데는 지장이 없다.
+    echo "[race.sh] posegraph 저장 → $PKG_SHARE_MAPS/$NAME.posegraph"
+    if timeout 30 ros2 service call /slam_toolbox/serialize_map \
+            slam_toolbox/srv/SerializePoseGraph \
+            "{filename: '$PKG_SHARE_MAPS/$NAME'}" >/dev/null 2>&1 \
+       && [ -f "$PKG_SHARE_MAPS/$NAME.posegraph" ]; then
+        echo "          ✓ $(du -h "$PKG_SHARE_MAPS/$NAME.posegraph" | cut -f1)"
+    else
+        echo "          ⚠ posegraph 저장 실패 — .pgm 은 정상 저장됐습니다."
+        echo "            localization.mode: slam_toolbox 는 쓸 수 없고,"
+        echo "            amcl 로는 문제없이 주행됩니다."
+    fi
+
     # install 쪽에도 복사 (rebuild 없이 바로 사용)
     INSTALL_MAPS="$WS/install/race_stack/share/race_stack/maps"
     [ -d "$INSTALL_MAPS" ] && cp "$PKG_SHARE_MAPS/$NAME".* "$INSTALL_MAPS/" || true
@@ -782,7 +825,7 @@ PYEOF
     echo "[race.sh]     savepose 는 **출발 자리를 옮길 때만** 쓰면 됩니다."
     exit 0 ;;
   "" ) MODE=$(get_yaml mode); CTRL="" ;;
-  mapping|mapping-joy) MODE=$CMD; CTRL="" ;;
+  mapping|mapping-joy|mapping-carto-joy) MODE=$CMD; CTRL="" ;;
   box)
     # 박스 위 벤치 테스트. 모드는 인자 > yaml 순으로 결정 — 실주행과 같은 스택을
     # 그대로 띄워야 검증이 의미가 있다. 차이는 bench:=true (속도 0, 자동정지 없음)뿐.
@@ -928,19 +971,30 @@ if [ "$MODE" = "mapping" ]; then
     trap "kill $LAUNCH_PID 2>/dev/null" EXIT
     ros2 run race_stack keyboard_teleop --ros-args -p max_speed:=$(get_yaml speed.mapping_max)
 
-elif [ "$MODE" = "mapping-joy" ]; then
+elif [ "$MODE" = "mapping-joy" ] || [ "$MODE" = "mapping-carto-joy" ]; then
     # SLAM 맵핑 + 조이스틱: 브링업+slam_toolbox 백그라운드, joy는 별도 실행
-    ros2 launch race_stack mapping.launch.py &
+    MAPPING_ARGS=()
+    SAVE_CMD=savemap
+    if [ "$MODE" = "mapping-carto-joy" ]; then
+        MAPPING_ARGS=(backend:=cartographer enable_joystick:=false)
+        SAVE_CMD=savemap-carto
+    fi
+    ros2 launch race_stack mapping.launch.py "${MAPPING_ARGS[@]}" &
     LAUNCH_PID=$!
+    trap 'kill "$LAUNCH_PID" ${JOY_PID:-} ${KILLER_PID:-} 2>/dev/null || true' EXIT
     # ★ launch 와 **동시에** 시작한다. 예전엔 아래 sleep 5 뒤에 한 번만 pkill 해서
     #   bringup 의 joy_teleop 이 6.5초간 살아 있었다 (위 kill_bringup_joy 주석 참고).
-    kill_bringup_joy &
-    KILLER_PID=$!
+    if [ "$MODE" = "mapping-joy" ]; then
+        kill_bringup_joy &
+        KILLER_PID=$!
+    fi
     sleep 5
+    kill -0 "$LAUNCH_PID" 2>/dev/null || { echo "매핑 launch 종료 — 위 오류를 확인하세요."; exit 1; }
     echo ""
     echo ">>> 조이스틱으로 천천히 트랙 1~2바퀴 돌면서 맵을 만드세요."
     echo ">>> ★ 이 창을 끄지 말고, 다른 터미널에서 저장하세요:"
-    echo ">>>       ./race.sh savemap <맵이름>"
+    echo ">>>       ./race.sh $SAVE_CMD <맵이름>"
+    echo ">>> 저장 전 차를 완전히 세우세요. Cartographer 저장은 매핑을 종료합니다."
     echo ">>> ★ 저장이 끝난 뒤에 이 창에서 Ctrl+C  (먼저 끄면 /map이 사라져 저장 실패)"
     echo ""
 
