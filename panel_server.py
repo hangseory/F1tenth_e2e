@@ -48,11 +48,16 @@ MODES = [
 # ROS — 없으면 E-STOP 만 빠지고 나머지는 그대로 돈다 (ROS 없이 개발·테스트 가능)
 # ══════════════════════════════════════════════════════════════════════════════
 class Ros:
-    """/teleop 으로 정지 명령을 낸다. mux priority 100 이라 자율 /drive(10)를 이긴다."""
+    """/teleop 으로 정지 명령을 내고, 차 상태를 구독한다.
+
+    mux priority 는 /teleop 100 / /drive 10 이라 정지가 자율 명령을 이긴다.
+    구독하는 것들은 **주행 스택이 떠 있을 때만** 나온다 — 없으면 '—' 로 둔다.
+    """
 
     def __init__(self, log):
         self.ok = False
         self.stop_flag = threading.Event()
+        self.st = {}          # 최근 상태값. (값, 받은 시각)
         try:
             import rclpy
             from ackermann_msgs.msg import AckermannDriveStamped
@@ -61,12 +66,61 @@ class Ros:
             self._msg_cls = AckermannDriveStamped
             self.node = rclpy.create_node('panel_server')
             self.pub = self.node.create_publisher(AckermannDriveStamped, '/teleop', 10)
+            self._subscribe()
             self.ok = True
             threading.Thread(target=self._spin, daemon=True).start()
             threading.Thread(target=self._pump, daemon=True).start()
             log('ROS 연결됨 — E-STOP 사용 가능 (/teleop)')
         except Exception as exc:
             log(f'ROS 없음 — E-STOP 비활성 ({exc.__class__.__name__}: {exc})')
+
+    def _put(self, key, val):
+        self.st[key] = (val, time.time())
+
+    def get(self, key, stale=3.0):
+        """stale 초보다 오래된 값은 None. 스택이 꺼진 뒤 옛 값을 보여주면 안 된다."""
+        v = self.st.get(key)
+        if v is None or time.time() - v[1] > stale:
+            return None
+        return v[0]
+
+    def _subscribe(self):
+        from rclpy.qos import qos_profile_sensor_data
+        try:
+            from vesc_msgs.msg import VescStateStamped
+            self.node.create_subscription(
+                VescStateStamped, '/sensors/core',
+                lambda m: (self._put('volt', m.state.voltage_input),
+                           self._put('erpm', m.state.speed),
+                           self._put('amp', m.state.current_motor)),
+                qos_profile_sensor_data)
+        except Exception:
+            pass
+        try:
+            from std_msgs.msg import Float32, Bool, Int32
+            self.node.create_subscription(Float32, '/loc/residual',
+                                          lambda m: self._put('res', m.data), 10)
+            self.node.create_subscription(Bool, '/race/enabled',
+                                          lambda m: self._put('go', m.data), 10)
+            self.node.create_subscription(Int32, '/race/lap',
+                                          lambda m: self._put('lap', m.data), 10)
+        except Exception:
+            pass
+        try:
+            from geometry_msgs.msg import PoseWithCovarianceStamped
+            self.node.create_subscription(
+                PoseWithCovarianceStamped, '/amcl_pose',
+                lambda m: self._put('pose', (m.pose.pose.position.x,
+                                             m.pose.pose.position.y)), 10)
+        except Exception:
+            pass
+        try:
+            from nav_msgs.msg import Odometry
+            self.node.create_subscription(
+                Odometry, '/odom', lambda m: self._put('v', m.twist.twist.linear.x),
+                qos_profile_sensor_data)
+        except Exception:
+            pass
 
     def _spin(self):
         try:
@@ -106,6 +160,36 @@ WPS_DIR = os.path.join(REPO, 'src', 'race_stack', 'waypoints')
 LOC_MODES = [('amcl', 'AMCL', '파티클 필터. 길을 잃어도 복구를 시도한다'),
              ('slam_toolbox', 'slam_toolbox', '스캔 매칭. .posegraph 필요'),
              ('cartographer', 'carto', '스캔 매칭 + pose graph. .pbstream 필요')]
+
+
+# ★ bat.sh 와 **같은 곡선**을 쓴다. 두 곳이 다른 잔량을 내면 어느 쪽을 믿을지
+#   알 수 없다. 리포는 전압이 용량에 비례하지 않는다 — 3.7~3.9 V 구간이 가팔라
+#   0.1 V 가 잔량 30% 를 가른다 (15.1 V 4S 가 직선으로는 53% 지만 실제 28%).
+_LIPO = [(3.30, 0), (3.40, 2), (3.50, 5), (3.60, 11), (3.65, 15), (3.70, 20),
+         (3.75, 25), (3.78, 29), (3.80, 33), (3.85, 45), (3.90, 60), (3.95, 65),
+         (4.00, 70), (4.05, 78), (4.10, 85), (4.15, 92), (4.20, 100)]
+
+
+def _lipo_pct(v_cell):
+    if v_cell <= _LIPO[0][0]:
+        return 0.0
+    if v_cell >= _LIPO[-1][0]:
+        return 100.0
+    for (a, pa), (b, pb) in zip(_LIPO, _LIPO[1:]):
+        if a <= v_cell <= b:
+            return pa + (pb - pa) * (v_cell - a) / (b - a)
+    return None
+
+
+def _battery_cells():
+    """차량 파일의 battery.cells. 못 읽으면 4S 로 본다 (과방전 쪽으로 안전)."""
+    try:
+        import yaml
+        car = open(os.path.join(REPO, '.car')).read().strip()
+        with open(os.path.join(REPO, 'config', f'vehicle_{car}.yaml')) as f:
+            return int((yaml.safe_load(f) or {}).get('battery', {}).get('cells', 4))
+    except Exception:
+        return 4
 
 
 def tune_get(key, default=''):
@@ -207,6 +291,8 @@ class State:
         self.log_dir = os.path.join(LOG_ROOT, time.strftime('%Y%m%d_%H%M%S'))
         self.files = {}                   # tab -> file object
         os.makedirs(self.log_dir, exist_ok=True)
+        self.cells = _battery_cells()
+        self.car_last = '—'
         self.ros = Ros(lambda s: self.log('panel', s))
 
     # ── 로그 ──────────────────────────────────────────────────────────────
@@ -337,6 +423,9 @@ class State:
                  'value': self.eta, 'min': 0.1, 'max': 1.0, 'step': 0.1,
                  'suffix': ''},
             ]},
+            {'t': 'group', 'text': '차 상태', 'children': [
+                {'t': 'label', 'id': 'carstate', 'text': '—'},
+            ]},
             {'t': 'group', 'text': '안전', 'children': [
                 {'t': 'button', 'id': 'estop', 'text': '긴급 정지', 'color': '#c62828'},
                 {'t': 'label', 'id': 'safety', 'text': ''},
@@ -367,6 +456,50 @@ class State:
                         'text': '긴급 정지 해제' if self.estop else '긴급 정지'})
         self.broadcast({'op': 'update', 'id': 'status',
                         'text': f'{run}   |   {es}   |   로그 {self.log_dir}'})
+
+    def car_text(self):
+        """차 상태 한 덩어리. 값이 없으면 '—' 로 둔다 (옛 값을 보여주지 않는다)."""
+        r = self.ros
+        if not r.ok:
+            return 'ROS 없음 — panel.sh --server 로 띄웠는지 확인하세요'
+        volt, erpm, amp = r.get('volt'), r.get('erpm'), r.get('amp')
+        res, v, pose = r.get('res', 5.0), r.get('v'), r.get('pose', 5.0)
+        go, lap = r.get('go', 1e9), r.get('lap', 1e9)
+        if volt is None:
+            return '주행 스택이 꺼져 있습니다 (차 상태는 기동 후에 나옵니다)'
+        cells = self.cells
+        per = volt / cells if cells else 0
+        pct = _lipo_pct(per)
+        warn = ' ⚠ 충전' if pct is not None and pct <= 20 else ''
+        out = [f'배터리 {volt:.1f} V ({cells}S, {per:.2f} V/cell)'
+               + (f' 약 {pct:.0f}%{warn}' if pct is not None else '')]
+        spd = f'{v:+.2f} m/s' if v is not None else '—'
+        out.append(f'속도 {spd}   erpm {erpm:+.0f}   전류 {amp:+.1f} A'
+                   if erpm is not None else f'속도 {spd}')
+        if res is not None:
+            out.append(f'위치추정 잔차 {res*100:.1f} cm'
+                       + (f'   위치 ({pose[0]:+.2f}, {pose[1]:+.2f})' if pose else ''))
+        if go is not None:
+            out.append(('주행 중' if go else '정지 상태(컨트롤러 꺼짐)')
+                       + (f'   랩 {lap}' if lap is not None else ''))
+        return '\n'.join(out)
+
+    def status_loop(self):
+        """1Hz 로 차 상태를 밀어준다. 클라이언트가 폴링하지 않게 한다.
+
+        ★ 바뀔 때만 보낸다 — 1Hz 로 같은 문자열을 계속 밀면 로그·대역이 낭비다.
+          대신 마지막 값을 들고 있다가 **새로 접속한 클라이언트에게 바로** 준다.
+          안 그러면 값이 안 변하는 동안 붙은 클라이언트는 영영 '—' 만 본다.
+        """
+        while True:
+            time.sleep(1.0)
+            try:
+                t = self.car_text()
+            except Exception as exc:
+                t = f'상태 읽기 실패: {exc}'
+            if t != self.car_last:
+                self.car_last = t
+                self.broadcast({'op': 'update', 'id': 'carstate', 'text': t})
 
     # ── 액션 ──────────────────────────────────────────────────────────────
     def action(self, aid, value):
@@ -475,6 +608,9 @@ class ClientHandler(socketserver.StreamRequestHandler):
                     self.send({'op': 'log', 'tab': tab, 'line': ln})
             st.clients.append(self)
             st.last_beat[self] = time.time()
+        # 지금 차 상태를 바로 준다. status_loop 은 **바뀔 때만** 보내므로,
+        # 값이 정체된 동안 붙은 클라이언트는 이게 없으면 영영 '—' 만 본다.
+        self.send({'op': 'update', 'id': 'carstate', 'text': st.car_last})
         st.push_status()
         st.log('panel', f'클라이언트 접속 {self.client_address}')
         try:
@@ -514,6 +650,7 @@ def main():
     global STATE
     STATE = State()
     threading.Thread(target=STATE.deadman_loop, daemon=True).start()
+    threading.Thread(target=STATE.status_loop, daemon=True).start()
     srv = Server((HOST, PORT), ClientHandler)
     print(f'panel_server: {HOST}:{PORT}  protocol {PROTOCOL}')
     print(f'  로그: {STATE.log_dir}')
