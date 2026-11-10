@@ -125,8 +125,34 @@ setup_dds () {
     export _DDS_PREV_DOMAIN="${ROS_DOMAIN_ID:-}"
     export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
 
-    local subnet; subnet=$(_dds_yaml_get 'network.subnet' '192.168.50.')
+    local subnet; subnet=$(_dds_yaml_get 'network.subnet' 'auto')
     local peers;  peers=$(_dds_yaml_get 'network.peers' '')
+
+    # ── subnet: auto — 기본 라우트가 나가는 인터페이스에서 대역을 알아낸다 ──
+    #
+    #   ★ 왜 자동이 기본인가 (2026-11-10)
+    #     차와 노트북이 장소마다 다른 공유기를 탄다 (팀 공유기 192.168.50.x /
+    #     연구실 192.168.1.x / 공용 WiFi). 대역을 파일에 박아두면 **옮길 때마다
+    #     두 기기를 다 고쳐야 하고, 한쪽만 고치면 한쪽은 고정 한쪽은 폴백이
+    #     되어 통신이 0 이 된다.** 2026-11-08~09 에 그걸로 RViz 가 하루 종일
+    #     안 떴다. 자동이면 양쪽이 알아서 같은 대역을 잡는다.
+    #
+    #   기본 라우트를 쓰는 이유: 라이다 전용망(192.168.0.x)과 docker0 를
+    #   자연스럽게 제외한다. 그쪽에는 기본 라우트가 없다.
+    #   값을 명시하면(예: "192.168.50.") 그대로 쓴다 — 자동이 틀릴 때의 탈출구다.
+    if [ "$subnet" = "auto" ] || [ -z "$subnet" ] || [ "$subnet" = "None" ]; then
+        local _dev _ip
+        _dev=$(ip -4 route show default 2>/dev/null | awk '/ dev /{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+        if [ -n "$_dev" ]; then
+            _ip=$(ip -4 -br addr show dev "$_dev" 2>/dev/null | awk '{print $3}' | cut -d/ -f1 | head -1)
+        fi
+        if [ -n "$_ip" ]; then
+            subnet="${_ip%.*}."
+            echo "[dds] subnet 자동: ${subnet}x  (${_dev})"
+        else
+            echo "[dds] ⚠ subnet 자동 감지 실패 — 기본 라우트가 없습니다"
+        fi
+    fi
 
     # 주행망 대역에서 내 IP 찾기
     local myip; myip=$(ip -4 -br addr 2>/dev/null \
