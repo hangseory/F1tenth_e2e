@@ -659,6 +659,52 @@ class MapController(Node):
             return 1.0
         return self._fr_spd
 
+    def _speed_floor(self, speed: float) -> float:
+        """speed.min_speed(하드웨어 바닥)를 **배율 뒤에** 다시 세운다.
+
+        왜 필요한가 (2026-11-11)
+        ────────────────────────
+        min_speed 는 "모터가 못 미는 erpm 을 피하는 바닥"인데, solve_profile
+        **안쪽**에서만 걸려 있었다. 그 뒤에 배율이 한 번 더 깎는다:
+
+            speed  = self._profile_speed(...)      # min_speed 반영됨
+            speed *= self._frenet_speed_scale()    # ← 여기서 바닥 밑으로 내려간다
+            speed  = self._launch_limit(...)
+            v_lock 클램프
+
+        그래서 바닥이 바닥 역할을 못 했다. gap_follower·pure_pursuit·
+        stanley 는 셋 다 맨 마지막에 max(speed, min_speed) 를 하는데
+        **map_controller 만 빠져 있었다.**
+
+        실측 (logs/20261111_04{0239,3532,3800}_race_map, 2124 샘플, race 모드
+        η=0.8 μ=0.63 pac_d=1.15):
+          · 그 코너의 물리 한계는 1.93㎧ 였다 (κ_max=1.523). 조향 포화
+            한계 v_lock 도 최대 조향에서 1.90㎧ — 둘 다 물고 있지 않았다.
+          · 그런데 CSV 속도열 상한 0.81㎧ × speed_scale(중간 0.79, 최소 0.45)
+            = **지령 0.36~0.64㎧** 가 나갔다.
+          · 그 대역에서 속도가 1.0㎧ 까지 매끄럽게 내려오다 **한 샘플에 0.00
+            으로 절벽처럼 떨어지고** 0.3~1.5s 멈춘 뒤 튀어오른다. 절벽 지점은
+            매번 0.75~1.03㎧ = 3150~4330 erpm. 센서리스 FOC 가 로터를 놓치는
+            것이다. "거의 정지 찔끔 정지 찔끔" 의 정체가 이것이다.
+          · 지령 1.3㎧ 아래에서 실제<0.3㎧ 비율 3~6%, 위에서는 0.3~0.6%.
+
+        ★ 장애물 때문에 줄인 것은 **절대 올리지 않는다.** 바닥은 물리·수치
+          때문에 느려진 경우에만 세운다. 아니면 막힌 쪽으로 밀어붙인다.
+          (stanley 는 obs_decel 뒤에도 무조건 바닥을 세우는데, min_speed 가
+           0.4 로 낮을 때나 무해한 동작이다. 여기서는 그 함정을 피한다)
+        """
+        floor = float(self.p('min_speed'))
+        if floor <= 0.0 or speed >= floor:
+            return speed
+        d = getattr(self, '_fr_diag', None) or {}
+        n_obs = d.get('n_obs', 0.0)
+        try:
+            if n_obs == n_obs and float(n_obs) > 0.0:   # nan 이 아니고 0 초과
+                return speed                            # 회피 감속은 존중한다
+        except (TypeError, ValueError):
+            pass
+        return floor
+
     def _frenet_cb(self, msg: Float64):
         self._fr_d_cmd = float(msg.data)
         self._fr_rx_t = self.get_clock().now().nanoseconds * 1e-9
@@ -1021,6 +1067,8 @@ class MapController(Node):
         # 걸어야 한다 — 뒤에 걸면 출발제한의 적분 상태(_cmd_prev)가 스케일된
         # 값을 못 보고 다음 틱에서 다시 튄다.
         speed *= self._frenet_speed_scale()
+        # ★ 하드웨어 바닥을 **배율 뒤에** 다시 세운다 (2026-11-11). 아래 주석 참고.
+        speed = self._speed_floor(speed)
         speed = self._launch_limit(speed, 0.02)   # 타이머 주기 50Hz
         # 조향이 포화되면 그 곡률을 마찰 예산 안에서 돌 수 있는 속도로 자른다.
         v_lock = steer_speed_limit(

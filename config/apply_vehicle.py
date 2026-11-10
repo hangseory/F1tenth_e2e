@@ -77,6 +77,12 @@ OVERLAY_MAP = [
     ('tuning.launch_acc',  'limits.launch_acc'),
     ('tuning.launch_time', 'limits.launch_time'),
     ('tuning.grip_util',   'limits.grip_util'),
+    # ★ 속도 바닥. **차량별이다** — 같은 m/s 가 차마다 다른 erpm 이 되기 때문이다
+    #   (speed_to_erpm_gain 이 다르다). 이 값의 목적은 센서리스 FOC 가 로터를
+    #   놓치는 erpm 대역을 피하는 것이라, 물리가 아니라 **그 차의 모터**가 정한다.
+    #   공용 race_script.yaml 에 두면 한 차에 맞춘 값이 다른 차에서 마찰 한계를
+    #   넘어선다 — min_speed 는 프로파일 맨 끝에 적용돼 물리 한계를 **덮는다**.
+    ('tuning.min_speed',   'speed.min_speed'),
     # ★ 젯슨 IP 는 차마다 다르다 (1호차 .57 / 2호차 .77). CycloneDDS 가 유니캐스트로
     #   인사할 고정 피어 목록이라, 남의 차 IP 가 들어가면 노트북 RViz 가 먹통이 된다.
     #   race_script.yaml 에 두면 두 차가 머지할 때마다 이 한 줄이 충돌한다.

@@ -64,7 +64,7 @@ config/.vehicle_overlay.yaml    race_script.yaml 위에 덮을 값  .gitignore
 | `vesc` | `speed_to_erpm_gain`, 조향 `gain`/`offset`, `servo_min`/`max` |
 | `geometry` | `wheelbase`, `mass`, `lf`, `lr` |
 | `tire` | `mu`, `pac_b/c/d/e` |
-| `tuning` | `l1_min`, `l1_k`, `steer_alpha`, `slip_gain`, `speed_lag`, `a_lon_*`, `grip_util` |
+| `tuning` | `l1_min`, `l1_k`, `steer_alpha`, `slip_gain`, `speed_lag`, `a_lon_*`, `grip_util`, `min_speed` |
 | `joystick` | `steer_invert`, `speed_invert`, `device`, `axis_*`, `btn_*` |
 | `network` | `domain_id` (1호차 `57` / 2호차 `77`), `peers` (젯슨 IP — 1호차 `.57` / 2호차 `.77`) |
 
