@@ -78,10 +78,38 @@ esac
 #   ./rviz.sh 129    젯슨 IP 끝자리 (2호차. 1호차는 57)
 #   ./rviz.sh car2   차 이름도 됨
 #   ./rviz.sh        .car 가 있으면 그걸 쓰고, 없으면 race_script.yaml 공용값
+#   ./rviz.sh car1 192.168.50.57
+#                    ★ 젯슨 IP 를 직접 넘긴다 — 공유기를 옮겨 IP 가 바뀌었을 때
+#                      yaml 수정·커밋·pull 없이 바로 붙는 방법. 그 IP 는 젯슨
+#                      기동 로그의 `[dds] ... 인터페이스 <IP> 고정` 줄에 찍힌다.
+#
+# ★ IP 를 왜 넘겨야 하나 (2026-11-11)
+#   CycloneDDS 를 AllowMulticast=false 로 쓰기 때문에 discovery 가 유니캐스트
+#   피어 목록**뿐**이다. 젯슨 IP 는 DHCP 라 공유기마다 바뀌는데 yaml 의 peers 는
+#   git 에 박혀 있어서, 옮기면 양쪽 저장소를 고치고 pull 해야 했다. 안 하면
+#   주행은 멀쩡한데 RViz 만 조용히 안 뜬다 — 그날 실제로 그랬다.
+if [ -n "${2:-}" ]; then
+    case "$2" in
+        [0-9]*.[0-9]*.[0-9]*.[0-9]*)
+            export RACE_PEERS="$2"
+            echo "[rviz.sh] 젯슨 IP 직접 지정: $2  (yaml 의 peers 를 무시합니다)" ;;
+        *) echo "[rviz.sh] ✗ 두 번째 인자는 젯슨 IP 여야 합니다: $2"; exit 1 ;;
+    esac
+fi
+
+# IP 를 첫 인자로 준 경우(`./rviz.sh 192.168.50.57`)도 받는다 — 그 IP 를 피어로
+# 쓰고, 끝자리로 차를 찾게 아래 분기에 숫자만 넘긴다.
+case "${1:-}" in
+    [0-9]*.[0-9]*.[0-9]*.[0-9]*)
+        export RACE_PEERS="$1"
+        echo "[rviz.sh] 젯슨 IP 직접 지정: $1  (yaml 의 peers 를 무시합니다)"
+        set -- "${1##*.}" ;;
+esac
+
 if [ -n "${1:-}" ]; then
     case "$1" in
         car[0-9]*) RACE_CAR="$1" ;;
-        *[!0-9]*)  echo "[rviz.sh] ✗ 알 수 없는 인자: $1  (예: ./rviz.sh 129 또는 ./rviz.sh car2)"; exit 1 ;;
+        *[!0-9]*)  echo "[rviz.sh] ✗ 알 수 없는 인자: $1  (예: ./rviz.sh car1 또는 ./rviz.sh car1 192.168.50.57)"; exit 1 ;;
         *)
             # 숫자 → 그 IP 끝자리를 peers 에 가진 vehicle 파일을 찾는다.
             # 번호를 두 군데(여기 + yaml) 적어두면 반드시 어긋나므로 yaml 만 본다.

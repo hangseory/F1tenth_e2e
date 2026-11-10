@@ -128,6 +128,19 @@ setup_dds () {
     local subnet; subnet=$(_dds_yaml_get 'network.subnet' 'auto')
     local peers;  peers=$(_dds_yaml_get 'network.peers' '')
 
+    # ── RACE_PEERS: 피어를 즉석에서 덮는 탈출구 (2026-11-11) ──────────────
+    #   젯슨 IP 는 DHCP 라 공유기를 옮기면 바뀌는데, yaml 의 peers 는 git 에
+    #   박혀 있다. 그래서 "노트북에서 RViz 가 안 보인다" 가 반복됐다 — 양쪽
+    #   저장소를 고치고 pull 해야 했기 때문이다.
+    #   이제 젯슨 기동 로그의 `[dds] ... 인터페이스 <IP> 고정` 에 찍힌 그 IP 를
+    #   노트북에서 그대로 넘기면 된다:
+    #       ./rviz.sh car1 192.168.50.57
+    #   (rviz.sh 가 이 변수로 바꿔 넣는다. 커밋할 필요도, pull 할 필요도 없다)
+    if [ -n "${RACE_PEERS:-}" ]; then
+        peers=$(printf '%s' "$RACE_PEERS" | tr ', ' '\n\n' | grep -v '^$')
+        echo "[dds] 피어 재지정 (RACE_PEERS): $(printf '%s' "$peers" | tr '\n' ' ')"
+    fi
+
     # ── subnet: auto — 기본 라우트가 나가는 인터페이스에서 대역을 알아낸다 ──
     #
     #   ★ 왜 자동이 기본인가 (2026-11-10)
@@ -184,11 +197,27 @@ setup_dds () {
 
     [ -f "$_DDS_TPL" ] || { echo "[dds] ⚠ 템플릿 없음: $_DDS_TPL"; return 0; }
 
-    # 피어 목록을 XML 조각으로 (자기 자신은 빼도 무해하므로 그대로 둔다)
-    local peer_xml=""
+    # 피어 목록을 XML 조각으로.
+    #
+    # ★ 내 IP 를 **항상 맨 앞에 넣는다** (2026-11-11). 빼면 안 된다.
+    #   AllowMulticast=false 라서 discovery 경로가 이 Peers 목록**뿐**이다.
+    #   그래서 자기 IP 가 목록에 없으면 **같은 젯슨 안의 두 프로세스도 서로를
+    #   못 찾는다.** 노트북과의 통신이 아니라 차 자체가 안 돈다.
+    #
+    #   2026-11-11 에 실제로 겪었다: network.peers 에 전날 쓰던 공용 WiFi IP
+    #   (192.168.1.9)가 남아 있었는데 젯슨 IP 는 172.24.91.115 로 바뀌어 있었다.
+    #   그 전까지는 "우연히" 피어 IP == 내 IP 라서 돌아갔던 것이다. 어긋나자
+    #     ./race.sh joy   → 조이스틱 입력이 ackermann_to_vesc 에 도달 못 함
+    #     ./bat.sh(race.sh 경유) → /sensors/core 를 못 들어 "전압 못 읽음"
+    #   둘 다 VESC·서보 고장처럼 보여 디버깅이 샌다.
+    #
+    #   이제 network.peers 는 **상대 기기(노트북)용**이고, 차 자체의 동작은
+    #   네트워크가 어떻게 바뀌어도 이 자동 항목이 보장한다.
+    local peer_xml="        <Peer address=\"$myip\"/>"$'\n'
     local p
     while IFS= read -r p; do
-        [ -n "$p" ] && peer_xml+="        <Peer address=\"$p\"/>"$'\n'
+        [ -n "$p" ] && [ "$p" != "$myip" ] \
+            && peer_xml+="        <Peer address=\"$p\"/>"$'\n'
     done <<< "$peers"
 
     local out="/tmp/cyclonedds-${myip//./_}.xml"
@@ -200,8 +229,23 @@ setup_dds () {
     ' "$_DDS_TPL" > "$out" || { echo "[dds] ⚠ XML 생성 실패"; return 0; }
 
     export CYCLONEDDS_URI="file://$out"
-    echo "[dds] CycloneDDS  |  인터페이스 $myip 고정  |  피어 $(echo "$peers" | grep -c .)개"
+    echo "[dds] CycloneDDS  |  인터페이스 $myip 고정  |  피어 $(printf '%s' "$peer_xml" | grep -c .)개 (자기 $myip 포함)"
     echo "      (상대 기기에서도 이 줄이 떠야 통신됩니다. 한쪽만 고정 = 통신 0)"
+
+    # ── 이 대역에 상대 피어가 하나도 없으면 크게 알린다 (2026-11-11) ──────
+    #   AllowMulticast=false 라 discovery 는 Peers 유니캐스트**뿐**이다.
+    #   자기 IP 는 위에서 자동으로 들어가므로 차 자체는 돈다. 하지만 다른
+    #   대역의 IP 만 적혀 있으면 **노트북과는 조용히 통신 0** 이 된다.
+    #   2026-11-11 에 그걸로 주행은 멀쩡한데 RViz 만 안 떴다 (peers 에 전날
+    #   공용 WiFi IP 192.168.1.9 가 남아 있었고 둘 다 192.168.50.x 였다).
+    #   조용한 실패를 보이는 실패로 바꾼다.
+    if ! printf '%s' "$peers" | grep -q "^${subnet//./\\.}"; then
+        echo "[dds] ⚠ 이 대역(${subnet}x)에 등록된 상대 피어가 없습니다 — 차는 돌지만"
+        echo "        노트북 RViz 는 안 보입니다 (멀티캐스트 꺼져 있어 유니캐스트 전용)."
+        echo "        peers: $(printf '%s' "$peers" | tr '\n' ' ')"
+        echo "        → 노트북에서:  ./rviz.sh <차> $myip"
+        echo "          (yaml 을 고치거나 git pull 할 필요 없습니다)"
+    fi
 }
 
 setup_dds
