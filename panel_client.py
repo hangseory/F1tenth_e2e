@@ -21,7 +21,7 @@ import sys
 
 from PyQt5 import QtCore, QtNetwork, QtWidgets
 
-PROTOCOL = 1
+PROTOCOL = 2
 HOST, PORT = '127.0.0.1', 8765
 BEAT_MS = 100            # 10Hz. 서버 데드맨이 0.3s 를 본다
 
@@ -178,6 +178,55 @@ class Panel(QtWidgets.QWidget):
                 h.addWidget(r)
             h.addStretch(1)
             self.ids[spec['id']] = w
+            return w
+        if t == 'combo':
+            w = QtWidgets.QWidget()
+            h = QtWidgets.QHBoxLayout(w)
+            h.setContentsMargins(0, 0, 0, 0)
+            if spec.get('label'):
+                lb = QtWidgets.QLabel(spec['label'])
+                lb.setMinimumWidth(80)
+                h.addWidget(lb)
+            cb = nofocus(QtWidgets.QComboBox())
+            cb.addItems([str(o) for o in spec.get('options', [])])
+            v = spec.get('value')
+            if v is not None:
+                i = cb.findText(str(v))
+                # 현재 값이 목록에 없으면 맨 앞에 넣어 보여준다 — 조용히 다른
+                # 값으로 바뀐 것처럼 보이면 안 된다 (설정이 깨진 상태의 신호다)
+                if i < 0:
+                    cb.insertItem(0, str(v))
+                    i = 0
+                cb.setCurrentIndex(i)
+            cb.currentTextChanged.connect(
+                lambda txt, i=spec['id']: self.send({'op': 'action', 'id': i, 'value': txt}))
+            h.addWidget(cb, 1)
+            self.ids[spec['id']] = cb
+            return w
+        if t == 'spin':
+            w = QtWidgets.QWidget()
+            h = QtWidgets.QHBoxLayout(w)
+            h.setContentsMargins(0, 0, 0, 0)
+            if spec.get('label'):
+                lb = QtWidgets.QLabel(spec['label'])
+                lb.setMinimumWidth(140)
+                h.addWidget(lb)
+            sp = nofocus(QtWidgets.QDoubleSpinBox())
+            sp.setRange(float(spec.get('min', 0.0)), float(spec.get('max', 10.0)))
+            sp.setSingleStep(float(spec.get('step', 0.1)))
+            sp.setDecimals(2)
+            sp.setSuffix(spec.get('suffix', ''))
+            try:
+                sp.setValue(float(spec.get('value', 0)))
+            except (TypeError, ValueError):
+                pass
+            # editingFinished 를 쓴다 — valueChanged 면 스핀 한 칸마다 tune.sh 가
+            # 돌아 느리고, 중간값이 파일에 써진다
+            sp.editingFinished.connect(
+                lambda i=spec['id'], s_=sp: self.send(
+                    {'op': 'action', 'id': i, 'value': round(s_.value(), 3)}))
+            h.addWidget(sp, 1)
+            self.ids[spec['id']] = sp
             return w
         if t == 'logtabs':
             self.tabs = QtWidgets.QTabWidget()

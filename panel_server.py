@@ -27,7 +27,7 @@ import sys
 import threading
 import time
 
-PROTOCOL = 1                 # 위젯 어휘·메시지 형식이 바뀌면 올린다
+PROTOCOL = 2                 # 위젯 어휘·메시지 형식이 바뀌면 올린다
 HOST, PORT = '127.0.0.1', 8765
 REPO = os.path.dirname(os.path.abspath(__file__))
 LOG_ROOT = os.path.join(REPO, 'logs', 'panel')
@@ -94,6 +94,100 @@ class Ros:
             return False
         self.stop_flag.set() if on else self.stop_flag.clear()
         return True
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 설정 — 전부 tune.sh 를 거친다
+#   ★ yaml 을 직접 쓰지 않는 이유: tune.sh 에 백업·검증·--undo 가 이미 있고,
+#     에디터로 연 파일과 충돌하지 않는다. 두 경로로 쓰면 반드시 어긋난다.
+# ══════════════════════════════════════════════════════════════════════════════
+MAPS_DIR = os.path.join(REPO, 'src', 'race_stack', 'maps')
+WPS_DIR = os.path.join(REPO, 'src', 'race_stack', 'waypoints')
+LOC_MODES = [('amcl', 'AMCL', '파티클 필터. 길을 잃어도 복구를 시도한다'),
+             ('slam_toolbox', 'slam_toolbox', '스캔 매칭. .posegraph 필요'),
+             ('cartographer', 'carto', '스캔 매칭 + pose graph. .pbstream 필요')]
+
+
+def tune_get(key, default=''):
+    try:
+        out = subprocess.run(['./tune.sh', key], cwd=REPO, timeout=20,
+                             capture_output=True, text=True).stdout.strip()
+        return out.splitlines()[-1].strip() if out else default
+    except Exception:
+        return default
+
+
+def tune_set(key, value):
+    """성공이면 None, 실패면 사람이 읽을 메시지."""
+    try:
+        r = subprocess.run(['./tune.sh', f'{key}={value}'], cwd=REPO, timeout=25,
+                           capture_output=True, text=True)
+        if r.returncode != 0:
+            return (r.stderr or r.stdout).strip()[:300] or f'{key} 설정 실패'
+        return None
+    except Exception as exc:
+        return f'{key} 설정 실패: {exc}'
+
+
+def scan_maps():
+    """.pgm 이 있는 것만 맵이다 — maps/ 에는 미리보기 PNG 도 같이 산다."""
+    try:
+        return sorted(f[:-4] for f in os.listdir(MAPS_DIR) if f.endswith('.pgm'))
+    except OSError:
+        return []
+
+
+def scan_wps():
+    try:
+        return sorted(f[:-4] for f in os.listdir(WPS_DIR) if f.endswith('.csv'))
+    except OSError:
+        return []
+
+
+def _base_names(map_name):
+    """<맵>, 그리고 파생 접미사를 벗긴 원본 이름.
+    _clean 은 원본에서 파생된 **이미지**라 자기 posegraph/pbstream 이 없다."""
+    out = [map_name]
+    for suf in ('_clean_loc', '_clean'):
+        if map_name.endswith(suf):
+            out.append(map_name[:-len(suf)])
+            break
+    return out
+
+
+def check_ready(map_name, wp_name, loc_mode):
+    """주행을 시작해도 되는지. 안 되면 사람이 읽을 이유를 돌려준다.
+
+    ★ 전부 실제로 겪은 실패다:
+      · 2026-11-09 waypoints 를 1109-2_clean_wp 로 적었는데 실제 파일은
+        ..._map_wp.csv 라 launch 가 죽었다 — 라인까지 다 만든 뒤였다.
+      · cartographer 인데 pbstream 이 없어 주행 직전에 막혔다.
+    """
+    if not map_name:
+        return '맵이 선택되지 않았습니다.'
+    pgm = os.path.join(MAPS_DIR, map_name + '.pgm')
+    if not os.path.exists(pgm):
+        return f'맵 이미지가 없습니다: {map_name}.pgm'
+    if not os.path.exists(os.path.join(MAPS_DIR, map_name + '.yaml')):
+        return f'맵 yaml 이 없습니다: {map_name}.yaml'
+    if not wp_name:
+        return '웨이포인트가 선택되지 않았습니다.'
+    csv_path = os.path.join(WPS_DIR, wp_name + '.csv')
+    if not os.path.exists(csv_path):
+        return f'웨이포인트 파일이 없습니다: {wp_name}.csv'
+    try:
+        if sum(1 for _ in open(csv_path)) < 3:
+            return f'{wp_name}.csv 가 비어 있습니다 (점이 없습니다).'
+    except OSError as exc:
+        return f'{wp_name}.csv 를 읽을 수 없습니다: {exc}'
+    need = {'cartographer': '.pbstream', 'slam_toolbox': '.posegraph'}.get(loc_mode)
+    if need:
+        cands = [b + need for b in _base_names(map_name)]
+        if not any(os.path.exists(os.path.join(MAPS_DIR, c)) for c in cands):
+            return (f'{loc_mode} 모드인데 {" / ".join(cands)} 가 없습니다.\n'
+                    f'그 방식은 .pgm 이 아니라 이 파일을 읽습니다 — 역산할 방법이 '
+                    f'없으니 다시 측량해야 합니다.')
+    return None
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -193,7 +287,26 @@ class State:
             return None
 
     # ── 레이아웃 / 상태 ───────────────────────────────────────────────────
+    # 키 → (속성 이름, 기본값). tune.sh 키와 서버 속성의 유일한 대응표다.
+    CFG_KEYS = (('map_name', 'map_name', ''), ('waypoints', 'wp_name', ''),
+                ('localization.mode', 'loc_mode', 'amcl'),
+                ('cap', 'cap', '0'), ('q1', 'eta', '0.5'))
+
+    def cfg_refresh(self, only=None):
+        """race_script.yaml 의 현재 값을 읽어 둔다 (tune.sh 경유).
+
+        ★ only 를 주면 그 키만 읽는다. tune.sh 는 한 번 돌 때마다 python 을
+          띄워 yaml 을 파싱하므로 5개를 매번 다시 읽으면 **6초를 넘긴다** —
+          값 하나 바꿀 때마다 화면이 멎는 것처럼 보였다. 바뀐 것만 읽는다.
+        """
+        with self.lock:
+            for key, attr, dflt in self.CFG_KEYS:
+                if only is not None and key != only:
+                    continue
+                setattr(self, attr, tune_get(key, dflt))
+
     def layout(self):
+        self.cfg_refresh()
         return {'op': 'layout', 'widgets': [
             {'t': 'group', 'text': '실행', 'children': [
                 {'t': 'radio', 'id': 'mode', 'value': self.sel_mode,
@@ -203,6 +316,26 @@ class State:
                     {'t': 'button', 'id': 'stop', 'text': '정지'},
                 ]},
                 {'t': 'label', 'id': 'runstate', 'text': ''},
+            ]},
+            {'t': 'group', 'text': '맵 / 경로', 'children': [
+                {'t': 'combo', 'id': 'map_name', 'label': '맵',
+                 'value': self.map_name, 'options': scan_maps()},
+                {'t': 'combo', 'id': 'waypoints', 'label': '웨이포인트',
+                 'value': self.wp_name, 'options': scan_wps()},
+                {'t': 'radio', 'id': 'loc_mode', 'value': self.loc_mode,
+                 'options': [list(x) for x in LOC_MODES]},
+                {'t': 'row', 'children': [
+                    {'t': 'button', 'id': 'cfg_reload', 'text': '새로고침'},
+                ]},
+                {'t': 'label', 'id': 'cfgstate', 'text': ''},
+            ]},
+            {'t': 'group', 'text': '속도', 'children': [
+                {'t': 'spin', 'id': 'cap', 'label': '전 모드 상한 cap',
+                 'value': self.cap, 'min': 0.0, 'max': 8.0, 'step': 0.5,
+                 'suffix': ' m/s  (0=끔)'},
+                {'t': 'spin', 'id': 'q1', 'label': 'q1 마찰예산 η',
+                 'value': self.eta, 'min': 0.1, 'max': 1.0, 'step': 0.1,
+                 'suffix': ''},
             ]},
             {'t': 'group', 'text': '안전', 'children': [
                 {'t': 'button', 'id': 'estop', 'text': '긴급 정지', 'color': '#c62828'},
@@ -214,6 +347,19 @@ class State:
 
     def push_status(self):
         run = f'실행 중: {self.mode}' if self.running() else '정지 상태'
+        problem = check_ready(self.map_name, self.wp_name, self.loc_mode)
+        cfg = f'{self.map_name} / {self.wp_name} / {self.loc_mode}'
+        if problem:
+            cfg += f'\n⚠ {problem}'
+        # ★ cap 이 걸려 있으면 **항상** 보여준다. 저속 시험용으로 걸어둔 걸 잊어
+        #   "왜 느리지" 로 헤맨 적이 있다 (2026-11-09).
+        try:
+            capv = float(self.cap)
+        except ValueError:
+            capv = 0.0
+        if capv > 0:
+            cfg += f'\n■ cap {capv:g} m/s 가 걸려 있습니다 (전 모드 상한)'
+        self.broadcast({'op': 'update', 'id': 'cfgstate', 'text': cfg})
         es = '■ 긴급 정지 걸림' if self.estop else ('대기' if self.ros.ok else 'ROS 없음 — E-STOP 비활성')
         self.broadcast({'op': 'update', 'id': 'runstate', 'text': run})
         self.broadcast({'op': 'update', 'id': 'safety', 'text': es})
@@ -227,7 +373,53 @@ class State:
         if aid == 'mode':
             self.sel_mode = value
             return None
+        # ★ 실행 중에는 맵/경로/위치추정을 못 바꾼다. launch 시점에만 읽히므로
+        #   바꿔도 안 먹는데 화면만 바뀌면 거짓말이 된다.
+        if aid in ('map_name', 'waypoints', 'loc_mode', 'cfg_reload'):
+            if aid != 'cfg_reload' and self.running():
+                self.push_status()
+                return (f'{self.mode} 실행 중에는 바꿀 수 없습니다.\n'
+                        f'설정은 기동할 때만 읽힙니다 — 먼저 정지하세요.')
+            if aid == 'map_name':
+                err = tune_set('map_name', value)
+            elif aid == 'waypoints':
+                err = tune_set('waypoints', value)
+            elif aid == 'loc_mode':
+                err = tune_set('localization.mode', value)
+            else:
+                err = None
+            self.cfg_refresh(only={'map_name': 'map_name', 'waypoints': 'waypoints',
+                                   'loc_mode': 'localization.mode'}.get(aid))
+            self.push_status()
+            return err
+        if aid in ('cap', 'q1'):
+            if aid == 'cap':
+                try:
+                    v = float(value)
+                except (TypeError, ValueError):
+                    return f'숫자가 아닙니다: {value}'
+                # ★ 0.5 m/s ≈ 2100 erpm 은 센서리스 BLDC 가 가장 불안정한 구간이다.
+                #   2026-11-09 박스 실측: 지령 500~1000 erpm 에서 전류 30~50A 를
+                #   먹고 거의 안 돌았고, 800 erpm 지령에 -314 erpm(역방향)까지 튀었다.
+                #   4000 erpm 에서는 전류 6.2A 로 깨끗하게 추종한다.
+                warn = (0 < v <= 0.5)
+            else:
+                warn = False
+            err = tune_set('cap' if aid == 'cap' else 'q1', value)
+            self.cfg_refresh(only=aid)
+            self.push_status()
+            if err:
+                return err
+            if warn:
+                return ('cap 0.5 m/s 이하는 권하지 않습니다.\n'
+                        '그 속도(≈2100 erpm)는 센서리스 모터가 가장 불안정한 '
+                        '구간이라 울컥거리고 오도메트리가 0 으로 읽힙니다.\n'
+                        '저속 시험은 1.0 m/s 이상으로 하세요.')
+            return None
         if aid == 'start':
+            problem = check_ready(self.map_name, self.wp_name, self.loc_mode)
+            if problem and self.sel_mode not in ('mapping-carto-joy',):
+                return f'시작할 수 없습니다 — {problem}'
             return self.start(self.sel_mode)
         if aid == 'stop':
             return self.stop()
