@@ -54,3 +54,6 @@ f1TENTH-contest_full_stack/sim_ws/src/f1tenth_gym_ros/maps/*_waypoints.csv
 config/vesc.yaml
 config/.vehicle_overlay.yaml
 .car
+
+# 제어판이 띄울 때마다 만드는 로그 폴더 (logs/panel/<시각>/<프로그램>.log)
+logs/panel/
