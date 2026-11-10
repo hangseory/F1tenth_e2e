@@ -51,7 +51,13 @@ def _pkg_dir():
         p = os.path.join(os.path.expanduser(ws), 'src', 'race_stack')
         if os.path.isdir(os.path.join(p, 'waypoints')):
             return p
-    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # ★ realpath 로 심링크를 **푼다**. abspath 로는 안 된다 —
+    #   build/race_stack/race_stack 은 저장소로 가는 심링크지만,
+    #   build/race_stack/waypoints 는 **빌드 시점에 고정된 심링크 모음**인
+    #   진짜 디렉토리다. abspath 를 쓰면 거기에 저장되고, 저장소에는 아무것도
+    #   안 남는다. (2026-11-11 에 실제로 그렇게 저장됐다 — 게다가 그 폴더의
+    #   오래된 CSV 를 열어 220줄짜리를 편집했다. 저장소 원본은 401줄이었다)
+    return os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 
 
 WP_DIR = os.path.join(_pkg_dir(), 'waypoints')
@@ -444,7 +450,11 @@ class Editor:
             xy, v = sp
             px = self.to_px(xy)
             a = self.args
-            self.path_line = self.ax.scatter(px[:, 0], px[:, 1], c=v, cmap='turbo', s=8,
+            # ★ 색은 우리 생성기들과 같은 RdYlGn 으로 통일한다 (원본은 turbo).
+            #   gen_raceline·gen_waypoints_kappa 의 오버레이 PNG, RViz 의
+            #   레이싱라인이 전부 "빨강=느림 / 초록=빠름" 이다. 편집기만 다른
+            #   색이면 같은 라인을 두 화면에서 보며 헷갈린다.
+            self.path_line = self.ax.scatter(px[:, 0], px[:, 1], c=v, cmap='RdYlGn', s=8,
                                              vmin=a.vmin, vmax=a.vmax, zorder=3)
             if not msg:
                 msg = t['speed_range'].format(v0=v.min(), v1=v.max(), vmax=a.vmax)
