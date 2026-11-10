@@ -19,6 +19,7 @@
 import json
 import os
 import queue
+import re
 import signal
 import socket
 import socketserver
@@ -27,7 +28,7 @@ import sys
 import threading
 import time
 
-PROTOCOL = 2                 # 위젯 어휘·메시지 형식이 바뀌면 올린다
+PROTOCOL = 3                 # 위젯 어휘·메시지 형식이 바뀌면 올린다
 HOST, PORT = '127.0.0.1', 8765
 REPO = os.path.dirname(os.path.abspath(__file__))
 LOG_ROOT = os.path.join(REPO, 'logs', 'panel')
@@ -282,6 +283,8 @@ class State:
         self.lock = threading.RLock()
         self.clients = []                 # [ClientHandler]
         self.proc = None                  # 지금 돌고 있는 race.sh
+        self.task = None                  # 맵/경로 작업 (모드와 별개)
+        self.task_name = None
         self.mode = None
         self.sel_mode = MODES[0][0]       # 라디오 선택값 (아직 실행 전)
         self.estop = False
@@ -372,6 +375,42 @@ class State:
             self.push_status()
             return None
 
+    # ── 맵/경로 작업 ──────────────────────────────────────────────────────
+    #   모드(self.proc)와 **별개 슬롯**이다. savemap-carto 는 맵핑이 돌고 있는
+    #   동안 실행해야 하므로 둘이 동시에 떠 있어야 한다.
+    def task_running(self):
+        return self.task is not None and self.task.poll() is None
+
+    def run_task(self, name, argv, need_mapping=False, block_if_running=True):
+        with self.lock:
+            if self.task_running():
+                return f'{self.task_name} 이(가) 아직 돌고 있습니다.'
+            if need_mapping and not (self.running() and 'mapping' in (self.mode or '')):
+                return ('맵핑이 돌고 있어야 저장할 수 있습니다.\n'
+                        '맵은 slam/cartographer 가 메모리에 들고 있습니다 — '
+                        '맵핑을 끄면 맵도 같이 사라집니다.')
+            if block_if_running and self.running():
+                return (f'{self.mode} 실행 중에는 할 수 없습니다.\n'
+                        f'정제·라인 생성은 CPU 를 많이 써서 주행을 방해합니다.')
+            self.task = subprocess.Popen(
+                argv, cwd=REPO, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                text=True, bufsize=1, start_new_session=True)
+            self.task_name = name
+            threading.Thread(target=self._drain_task, args=(self.task, name),
+                             daemon=True).start()
+            self.log('panel', f'작업 시작: {" ".join(argv)}')
+            self.push_status()
+            return None
+
+    def _drain_task(self, proc, name):
+        for line in proc.stdout:
+            self.log(name, line)
+        rc = proc.wait()
+        self.log('panel', f'작업 끝: {name} (코드 {rc})')
+        # 새 맵·웨이포인트가 생겼을 수 있다 → 목록을 다시 읽게 레이아웃을 민다
+        self.broadcast(self.layout())
+        self.push_status()
+
     # ── 레이아웃 / 상태 ───────────────────────────────────────────────────
     # 키 → (속성 이름, 기본값). tune.sh 키와 서버 속성의 유일한 대응표다.
     CFG_KEYS = (('map_name', 'map_name', ''), ('waypoints', 'wp_name', ''),
@@ -415,6 +454,19 @@ class State:
                 ]},
                 {'t': 'label', 'id': 'cfgstate', 'text': ''},
             ]},
+            {'t': 'group', 'text': '맵 작업', 'children': [
+                {'t': 'row', 'children': [
+                    {'t': 'lineedit', 'id': 'savename', 'label': '저장 이름',
+                     'value': ''},
+                    {'t': 'button', 'id': 'savemap', 'text': '맵 저장'},
+                ]},
+                {'t': 'row', 'children': [
+                    {'t': 'button', 'id': 'clean', 'text': '정제(clean)'},
+                    {'t': 'button', 'id': 'line', 'text': '라인 생성(line)'},
+                    {'t': 'button', 'id': 'savepose', 'text': 'savepose'},
+                ]},
+                {'t': 'label', 'id': 'taskstate', 'text': ''},
+            ]},
             {'t': 'group', 'text': '속도', 'children': [
                 {'t': 'spin', 'id': 'cap', 'label': '전 모드 상한 cap',
                  'value': self.cap, 'min': 0.0, 'max': 8.0, 'step': 0.5,
@@ -449,6 +501,10 @@ class State:
         if capv > 0:
             cfg += f'\n■ cap {capv:g} m/s 가 걸려 있습니다 (전 모드 상한)'
         self.broadcast({'op': 'update', 'id': 'cfgstate', 'text': cfg})
+        self.broadcast({'op': 'update', 'id': 'taskstate',
+                        'text': (f'작업 중: {self.task_name}' if self.task_running()
+                                 else 'GUI 가 필요한 waypoints-kappa / start_pos 는 '
+                                      '젯슨 터미널에서 하세요')})
         es = '■ 긴급 정지 걸림' if self.estop else ('대기' if self.ros.ok else 'ROS 없음 — E-STOP 비활성')
         self.broadcast({'op': 'update', 'id': 'runstate', 'text': run})
         self.broadcast({'op': 'update', 'id': 'safety', 'text': es})
@@ -549,6 +605,39 @@ class State:
                         '구간이라 울컥거리고 오도메트리가 0 으로 읽힙니다.\n'
                         '저속 시험은 1.0 m/s 이상으로 하세요.')
             return None
+        if aid == 'savename':
+            self.savename = (value or '').strip()
+            return None
+        if aid == 'savemap':
+            nm = getattr(self, 'savename', '')
+            if not nm or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_-]*', nm):
+                return ('저장 이름을 영문/숫자로 시작해 적어주세요 '
+                        '(영문·숫자·_·- 만).')
+            # ★ savemap 이 아니라 savemap-carto 다. savemap 은 /map 토픽만 받아
+            #   .pgm 을 쓰고 .pbstream 을 안 만든다 — 에러 없이 성공하므로
+            #   라인까지 다 만든 뒤 주행 직전에야 막힌다 (2026-11-09 에 겪음).
+            return self.run_task(f'savemap:{nm}', ['./race.sh', 'savemap-carto', nm],
+                                 need_mapping=True, block_if_running=False)
+        if aid == 'clean':
+            if not self.map_name:
+                return '맵이 선택되지 않았습니다.'
+            base = self.map_name
+            for suf in ('_clean_loc', '_clean'):
+                if base.endswith(suf):
+                    base = base[:-len(suf)]
+                    break
+            return self.run_task(f'clean:{base}', ['./race.sh', 'clean', base])
+        if aid == 'line':
+            if not self.map_name:
+                return '맵이 선택되지 않았습니다.'
+            return self.run_task(f'line:{self.map_name}',
+                                 ['./race.sh', 'line', self.map_name])
+        if aid == 'savepose':
+            if not self.running():
+                return ('주행 스택이 떠 있어야 합니다. savepose 는 지금 추정 중인 '
+                        '위치를 읽어 init_x/y/yaw 에 씁니다.')
+            return self.run_task('savepose', ['./race.sh', 'savepose'],
+                                 block_if_running=False)
         if aid == 'start':
             problem = check_ready(self.map_name, self.wp_name, self.loc_mode)
             if problem and self.sel_mode not in ('mapping-carto-joy',):

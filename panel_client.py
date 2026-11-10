@@ -21,7 +21,7 @@ import sys
 
 from PyQt5 import QtCore, QtNetwork, QtWidgets
 
-PROTOCOL = 2
+PROTOCOL = 3
 HOST, PORT = '127.0.0.1', 8765
 BEAT_MS = 100            # 10Hz. 서버 데드맨이 0.3s 를 본다
 
@@ -178,6 +178,24 @@ class Panel(QtWidgets.QWidget):
                 h.addWidget(r)
             h.addStretch(1)
             self.ids[spec['id']] = w
+            return w
+        if t == 'lineedit':
+            w = QtWidgets.QWidget()
+            h = QtWidgets.QHBoxLayout(w)
+            h.setContentsMargins(0, 0, 0, 0)
+            if spec.get('label'):
+                lb = QtWidgets.QLabel(spec['label'])
+                lb.setMinimumWidth(70)
+                h.addWidget(lb)
+            le = QtWidgets.QLineEdit(spec.get('value', ''))
+            le.setPlaceholderText(spec.get('placeholder', ''))
+            # 타이핑 한 글자마다 보내지 않는다 — 서버가 매번 검증하면 시끄럽다.
+            # 포커스를 잃거나 Enter 를 칠 때만 보낸다.
+            le.editingFinished.connect(
+                lambda i=spec['id'], e=le: self.send(
+                    {'op': 'action', 'id': i, 'value': e.text()}))
+            h.addWidget(le, 1)
+            self.ids[spec['id']] = le
             return w
         if t == 'combo':
             w = QtWidgets.QWidget()
