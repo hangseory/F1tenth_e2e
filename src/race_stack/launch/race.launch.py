@@ -186,7 +186,17 @@ def generate_launch_description():
         else os.path.join(race_share, 'config')
 
     map_yaml = os.path.join(race_data, 'maps', cfg['map_name'] + '.yaml')
-    wp_csv = os.path.join(race_data, 'waypoints', cfg['waypoints'] + '.csv')
+
+    # ★ 웨이포인트는 env 로 덮을 수 있다 (2026-11-11) — race.sh 의 --wp <이름>.
+    #   왜 필요한가: 라인을 비교하려면 race_script.yaml 의 waypoints: 를 매번
+    #   손으로 고쳐야 했다. 그 파일은 편집기에 열려 있기도 하고, 고친 걸 되돌리는
+    #   것을 잊으면 다음 주행이 조용히 다른 라인으로 돈다. 실제로 11/11 에
+    #   _pre 와 _pre_edit 을 번갈아 쓰다 어느 쪽으로 달렸는지 로그를 뒤져야 했다.
+    #   env 는 그 실행에만 걸리므로 파일이 안 더럽혀진다.
+    #   ※ 위치 인자로 안 받는 이유 — race 뒤 두 번째 인자는 이미 컨트롤러다
+    #     (auto|stanley|pure_pursuit|gap_follower|map).
+    _wp_name = (os.environ.get('RACE_WAYPOINTS') or '').strip() or cfg['waypoints']
+    wp_csv = os.path.join(race_data, 'waypoints', _wp_name + '.csv')
     amcl_yaml = os.path.join(race_share, 'config', 'amcl.yaml')
 
     if not os.path.exists(map_yaml):
@@ -194,6 +204,27 @@ def generate_launch_description():
             f'맵 파일 없음: {map_yaml}\n'
             f'→ 주최측 맵을 src/race_stack/maps/에 넣고 colcon build 하거나,\n'
             f'  ./race.sh mapping 으로 직접 맵을 만든 뒤 ./race.sh savemap 하세요.')
+
+    # ★ 웨이포인트도 맵처럼 미리 검사한다 (2026-11-11). 전에는 검사가 없어서
+    #   이름이 틀리면 컨트롤러가 빈 경로로 떠 "라인을 안 따라간다" 로 보였다.
+    #   --wp 로 이름을 손으로 넣게 된 이상 오타가 흔해지므로 여기서 끊는다.
+    if not os.path.exists(wp_csv):
+        _wp_dir = os.path.join(race_data, 'waypoints')
+        try:
+            _avail = sorted(f[:-4] for f in os.listdir(_wp_dir) if f.endswith('.csv'))
+        except OSError:
+            _avail = []
+        _src_txt = ('RACE_WAYPOINTS (--wp)' if os.environ.get('RACE_WAYPOINTS')
+                    else 'race_script.yaml 의 waypoints:')
+        raise RuntimeError(
+            f'웨이포인트 없음: {wp_csv}\n'
+            f'→ 이름의 출처: {_src_txt}  (값 "{_wp_name}")\n'
+            f'→ 있는 것: {", ".join(_avail) if _avail else "(없음)"}\n'
+            f'  라인을 새로 만들려면  ./race.sh waypoints-kappa <맵> --out <이름>')
+
+    print(f'[launch] 웨이포인트: {_wp_name}'
+          + ('   ★ --wp 로 덮어썼습니다 (race_script.yaml 값 무시)'
+             if os.environ.get('RACE_WAYPOINTS') else ''))
 
     nodes = []
 

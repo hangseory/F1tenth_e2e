@@ -35,6 +35,12 @@
 #    ./race.sh box [모드]      ★ 박스 위 벤치 테스트 — 바퀴를 돌리지 않는다.
 #                              실주행과 동일한 스택(맵/AMCL/LiDAR/컨트롤러)을 띄우되
 #                              속도만 0. 토픽 통신·RViz 표시·조향 서보 확인용.
+#    ./race.sh <모드> --wp <이름>  ★ 이 실행만 다른 웨이포인트로 달린다
+#                              race_script.yaml 을 안 고치므로 되돌릴 게 없다.
+#                              라인 랩타임 비교에 쓴다. 없는 이름이면 목록을
+#                              띄우고 바로 멈춘다 (스택을 띄우기 전에).
+#                              예: ./race.sh race --wp c11_clean_wp_m65
+#                                  ./race.sh q1 map --wp c11_clean_wp_kappa_pre --bag
 #    ./race.sh <모드> --bag    ★ 주행 중 원시 토픽을 bag 으로 녹화 (분당 약 9MB)
 #                              /scan · odom · IMU · pose · drive. 사후 분석용.
 #                              logs/bags/<시각>_<모드>_<컨트롤러>/ 에 쌓이고,
@@ -58,6 +64,10 @@
 #    ./race.sh clean [맵]      SLAM 맵 정제 (빛살 제거). 화면 없이 대화형
 #    ./race.sh line [맵] [옵션]  ★ 레이싱라인 생성 (최소곡률 QP, 자동)
 #                              예) ./race.sh line 0815_clean --apex-extra 0.5
+#    ./race.sh wp [필터]       ★ 있는 웨이포인트 목록 + 이 차로 **따라갈 수 있는지**
+#                              (R_min / 추종조향 / 여유 / 한계초과점). 인자 없으면
+#                              지금 맵 것만, all 이면 전부, 그 외는 이름에 포함된 것.
+#                              여유가 20% 밑이면 조향이 포화돼 바깥으로 벌어진다.
 #    ./race.sh waypoints-kappa [맵]  위와 동일 + 조향각 물리한계(곡률) 제약
 #                              → <맵>_wp_kappa.csv 로 따로 저장, 랩타임 비교용
 #    ./race.sh waypoints-tumftm [맵]  TUMFTM 최소곡률(IQP) QP 최적화 (비-GUI, 자동)
@@ -188,14 +198,46 @@ export RACE_SCRIPT   # launch 파일이 이 env로 yaml 경로를 읽음
 # /scan 원시 데이터가 없으면 deskew·AMCL·ICP 같은 앞단 문제를 사후에 못 판정한다
 # (2026-08-09: 고속 deskew 를 켤지 정하려는데 고속 주행 bag 이 하나도 없었다).
 RECORD_BAG=0
+WP_OVERRIDE=""
 _args=()
-for _a in "$@"; do
-    case "$_a" in
+# ★ --wp 는 값을 받으므로 for 가 아니라 while 로 돈다 (2026-11-11).
+#   위치 인자로 안 받는 이유: race 뒤 두 번째 인자는 이미 컨트롤러다
+#   (auto|stanley|pure_pursuit|gap_follower|map). 거기에 라인 이름을 섞으면
+#   둘을 구분할 방법이 없다.
+while [ $# -gt 0 ]; do
+    case "$1" in
         --bag) RECORD_BAG=1 ;;
-        *) _args+=("$_a") ;;
+        --wp)
+            shift
+            WP_OVERRIDE="${1:-}"
+            [ -n "$WP_OVERRIDE" ] || {
+                echo "[race.sh] ✗ --wp 다음에 웨이포인트 이름이 필요합니다"
+                echo "          예: ./race.sh race --wp c11_clean_wp_m65"; exit 1; } ;;
+        --wp=*) WP_OVERRIDE="${1#--wp=}" ;;
+        *) _args+=("$1") ;;
     esac
+    shift
 done
 set -- "${_args[@]}"
+
+# ── --wp: 이 실행에만 쓸 웨이포인트 ──────────────────────────────────
+#   race_script.yaml 을 고치지 않는다. 그 파일은 편집기에 열려 있기도 하고,
+#   고친 걸 되돌리는 걸 잊으면 다음 주행이 조용히 다른 라인으로 돈다
+#   (11/11 에 _pre 와 _pre_edit 을 번갈아 쓰다 어느 쪽이었는지 로그를 뒤졌다).
+#   여기서 **먼저 파일이 있는지 보고** 없으면 목록을 띄우고 끊는다 — 스택을
+#   14개 노드까지 띄운 뒤 죽는 것보다 싸다.
+if [ -n "$WP_OVERRIDE" ]; then
+    WP_OVERRIDE="${WP_OVERRIDE%.csv}"        # 확장자를 붙여 줘도 받는다
+    _wp_dir="$SCRIPT_DIR/src/race_stack/waypoints"
+    if [ ! -f "$_wp_dir/$WP_OVERRIDE.csv" ]; then
+        echo "[race.sh] ✗ 웨이포인트 없음: $_wp_dir/$WP_OVERRIDE.csv"
+        echo "          있는 것:"
+        ls "$_wp_dir"/*.csv 2>/dev/null | sed 's#.*/##; s#\.csv$##' | sed 's/^/            /'
+        echo "          새로 만들려면: ./race.sh waypoints-kappa <맵> --out <이름>"
+        exit 1
+    fi
+    export RACE_WAYPOINTS="$WP_OVERRIDE"
+fi
 
 CMD=${1:-}
 # ★ 차량 overlay 를 먼저 본다 — race.launch.py 와 같은 규약.
@@ -698,30 +740,134 @@ case "$CMD" in
     fi ;;
   waypoints)
     NAME=${2:-}
-    if [ -n "$NAME" ]; then
-      exec ros2 run race_stack gen_waypoints -- --map "$NAME"
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    if [[ -n "$NAME" && "$NAME" != -* ]]; then
+      exec python3 -m race_stack.gen_waypoints --map "$NAME" "${@:3}"
     else
-      exec ros2 run race_stack gen_waypoints
+      exec python3 -m race_stack.gen_waypoints "${@:2}"
     fi ;;
+  wp|wplist)
+    # 있는 웨이포인트 목록 + **이 차로 따라갈 수 있는지**.
+    #   ./race.sh wp         지금 맵(map_name) 의 라인만
+    #   ./race.sh wp all     전부
+    #   ./race.sh wp c11     이름에 c11 이 든 것
+    #
+    # ★ "돌 수 있는 라인" 과 "따라갈 수 있는 라인" 은 다르다 (2026-11-11 실측).
+    #   곡률 한계를 안 넘어도(초과 0점), 라인을 **따라가기만** 해도 조향의 82%
+    #   를 쓰면 보정에 쓸 여유가 18% 뿐이다. 그러면 오차가 조금만 생겨도 조향이
+    #   포화되고, 차는 더 꺾을 수 없어 바깥으로 벌어진다. 그날 랩의 16~20% 가
+    #   포화였고 CTE 가 8.5cm → 18cm 로 나빠졌다. 그래서 '추종조향' 칸을 띄운다.
+    exec python3 - "$SCRIPT_DIR" "${2:-}" <<'PY'
+import csv, glob, math, os, sys
+import numpy as np
+import yaml
+
+root = sys.argv[1]
+filt = sys.argv[2] if len(sys.argv) > 2 else ''
+cfg = yaml.safe_load(open(os.path.join(root, 'race_script.yaml'))) or {}
+try:
+    ov = yaml.safe_load(open(os.path.join(root, 'config', '.vehicle_overlay.yaml'))) or {}
+except OSError:
+    ov = {}
+_pp_ov, _pp_rs = (ov.get('pure_pursuit') or {}), (cfg.get('pure_pursuit') or {})
+L  = float(_pp_ov.get('wheelbase', _pp_rs.get('wheelbase', 0.33)))
+MS = float(_pp_ov.get('max_steer', _pp_rs.get('max_steer', 0.40)))
+KMAX = math.tan(MS) / L
+cur  = (os.environ.get('RACE_WAYPOINTS') or cfg.get('waypoints') or '')
+mapn = cfg.get('map_name') or ''
+
+wp_dir = os.path.join(root, 'src', 'race_stack', 'waypoints')
+names = sorted(os.path.basename(p)[:-4] for p in glob.glob(os.path.join(wp_dir, '*.csv')))
+if filt == 'all':
+    shown, why = names, '전부'
+elif filt:
+    shown, why = [n for n in names if filt in n], f"'{filt}' 포함"
+elif mapn:
+    shown, why = [n for n in names if n.startswith(mapn)], f"지금 맵 '{mapn}' 것만"
+    if not shown:
+        shown, why = names, f"지금 맵 '{mapn}' 것이 없어 전부"
+else:
+    shown, why = names, '전부'
+
+
+def kappa(x, y):
+    """3점 외접원. 간격이 불균일해도 수치미분보다 둔감하다."""
+    xm, xp = np.roll(x, 1), np.roll(x, -1)
+    ym, yp = np.roll(y, 1), np.roll(y, -1)
+    ab = np.hypot(x - xm, y - ym)
+    bc = np.hypot(xp - x, yp - y)
+    ca = np.hypot(xm - xp, ym - yp)
+    den = ab * bc * ca
+    area2 = np.abs((x - xm) * (yp - ym) - (y - ym) * (xp - xm))
+    return np.where(den > 1e-12, area2 / np.maximum(den, 1e-12), 0.0)
+
+
+print(f'\n차: wheelbase {L:.3f} m, max_steer {MS:.4f} rad '
+      f'→ R_min {1 / KMAX:.3f} m (κ_max {KMAX:.3f})')
+print(f'웨이포인트 {len(names)}개 중 {len(shown)}개 표시 ({why})   ★ = 지금 선택된 것\n')
+print('    이름                                 점수  간격   속도(m/s)      '
+      'R_min   추종조향  여유  한계초과')
+print('    ' + '-' * 95)
+
+for n in shown:
+    x, y, v = [], [], []
+    try:
+        for r in csv.reader(open(os.path.join(wp_dir, n + '.csv'))):
+            try:
+                x.append(float(r[0])); y.append(float(r[1])); v.append(float(r[2]))
+            except (IndexError, ValueError):
+                pass
+    except OSError:
+        continue
+    if len(x) < 3:
+        print(f'  {"★" if n == cur else " "} {n:36s}  (점이 너무 적다: {len(x)})')
+        continue
+    x, y, v = np.array(x), np.array(y), np.array(v)
+    k = kappa(x, y)
+    ds = np.hypot(np.diff(np.r_[x, x[:1]]), np.diff(np.r_[y, y[:1]]))
+    kmx = max(k.max(), 1e-9)
+    R = 1.0 / kmx
+    st = math.atan(L / R)                 # 그 코너를 따라가는 데 필요한 조향
+    pct = st / MS * 100.0
+    over = int((k > KMAX).sum())
+    flag = ('✗못돈다' if over else ('⚠여유없음' if pct > 80 else
+                                    ('·빡빡' if pct > 70 else '')))
+    print(f'  {"★" if n == cur else " "} {n:36s} {len(x):4d}  {np.median(ds):.3f} '
+          f' {v.min():4.2f}~{v.max():4.2f}  {np.median(v):4.2f}  {R:5.3f}m  '
+          f'{pct:5.0f}%  {100 - pct:4.0f}%  {over:3d}점  {flag}')
+
+print(f"""
+  추종조향 = atan(wheelbase / R_min) ÷ max_steer — 라인을 **따라가기만** 할 때 쓰는 조향.
+    여유가 20% 밑이면 오차 보정 권한이 없어 조향이 포화되고 바깥으로 벌어진다.
+    30% 이상을 권한다. 여유를 늘리려면 생성 시 --kappa-margin 을 낮출 것.
+  한계초과 = 핸들을 끝까지 꺾어도 못 도는 점. 1점이라도 있으면 그 라인은 못 쓴다.
+
+  달려보기 (race_script.yaml 안 고치고 이 실행만):
+      ./race.sh race --wp <이름>
+""")
+PY
+    ;;
   waypoints-kappa)
     # gen_waypoints 와 동일하되 조향각 물리 한계(곡률) 제약이 들어간 버전.
     # vehicle overlay 의 wheelbase/max_steer 를 읽고, 한계의 85% 만 써서
     # 라인 R_min 이 차 R_min 과 같아지는 일을 막는다 (추종 오차만큼 안쪽은 κ 증가).
     # 결과는 <맵이름>_wp_kappa.csv 로 따로 저장되어 기존 결과와 랩타임 비교 가능.
     NAME=${2:-}
-    if [ -n "$NAME" ]; then
-      exec ros2 run race_stack gen_waypoints_kappa -- --map "$NAME"
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    if [[ -n "$NAME" && "$NAME" != -* ]]; then
+      exec python3 -m race_stack.gen_waypoints_kappa --map "$NAME" "${@:3}"
     else
-      exec ros2 run race_stack gen_waypoints_kappa
+      exec python3 -m race_stack.gen_waypoints_kappa "${@:2}"
     fi ;;
   waypoints-tumftm)
     # TUMFTM 최소곡률(IQP) QP 최적화 — GUI 클릭 없이 자동으로 라인을 뽑는다.
     # 결과는 <맵이름>_wp_tumftm.csv 로 따로 저장되어 기존 결과와 랩타임 비교 가능.
     NAME=${2:-}
-    if [ -n "$NAME" ]; then
-      exec ros2 run race_stack gen_raceline_tumftm -- --map "$NAME"
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    if [[ -n "$NAME" && "$NAME" != -* ]]; then
+      exec python3 -m race_stack.gen_raceline_tumftm --map "$NAME" "${@:3}"
     else
-      exec ros2 run race_stack gen_raceline_tumftm
+      exec python3 -m race_stack.gen_raceline_tumftm "${@:2}"
     fi ;;
   start_pos|startpos)
     # 맵 이미지를 띄우고 **두 번 클릭**해서 출발 포즈를 잡는다.
@@ -930,6 +1076,9 @@ fi
 echo "============================================"
 echo "  RoboRacer 2026  |  MODE = $MODE${CTRL:+  |  CONTROLLER = $CTRL}"
 echo "  config: $RACE_SCRIPT"
+if [ -n "${RACE_WAYPOINTS:-}" ]; then
+echo "  ★ 웨이포인트 = $RACE_WAYPOINTS   (--wp. race_script.yaml 의 waypoints: 무시)"
+fi
 if [ -n "${BENCH:-}" ]; then
 echo "  ★ BENCH (박스 위) — 속도 0, 바퀴 안 돎, 자동정지 없음"
 echo "     확인용: 다른 터미널에서  ./race.sh check   /  노트북에서  ./rviz.sh"
