@@ -331,6 +331,58 @@ cd ~/yax && ./race.sh waypoints-kappa 1109_clean
 
 `line` 이 1.2 초 빠르지만 **벽에 더 붙습니다.**
 
+### ★ 재생성은 기존 라인을 덮어씁니다 — `--out` 으로 피하세요
+
+`waypoints-kappa` 는 이름을 **맵 이름에서 만들기** 때문에, 같은 맵으로 다시 돌리면
+지금 주행 중인 라인이 그대로 사라집니다. 파일이 **넷** 나옵니다:
+
+```
+<맵>_wp_kappa.csv        최종
+<맵>_wp_kappa.png        속도색 오버레이
+<맵>_wp_kappa_pre.csv    국소보정(Powell) 전 스냅샷 — 보정을 안 기다리고 바로 시험용
+<맵>_wp_kappa_pre.png
+```
+
+⚠ `_pre` 도 생성기가 직접 씁니다. `race_script.yaml` 의 `waypoints:` 가 `_pre` 를
+가리키고 있으면 **달리던 라인이 덮입니다.** 그리고 **웨이포인트는 git 에 안 올려두면
+복구 수단이 없습니다** — `c11_*` 전부가 미추적이었던 적이 있습니다.
+
+이름을 바꿔 저장하려면 `--out` 을 주세요 (확장자는 붙여도 됩니다):
+
+```bash
+cd ~/yax && ./race.sh waypoints-kappa c11_clean --out c11_clean_wp_m65 --kappa-margin 0.65
+```
+
+```
+c11_clean_wp_m65.csv  /  .png            ← 최종
+c11_clean_wp_m65_pre.csv  /  .png        ← 보정 전 스냅샷
+```
+
+기존 `c11_clean_wp_kappa*` 는 **그대로 남습니다.** 주행할 라인은 `race_script.yaml` 의
+`waypoints:` 를 `c11_clean_wp_m65` (또는 `_pre`) 로 바꿔서 고르고, 되돌리려면 그 한 줄만
+다시 바꾸면 됩니다 — 랩타임 비교가 이 방식으로 됩니다.
+
+이름이 겹치면 생성기가 **시작할 때 먼저 알려줍니다**:
+
+```
+⚠ 아래 파일을 덮어씁니다:
+    .../c11_clean_wp_kappa.csv
+    .../c11_clean_wp_kappa_pre.csv
+  남겨두려면 Ctrl+C 로 멈추고 --out <다른이름> 을 주세요.
+  (git 에 커밋돼 있지 않으면 복구할 수 없습니다)
+```
+
+> ⚠ **`--out` 은 편집기에서 뜻이 다릅니다.** `waypoint_editor --out` 은 **열어서 고칠**
+> CSV 를 고르는 인자이고(저장은 `_edit` 가 붙은 새 파일로 나갑니다), 생성기의 `--out` 은
+> **새로 쓸 이름**입니다. 같은 이름의 서로 다른 인자입니다.
+
+만든 라인은 커밋해 두세요 — 맵·라인은 repo 에 보존하는 것이 규약입니다:
+
+```bash
+cd ~/yax && git add src/race_stack/waypoints/c11_clean_wp_m65* && \
+  git commit -m "feat(line): c11_clean kappa-margin 0.65 라인" && git push origin car1:car1-car2merge
+```
+
 ### ★ 출력에서 반드시 볼 줄
 
 ```
