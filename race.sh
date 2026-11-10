@@ -68,6 +68,9 @@
 #                              (R_min / 추종조향 / 여유 / 한계초과점). 인자 없으면
 #                              지금 맵 것만, all 이면 전부, 그 외는 이름에 포함된 것.
 #                              여유가 20% 밑이면 조향이 포화돼 바깥으로 벌어진다.
+#    ./race.sh mintime <맵> --sketch  ★ 최소시간 라인 (경로+속도 동시 최적화). 지도에 경로를
+#                              클릭으로 찍거나(--sketch), 기존 라인을 기준으로(--like <라인>)
+#                              --eval 이면 기존 라인들을 같은 물리로 비교만
 #    ./race.sh waypoints-kappa [맵]  위와 동일 + 조향각 물리한계(곡률) 제약
 #                              → <맵>_wp_kappa.csv 로 따로 저장, 랩타임 비교용
 #    ./race.sh waypoints-tumftm [맵]  TUMFTM 최소곡률(IQP) QP 최적화 (비-GUI, 자동)
@@ -799,7 +802,10 @@ def kappa(x, y):
     ca = np.hypot(xm - xp, ym - yp)
     den = ab * bc * ca
     area2 = np.abs((x - xm) * (yp - ym) - (y - ym) * (xp - xm))
-    return np.where(den > 1e-12, area2 / np.maximum(den, 1e-12), 0.0)
+    # κ = 4·면적/(abc) = 2·|외적|/(abc). area2 는 |외적|(=2·면적) 이므로 2 를 곱한다.
+    # ★ 2026-11-11 까지 2 가 빠져 곡률을 **절반**으로 보고 있었다 — R_min 이 2배,
+    #   추종조향이 낮게 찍혀 "82% 여유없음" 이던 c11 코너는 실제로 한계 초과였다.
+    return np.where(den > 1e-12, 2.0 * area2 / np.maximum(den, 1e-12), 0.0)
 
 
 print(f'\n차: wheelbase {L:.3f} m, max_steer {MS:.4f} rad '
@@ -859,6 +865,19 @@ PY
     else
       exec python3 -m race_stack.gen_waypoints_kappa "${@:2}"
     fi ;;
+  mintime|waypoints-mintime)
+    # ★ 최소시간 OCP (CasADi/IPOPT) — 경로와 속도를 한 번에 푼다. map_controller 와
+    #   같은 마찰원·조향 한계·min_speed 를 읽으므로 "예상 랩" 이 컨트롤러 모델 그대로다.
+    #   ./race.sh mintime c11_clean --sketch                            (지도에 클릭해서 생성)
+    #   ./race.sh mintime c11_clean --like c11_clean_wp_kappa_pre      (기존 라인을 기준으로 생성)
+    #   ./race.sh mintime c11_clean --eval                              (기존 라인 비교)
+    #   의존: pip install --user --no-deps casadi   (numpy 1.26.4 보호)
+    NAME=${2:-}
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    if [[ -z "$NAME" || "$NAME" == -* ]]; then
+      echo "사용법: ./race.sh mintime <맵> [--sketch | --like <기준라인>] [--out 이름] [--eval]"; exit 1
+    fi
+    exec python3 -W ignore -m race_stack.gen_raceline_mintime --map "$NAME" "${@:3}" ;;
   waypoints-tumftm)
     # TUMFTM 최소곡률(IQP) QP 최적화 — GUI 클릭 없이 자동으로 라인을 뽑는다.
     # 결과는 <맵이름>_wp_tumftm.csv 로 따로 저장되어 기존 결과와 랩타임 비교 가능.

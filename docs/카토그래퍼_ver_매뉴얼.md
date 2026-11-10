@@ -331,6 +331,16 @@ cd ~/yax && ./race.sh waypoints-kappa 1109_clean
 
 `line` 이 1.2 초 빠르지만 **벽에 더 붙습니다.**
 
+### ★ 최소시간 라인 — `./race.sh mintime`
+
+경로와 속도를 한 번에 최적화합니다. c11 에서 예상 랩 8.54 s(kappa_pre) → **6.41 s**,
+조향 한계 초과 구간도 없앴습니다. 지도에 경로를 대충 클릭하면 됩니다.
+
+```bash
+cd ~/yax && ./race.sh mintime 1109_clean --sketch --car car1 --out 1109_clean_wp_mt1
+```
+자세한 사용법·이름 규칙(`_p3`)·옵션: **`docs/mintime_라인_매뉴얼.md`**
+
 ### ★ 있는 라인 보기 — `./race.sh wp`
 
 ```bash
@@ -736,6 +746,7 @@ cd ~/yax && ./race.sh savemap-carto 1109
 cd ~/yax && ./race.sh clean 1109                  # 자동 정제
 # 자동이 엉뚱하게 고르면:  DISPLAY=:1 python3 src/race_stack/maps/clean_map.py --map 1109
 cd ~/yax && ./race.sh line 1109_clean             # 라인 생성
+# 또는 최소시간 라인 (노트북, 지도에 클릭):  ./race.sh mintime 1109_clean --sketch --car car1
 # 맵을 손봐야 하면 (벽 그리기/지우기):
 #   DISPLAY=:1 python3 -m race_stack.map_editor src/race_stack/maps/1109_clean.yaml --waypoints 1109_clean_wp_kappa.csv
 # 만든 라인을 고치려면 (→ _edit.csv + _edit.png):
