@@ -3,7 +3,7 @@
 #
 #  config/vesc.yaml 에서 servo_min/servo_max 만 0.02/0.98 로 넓힌 사본.
 #  vesc_driver 가 명령을 servo_min/max 로 먼저 잘라내기 때문에
-#  (vesc_driver.cpp:334), 원본 값(0.15/0.85)으로는 그 지점에서 바퀴가
+#  (vesc_driver.cpp:334), 정상 주행 값(0.12/0.85)으로는 그 지점에서 바퀴가
 #  멈추는 것이 기구 스토퍼인지 소프트웨어 클램프인지 구분할 수 없다.
 #
 #  ★ 이 파일로 주행하지 말 것 — 정상 주행 중에도 서보가 스토퍼를 밀 수 있다.
@@ -19,9 +19,11 @@
 
     # servo value (0 to 1) =  steering_angle_to_servo_gain * steering angle (radians) + steering_angle_to_servo_offset
     # 2026-07-16 IMU 호주행 캘리브레이션: 실제 = 1.594×명령 + 0.032 (구 -1.2135/0.40)
-    #   좌 기구락 servo 0.15 = 0.361rad, 우 락 0.85 = 0.558rad → max_steer ≤ 0.35 권장
+    # 2026-11-10 중앙 **0.485** (타이로드 조정으로 소프트리밋 중점에 맞춤).
+    #   정상 주행 한계 0.12/0.85 기준 좌 +27.48° / 우 -27.48° — 좌우 대칭이다.
+    # 아래 0.02/0.98은 기구 한계 측정 전용이며 정상 주행 한계가 아니다.
     steering_angle_to_servo_gain: -0.761
-    steering_angle_to_servo_offset: 0.425
+    steering_angle_to_servo_offset: 0.485
 
     port: /dev/sensors/vesc
     duty_cycle_min: 0.0

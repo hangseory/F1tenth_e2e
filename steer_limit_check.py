@@ -47,6 +47,7 @@ import math
 import os
 import sys
 import threading
+import time
 
 import rclpy
 import yaml
@@ -87,8 +88,24 @@ def main():
     rclpy.init()
     node = Node('steer_limit_check')
     pub = node.create_publisher(Float64, '/commands/servo/position', 10)
+
+    # ★ 20Hz 로 **계속 재발행**한다 (2026-11-09).
+    #   단발 publish 로는 서보가 안 움직였다. 이유가 두 가지다:
+    #     ① 발행자를 만든 직후의 첫 메시지는 DDS 탐색이 끝나기 전에 나가서
+    #        구독자(vesc_driver)에게 도달하지 못한다.
+    #     ② VESC 의 서보 출력은 명령이 계속 와야 유지된다 — 한 번 보내고 말면
+    #        금방 되돌아간다.
+    #   그래서 현재 목표값을 _cur 에 두고 타이머가 반복해서 내보낸다.
+    _cur = {'v': offset}
+
+    def set_servo(v):
+        _cur['v'] = float(v)
+        pub.publish(Float64(data=float(v)))
+
+    node.create_timer(0.05, lambda: pub.publish(Float64(data=_cur['v'])))
     spin = threading.Thread(target=lambda: rclpy.spin(node), daemon=True)
     spin.start()
+    time.sleep(0.5)          # 탐색이 끝날 시간을 준다
 
     print(__doc__.split('사전 준비')[0])
     print('=' * 62)
@@ -102,7 +119,7 @@ def main():
     print('  Enter = 한 칸 더 / b = 되돌리기 / c = 중앙 / 숫자 = 서보값 직접 지정 / q = 종료\n')
 
     servo = offset
-    pub.publish(Float64(data=servo))
+    set_servo(servo)
     print(f'  중앙으로 이동: 서보 {servo:.3f}  (δ {math.degrees(to_angle(servo)):+.1f}°)')
 
     def show(s, note=''):
@@ -122,7 +139,7 @@ def main():
                 break
             if cmd == 'c':
                 servo = offset
-                pub.publish(Float64(data=servo)); show(servo, '  (중앙)')
+                set_servo(servo); show(servo, '  (중앙)')
                 continue
             if cmd and (cmd[0].isdigit() or cmd[0] == '.'):
                 # 서보 값을 직접 입력해 바로 이동 (중립 찾을 때 편하다)
@@ -133,7 +150,7 @@ def main():
                 if not (args.floor <= v <= args.ceil):
                     print(f'  {args.floor}~{args.ceil} 범위로 입력하세요'); continue
                 servo = v
-                pub.publish(Float64(data=servo)); show(servo, '  (직접 지정)')
+                set_servo(servo); show(servo, '  (직접 지정)')
                 continue
             if cmd == 'b':
                 servo = min(max(servo - dirn * args.step, args.floor), args.ceil)
@@ -143,14 +160,13 @@ def main():
                     print(f'  하드리밋 {limit:.2f} 도달 — 더 못 갑니다 (안전 상한)')
                     continue
                 servo = nxt
-            pub.publish(Float64(data=servo))
+            set_servo(servo)
             show(servo)
     except (EOFError, KeyboardInterrupt):
         pass
     finally:
         print(f'\n중앙 복귀: 서보 {offset:.3f}')
-        pub.publish(Float64(data=offset))
-        import time
+        set_servo(offset)
         time.sleep(0.3)
         rclpy.shutdown()
         spin.join(timeout=1.0)

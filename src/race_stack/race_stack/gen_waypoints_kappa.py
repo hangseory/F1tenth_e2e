@@ -49,6 +49,7 @@ import matplotlib
 matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib.collections import LineCollection
+from race_stack.steering_geometry import load_steering_geometry
 
 # ── 경로 (환경변수 RACE_WS 로 워크스페이스 지정, 기본은 이 파일 기준) ────────
 # 이 파일: <ws>/src/race_stack/race_stack/gen_waypoints.py → 패키지 루트는 두 단계 위
@@ -89,24 +90,8 @@ KAPPA_MARGIN = 0.85
 
 
 def _car_steer_geom(fallback_wb=0.33, fallback_ms=0.36):
-    """apply_vehicle 이 만든 overlay 에서 wheelbase / max_steer.
-
-    손으로 적으면 컨트롤러와 갈라진다 (gen_raceline._car_min_radius 과 같은 이유).
-    overlay 가 없으면(노트북에서 분석만 할 때) 모듈 기본값.
-    """
-    for name in ('.vehicle_overlay.yaml',):
-        p = os.path.join(_PKG_DIR, '..', '..', 'config', name)
-        p = os.path.abspath(p)
-        if not os.path.exists(p):
-            continue
-        try:
-            o = yaml.safe_load(open(p))
-            ms = float(o['pure_pursuit']['max_steer'])
-            wb = float(o['pure_pursuit']['wheelbase'])
-            return wb, ms
-        except Exception:
-            pass
-    return fallback_wb, fallback_ms
+    """실행 워크스페이스와 무관하게 현재 차량의 조향 한계를 읽는다."""
+    return load_steering_geometry(fallback_wb, fallback_ms)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -575,7 +560,13 @@ def postfix_curvature(rx, ry, dist_track, h):
     return rx2, ry2
 
 
-def minimum_laptime_opt(cx, cy, cw, dist_track, h):
+def minimum_laptime_opt(cx, cy, cw, dist_track, h, on_pre_refine=None):
+    """on_pre_refine(rx, ry, kappa_max, n_over) — L-BFGS-B 가 끝나는 **즉시**
+    호출된다 (국소보정 전). 중간 결과를 바로 저장해 쓰려는 용도다.
+    국소보정은 위반 구간을 Powell 로 다시 훑는 단계라 오래 걸릴 수 있는데,
+    그동안 아무것도 못 쓰는 상태였다 — 끊으면 결과가 통째로 사라졌다.
+    (2026-11-09: 랩 8.285s 까지 간 결과를 못 건지고 버린 일이 있었다)
+    """
     nx_, ny_ = _normals(cx, cy)
     N = len(cx)
     # gen_waypoints.py 원본은 클리어런스 0.6m 미만 구간을 통째로 오프셋 0 으로
@@ -633,6 +624,14 @@ def minimum_laptime_opt(cx, cy, cw, dist_track, h):
     d_opt = res.x
     kappa_pre = np.abs(_curvature(cx + d_opt * nx_, cy + d_opt * ny_))
     n_over_pre = int((kappa_pre > KAPPA_MAX).sum())
+    if on_pre_refine is not None:
+        # 저장이 실패해도 본 최적화는 계속되어야 한다 — 보조 기능이다.
+        try:
+            on_pre_refine(cx + d_opt * nx_, cy + d_opt * ny_,
+                          float(kappa_pre.max()), n_over_pre)
+        except Exception as exc:
+            print(f'  [중간저장] 실패(무시하고 계속): {exc}')
+
     if n_over_pre > 0:
         print(f'  [국소보정] L-BFGS-B 이후 {n_over_pre}개 포인트 곡률 초과 '
               f'(|κ|_max={kappa_pre.max():.3f}) — 위반구간 국소 재탐색 중...')
@@ -1017,7 +1016,8 @@ class DrawingApp:
         cw   = self.dist_track[pys2, pxs2] * RESOLUTION
 
         print(f'[optimize] {N_OPT}pts laptime optimization...')
-        rx, ry = minimum_laptime_opt(cx, cy, cw, self.dist_track, self.H)
+        rx, ry = minimum_laptime_opt(cx, cy, cw, self.dist_track, self.H,
+                                     on_pre_refine=self._save_pre)
         rx, ry = smooth_resample(rx, ry, N_FINAL, s_factor=0.005)
         rx, ry = snap_to_safe(rx, ry, self.dist_track, self.H, min_m=SAFETY_M)
         rx, ry = postfix_curvature(rx, ry, self.dist_track, self.H)
@@ -1050,6 +1050,31 @@ class DrawingApp:
         self.colorbar = self.fig.colorbar(lc, ax=self.ax,
                                           label='speed (m/s)',
                                           fraction=0.03, pad=0.02)
+
+    def _save_pre(self, rx, ry, kappa_max, n_over):
+        """국소보정 **전** 라인을 바로 저장한다 → <이름>_pre.csv
+
+        국소보정(Powell 재탐색)은 오래 걸릴 수 있고 중간 결과가 없었다.
+        이 파일이 있으면 보정을 기다리지 않고 바로 주행해 볼 수 있다.
+
+        ★ 보정 전이라 곡률 한계를 넘는 점이 남아 있을 수 있다. 그 구간은
+          핸들을 끝까지 꺾어도 못 돈다 — 저속으로만 시험할 것.
+        ★ postfix_curvature 는 일부러 건너뛴다. 그걸 돌리면 느려서, 빨리
+          쓰려는 목적이 사라진다.
+        """
+        rx, ry = smooth_resample(rx, ry, N_FINAL, s_factor=0.005)
+        rx, ry = snap_to_safe(rx, ry, self.dist_track, self.H, min_m=SAFETY_M)
+        v = speed_profile(rx, ry)
+        base, ext = os.path.splitext(self.wp_path)
+        path = base + '_pre' + ext
+        save_all(self.map_name, rx, ry, v, path, self.img_arr)
+        print(f'  [중간저장] 국소보정 전 라인 → {path}')
+        if n_over:
+            print(f'             |κ|_max={kappa_max:.3f} (한계 {KAPPA_MAX:.3f}) — '
+                  f'{n_over}개 점이 한계 초과. 그 구간은 못 돌 수 있으니 저속으로.')
+        else:
+            print(f'             |κ|_max={kappa_max:.3f} — 한계 안. 이대로 써도 된다.')
+        print(f'             보정본은 계속 계산 중 → {self.wp_path}')
 
     def _save(self):
         if self.result is None:
