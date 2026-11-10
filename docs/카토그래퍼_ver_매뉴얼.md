@@ -281,6 +281,23 @@ infield = outer & ~seed              메워진 부분 = 안쪽 섬
 
 > ⚠ slam_toolbox 맵에서는 폴리곤 안의 **미관측 영역이 길로 바뀝니다** — 미지(205)가 `occupancy 0.196` 인데 그 맵의 `free_thresh` 가 0.25 라서입니다. Cartographer 맵(미지 128 → 0.498)은 해당 없습니다. 눈으로 확인하며 쓰는 도구라 당장 막히진 않지만 알고 계세요.
 
+### ★ 맵 편집기 — 벽을 직접 그리고 지운다 (권장)
+
+```bash
+cd ~/yax && DISPLAY=:1 python3 -m race_stack.map_editor src/race_stack/maps/1109_clean.yaml --waypoints 1109_clean_wp_kappa.csv
+```
+
+**잘못 기록된 벽**(사람·의자·유리 반사)을 지우고, **빠진 벽을 그리고**, 영역을 미지로 표시합니다. 설치할 건 없습니다.
+
+`--waypoints` 로 라인을 같이 띄우면 **어디를 고쳐야 하는지** 보면서 작업할 수 있습니다.
+
+> 왼쪽 아이콘 바에 모든 기능이 있습니다. 버튼에 마우스를 올리면 이름과 단축키가 뜹니다.
+> 처음 저장할 때 원본을 `<맵>_orig.pgm` 으로 보관합니다.
+>
+> ⚠ 맵을 고치면 **위치추정을 다시 켜야** 적용됩니다.
+
+폴리곤 방식(`clean_map.py`)과의 차이 — 폴리곤은 "이 영역 전체가 트랙/벽" 을 정하고, 편집기는 **픽셀 단위로 고칩니다.** 벽이 하나 삐죽 튀어나온 것 같은 국소 결함에는 편집기가 맞습니다.
+
 ### 그림판처럼 칠해서 벽을 메우고 싶으면
 
 `.pgm` 은 그냥 흑백 이미지라 아무 편집기로나 열립니다. **검정(0)** 으로 뚫린 곳에 2~3 px 선을 그으면 벽이 닫힙니다. 안티앨리어싱은 끄세요.
@@ -378,6 +395,53 @@ cd ~/yax/src/race_stack && RACE_WS=$HOME/f1tenth_ws python3 -m race_stack.gen_ra
 > ```
 > ①을 건너뛰고 ③만 하면 그냥 벽입니다. `--cte` 에는 **실측값**을 넣으세요
 > (저속으로 한 바퀴 돌고 `logs/<런>/driven_path.csv` 로 잽니다).
+
+### ★ 만든 라인을 고치고 싶을 때 — 웨이포인트 편집기
+
+전체를 다시 만들 필요 없습니다. **기존 CSV 를 열어 고칩니다.**
+
+```bash
+cd ~/yax && DISPLAY=:1 python3 -m race_stack.waypoint_editor src/race_stack/maps/1109_clean.yaml --out 1109_clean_wp_kappa.csv
+```
+
+`--out` 에 **이미 있는 파일 이름**을 주면 그걸 불러와 **약 1 m 간격 핸들**로 편집 상태가 됩니다 (좁은 코너는 더 촘촘히).
+
+| 마우스 | 동작 |
+|---|---|
+| 좌클릭 | 끝에 점 추가 |
+| **점을 드래그** | 그 점 옮기기 — 라인이 따라옴 |
+| **라인을 드래그** | 그 자리에 점을 만들고 옮김 |
+| 우클릭 | 커서 아래 점 삭제 |
+| 우드래그 | 화면 이동 |
+| 휠 | 커서 기준 확대/축소 |
+
+| 키 | 동작 |
+|---|---|
+| `a` | 커서 위치에 점 추가 (원격 데스크톱용) |
+| `z` | 되돌리기 |
+| **`c`** | **닫힌 루프 ↔ 열린 경로** |
+| `r` | 전부 지우기 (`z` 로 복구) |
+| `+` `-` `0` | 확대 / 축소 / 맵 전체 |
+| **Enter** | **저장** |
+| `q` | 종료 |
+
+> ### ★ `c` 로 닫힌 루프인지 꼭 확인하세요
+> 트랙을 도는 거면 닫혀 있어야 합니다. 열린 경로로 저장하면 마지막 점에서 끝나 랩이 안 됩니다.
+
+**저장하면 `_edit` 가 붙습니다** — 원본을 덮어쓰지 않습니다:
+
+```
+1109_clean_wp_kappa.csv  →  1109_clean_wp_kappa_edit.csv
+                            1109_clean_wp_kappa_edit.png   ← 속도색 오버레이
+```
+
+편집은 되돌릴 수 없으니(저장하면 끝) 원본은 비교 기준으로 남겨둡니다. 이미 `_edit` 로 끝나면 그대로 둡니다.
+
+> ### 저장하면 라인이 **정규화**됩니다
+> 0.10 m 간격으로 재샘플링하고 스플라인으로 다듬습니다. `waypoints-kappa` 가 만든
+> 파일은 0.014~0.085 m 로 불균일해서, 편집기의 곡률 표시가 과하게 나옵니다
+> (실측: 원본 `R_min 0.074 m` → 저장 후 **0.644 m**). **파일이 나쁜 게 아니라
+> 표시가 과한 것**이고, 한 번 저장하면 정리됩니다. 라인 모양 변형은 1.6 cm 수준입니다.
 
 ### 결과 확인
 
@@ -554,6 +618,10 @@ cd ~/yax && ./race.sh savemap-carto 1109
 cd ~/yax && ./race.sh clean 1109                  # 자동 정제
 # 자동이 엉뚱하게 고르면:  DISPLAY=:1 python3 src/race_stack/maps/clean_map.py --map 1109
 cd ~/yax && ./race.sh line 1109_clean             # 라인 생성
+# 맵을 손봐야 하면 (벽 그리기/지우기):
+#   DISPLAY=:1 python3 -m race_stack.map_editor src/race_stack/maps/1109_clean.yaml --waypoints 1109_clean_wp_kappa.csv
+# 만든 라인을 고치려면 (→ _edit.csv + _edit.png):
+#   DISPLAY=:1 python3 -m race_stack.waypoint_editor src/race_stack/maps/1109_clean.yaml --out 1109_clean_wp_kappa.csv
 # 마진을 한계까지 밀어보려면:
 #   cd ~/yax/src/race_stack && RACE_WS=$HOME/f1tenth_ws python3 -m race_stack.gen_raceline_aggro --map 1109_clean
 cd ~/yax && ./tune.sh localization.mode=cartographer && ./tune.sh map_name=1109_clean && ./tune.sh waypoints=1109_clean_map_wp
@@ -591,6 +659,9 @@ cd ~/yax && ./panel.sh                                  # 창
 | VS Code 가 저장을 거부함 | 파일이 디스크에서 바뀌었다 → `File > Revert File`. `tune.sh` 를 쓰면 안 생긴다 |
 | 제어판 제목이 `연결 끊김` | 터널이 없거나 서버가 안 떠 있다. 젯슨에서 `ss -tnp \| grep 8765` 로 ESTAB 확인 |
 | 제어판 띄웠는데 젯슨에 창이 없음 | **정상.** 서버는 헤드리스다. 창은 노트북에만 뜬다 |
+| 편집기에서 곡률 경고가 잔뜩 뜸 | kappa 파일은 간격이 불균일해 표시가 과하다. 한 번 저장하면 정리된다 |
+| 편집기로 저장했는데 원본이 그대로 | **정상.** `_edit` 가 붙어 따로 저장된다. `race_script.yaml` 의 `waypoints` 도 그 이름으로 바꿀 것 |
+| 편집기 창이 안 뜸 | SSH 면 `DISPLAY=:1` 을 붙였는가. 창은 젯슨 모니터에 뜬다 |
 
 > ### ★ 스택을 켠 뒤에는 와이파이를 바꾸지 마세요
 > CycloneDDS 가 **기동 시점의 IP 로 인터페이스를 고정**하고 그 뒤 재바인딩을
