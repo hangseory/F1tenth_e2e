@@ -1167,6 +1167,10 @@ def main():
                     help='최대 조향각 (rad). 생략 시 vehicle overlay / 기본값')
     p.add_argument('--kappa-margin', type=float, default=KAPPA_MARGIN,
                     help='조향 한계 대비 곡률 여유 (기본 0.85). 1.0=한계까지 붙임')
+    p.add_argument('--out', default=None,
+                    help='출력 파일 이름 (확장자 없이). 기본 <맵>_wp_kappa. '
+                         '★ 기존 라인을 덮지 않으려면 다른 이름을 줄 것 — '
+                         '<이름>.csv / <이름>_pre.csv / 각 .png 가 모두 따라간다')
     p.add_argument('--seed-px', type=int,  default=None, help='트랙 내부 시드 픽셀 X (미지정시 자동/클릭)')
     p.add_argument('--seed-py', type=int,  default=None, help='트랙 내부 시드 픽셀 Y')
     args = p.parse_args()
@@ -1185,7 +1189,30 @@ def main():
     else:
         sys.exit(f'맵 이미지 없음: {map_base}.pgm / .png')
 
-    wp_path = os.path.join(WP_DIR, f'{map_name}_wp_kappa.csv')
+    # ★ 출력 이름. 기본은 <맵>_wp_kappa 이고, --out 으로 바꿀 수 있다 (2026-11-11).
+    #   왜 필요한가 — 이 생성기는 **두 개**를 쓴다: <이름>.csv 와, 국소보정 전
+    #   스냅샷인 <이름>_pre.csv (_save_pre). 그리고 각각의 .png 까지 넷이다.
+    #   이름이 맵에 고정돼 있어서 재생성하면 지금 주행 중인 라인이 그대로 덮였다.
+    #   웨이포인트는 git 에 안 올려두면 복구 수단이 없다 (실제로 c11_* 전부가
+    #   미추적 상태였다). 그래서 이름을 바꿀 길과, 덮어쓰기 경고를 같이 둔다.
+    wp_stem = (args.out or f'{map_name}_wp_kappa')
+    for _ext in ('.csv', '.png'):            # 확장자를 붙여 줘도 받아준다
+        if wp_stem.endswith(_ext):
+            wp_stem = wp_stem[:-len(_ext)]
+    wp_path = os.path.join(WP_DIR, f'{wp_stem}.csv')
+
+    # 덮어쓸 파일이 있으면 미리 보여준다 — 조용히 덮이지 않게.
+    _doomed = [p for p in (wp_path,
+                           os.path.join(WP_DIR, f'{wp_stem}.png'),
+                           os.path.join(WP_DIR, f'{wp_stem}_pre.csv'),
+                           os.path.join(WP_DIR, f'{wp_stem}_pre.png'))
+               if os.path.exists(p)]
+    if _doomed:
+        print('\n⚠ 아래 파일을 덮어씁니다:')
+        for p in _doomed:
+            print(f'    {p}')
+        print('  남겨두려면 Ctrl+C 로 멈추고 --out <다른이름> 을 주세요.')
+        print('  (git 에 커밋돼 있지 않으면 복구할 수 없습니다)\n')
     load_map_config(map_base)
 
     A_LAT_MAX = args.mu  * G_GRAV
@@ -1234,7 +1261,8 @@ def main():
     print('\n=== 다음 단계 ===')
     print(f'race_script.yaml 에서:')
     print(f'  map_name:  {map_name}')
-    print(f'  waypoints: {map_name}_wp_kappa   (기존 {map_name}_wp 와 랩타임 비교용)')
+    print(f'  waypoints: {wp_stem}   (기존 라인과 랩타임 비교용)')
+    print(f'  ※ 국소보정 전 스냅샷도 있습니다: {wp_stem}_pre')
 
 
 if __name__ == '__main__':
