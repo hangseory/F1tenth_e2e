@@ -68,6 +68,7 @@
 #                              (R_min / 추종조향 / 여유 / 한계초과점). 인자 없으면
 #                              지금 맵 것만, all 이면 전부, 그 외는 이름에 포함된 것.
 #                              여유가 20% 밑이면 조향이 포화돼 바깥으로 벌어진다.
+#    ./race.sh wp-show [이름]  ★ 라인 오버레이 사진 띄우기 (노트북, ROS 불필요)
 #    ./race.sh mintime <맵> --sketch  ★ 최소시간 라인 (경로+속도 동시 최적화). 지도에 경로를
 #                              클릭으로 찍거나(--sketch), 기존 라인을 기준으로(--like <라인>)
 #                              --eval 이면 기존 라인들을 같은 물리로 비교만
@@ -143,6 +144,14 @@ python3 "$SCRIPT_DIR/config/apply_vehicle.py" || exit 1
 export RACE_VEHICLE_OVERLAY="$SCRIPT_DIR/config/.vehicle_overlay.yaml"
 
 # ---------- 0. 환경 소싱 ----------
+# ★ 파일만 읽는 도구(라인 목록·사진·생성)는 ROS 도 차도 필요 없다. 노트북은
+#   ~/f1tenth_ws 를 빌드하지 않아 install/setup.bash 가 없고, 아래 VESC 심링크·
+#   배터리 확인도 차가 없으면 의미가 없다. 그래서 0 ~ 1-2 를 건너뛴다.
+case "${1:-}" in
+  wp|wplist|wp-show|wpshow|mintime|waypoints-mintime) OFFLINE_CMD=1 ;;
+  *) OFFLINE_CMD= ;;
+esac
+if [ -z "$OFFLINE_CMD" ]; then
 source /opt/ros/humble/setup.bash
 source "$WS/install/setup.bash"
 
@@ -191,6 +200,7 @@ fi
 # ★ bat.sh 는 스택 미실행 시 vesc_driver 를 잠깐 띄웠다 반드시 회수한다.
 #   남아 있으면 아래 2-1 중복 실행 가드가 오탐하고 VESC 시리얼도 물고 있다.
 [ -x "$SCRIPT_DIR/bat.sh" ] && "$SCRIPT_DIR/bat.sh" --inline || true
+fi   # OFFLINE_CMD
 
 # ---------- 2. 모드 결정 ----------
 export RACE_SCRIPT   # launch 파일이 이 env로 yaml 경로를 읽음
@@ -848,6 +858,8 @@ print(f"""
     30% 이상을 권한다. 여유를 늘리려면 생성 시 --kappa-margin 을 낮출 것.
   한계초과 = 핸들을 끝까지 꺾어도 못 도는 점. 1점이라도 있으면 그 라인은 못 쓴다.
 
+  사진으로 보기:  ./race.sh wp-show [이름|이름조각]
+
   달려보기 (race_script.yaml 안 고치고 이 실행만):
       ./race.sh race --wp <이름>
 """)
@@ -865,6 +877,11 @@ PY
     else
       exec python3 -m race_stack.gen_waypoints_kappa "${@:2}"
     fi ;;
+  wp-show|wpshow)
+    # 라인 오버레이 사진(PNG)을 바로 띄운다. 인자: 없음=지금 맵 목록에서 번호 선택 /
+    # 정확한 이름=바로 열기 / 이름조각=걸리는 것들 / all=전부. PNG 없으면 즉석에서 그림.
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    exec python3 -W ignore -m race_stack.wp_show "${2:-}" ;;
   mintime|waypoints-mintime)
     # ★ 최소시간 OCP (CasADi/IPOPT) — 경로와 속도를 한 번에 푼다. map_controller 와
     #   같은 마찰원·조향 한계·min_speed 를 읽으므로 "예상 랩" 이 컨트롤러 모델 그대로다.

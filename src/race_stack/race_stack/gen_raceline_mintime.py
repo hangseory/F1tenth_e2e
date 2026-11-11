@@ -659,8 +659,10 @@ def main():
         else:
             break                                   # 더 안 좋아지면 멈춘다
         ref_raw = cl + nrm * r['n'][:, None]
-    if best is not None:
-        _, r, cl, nrm = best
+    if best is None:
+        sys.exit('  ✗ 최적화 실패 — 저장 안 함. 기준선이 거칠면 --ref-smooth 를 올리고(0.003~0.01), '
+                 '그래도 안 되면 --safety / --dkappa-max / --steer-util 를 완화해 볼 것')
+    _, r, cl, nrm = best
     ref_raw = ref_sketch
     # 3) 라인 복원 → 0.05 m 재샘플 → 컨트롤러 모델로 재평가
     line = cl + nrm * r['n'][:, None]
