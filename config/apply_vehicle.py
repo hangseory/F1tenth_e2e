@@ -61,6 +61,9 @@ OVERLAY_MAP = [
     ('geometry.mass',      'map.mass'),
     ('geometry.lf',        'map.lf'),
     ('geometry.lr',        'map.lr'),
+    # 실측 유효 최대 조향 — 라인 도구(mintime, ./race.sh wp)만 읽는다. 컨트롤러가
+    # 읽는 절이 아니라 별도 'line' 절로 보낸다 (launch 의 deep-merge 는 무해).
+    ('geometry.steer_eff_max', 'line.steer_eff_max'),
     ('tire.mu',            'map.mu'),
     ('tire.pac_b',         'map.pac_b'),
     ('tire.pac_c',         'map.pac_c'),
@@ -119,6 +122,10 @@ def put(d, dotted, val):
     for k in keys[:-1]:
         d = d.setdefault(k, {})
     d[keys[-1]] = val
+
+
+def wb_of(v):
+    return float(dig(v, 'geometry.wheelbase'))
 
 
 def steer_limits(v):
@@ -258,6 +265,13 @@ def main():
               f'offset {dig(v, "vesc.steering_angle_to_servo_offset")}')
         print(f'[vehicle]   조향 한계 좌 {math.degrees(left):+.2f}° / '
               f'우 {math.degrees(right):+.2f}° → max_steer {lim:.4f}, R_min {rmin:.3f}m')
+        try:
+            eff = float(dig(v, 'geometry.steer_eff_max'))
+            print(f'[vehicle]   실측 유효 조향 ±{math.degrees(eff):.1f}° (R {wb_of(v)/math.tan(eff):.3f}m)'
+                  f' = 명목의 {100*eff/lim:.0f}%  ← 라인 생성·판정 기준')
+        except KeyError:
+            print('[vehicle]   · 실측 유효 조향(geometry.steer_eff_max) 없음 — 라인 도구가 명목 max_steer 를 씀'
+                  ' (./race.sh steer-meas 로 잴 것)')
         print(f'[vehicle]   race_script 덮어쓴 키 {n}개')
         # 아직 안 잰 값 경고 — 주석에 '미측정' 이 있으면 센다
         # 표시 두 가지를 구분한다:

@@ -128,6 +128,12 @@ def load_params(mode='race', car=None):
         max_steer=float(pp.get('max_steer', 0.36)),
         l1_min=float(m.get('l1_min', 1.2)), l1_k=float(m.get('l1_k', 0.75)),
     )
+    # 실측 유효 최대 조향 (vehicle_<차>.yaml geometry.steer_eff_max). 명목 max_steer 는
+    # 서보 리밋에서 계산한 '명령 한계' 일 뿐, 차가 실제로 그만큼 꺾이지 않는다
+    # (1호차 2026-11-11: 명목 27.5° / 실측 21.2°). 라인 판단은 실측으로 한다.
+    eff = (c.get('line') or {}).get('steer_eff_max')
+    p['steer_eff'] = float(eff) if eff else p['max_steer']
+    p['steer_eff_measured'] = bool(eff)
     a_g = p['grip_util'] * p['mu_eff'] * GRAVITY
     L = p['lf'] + p['lr']
     p['a_g'] = a_g
@@ -222,8 +228,8 @@ def evaluate_line(pts_xy, prm, walls=None, csv_v=None, kscale=None):
                             v_min=prm['v_min'], a_lon_acc=prm['a_lon_acc'],
                             a_lon_brk=prm['a_lon_brk'], hard_cap=prm['hard_cap'],
                             curvature=k)
-    L, MS = prm['wheelbase'], prm['max_steer']
-    steer = np.arctan(L * np.abs(kg)) / MS
+    L, MS = prm['wheelbase'], prm.get('steer_eff', prm['max_steer'])
+    steer = np.arctan(L * np.abs(kg)) / MS      # 실측 유효 조향 대비 (없으면 명목)
     ds = np.hypot(np.diff(np.r_[pts[:, 0], pts[0, 0]]), np.diff(np.r_[pts[:, 1], pts[0, 1]]))
     # 곡률 변화율 — L1 을 따라가는 PP 가 감당하는 정도 (기하 곡률 기준)
     dk = np.abs(np.diff(np.r_[kg, kg[0]])) / np.maximum(ds, 1e-3)
@@ -484,7 +490,12 @@ def solve_mintime(kr, h, wl, wr, prm, *, kappa_cap, dkappa_max, w_dk, v_max,
 # ══════════════════════════════════════════════════════════════════════════════
 def eval_table(map_name, prm, filt=None):
     walls = wall_tree(map_name)
-    files = sorted(glob.glob(os.path.join(WP_DIR, map_name + '*.csv')))
+    # 이 맵 소속 라인만 — 이름 접두사가 더 긴 다른 맵(c11 ↔ c11_clean)의 라인은 뺀다.
+    #   안 그러면 c11_clean 라인을 c11(정제 전) 벽으로 재서 벽min 이 엉뚱하게 나온다.
+    maps = [os.path.basename(p)[:-5] for p in glob.glob(os.path.join(MAPS_DIR, '*.yaml'))]
+    longer = [m for m in maps if m != map_name and m.startswith(map_name)]
+    files = sorted(f for f in glob.glob(os.path.join(WP_DIR, map_name + '_*.csv'))
+                   if not any(os.path.basename(f).startswith(m + '_') for m in longer))
     if filt:
         files = [f for f in files if filt in os.path.basename(f)]
     print(f'\n  {"이름":40s} {"예상랩":>6s} {"(매끈)":>6s} {"길이":>6s} {"v범위":>11s} '
@@ -509,14 +520,179 @@ def eval_table(map_name, prm, filt=None):
     print('\n  예상랩 = map_controller 와 같은 곡률·속도 모델 (지연·추종오차는 없음 → 하한).'
           '\n  (매끈) = 같은 라인을 점 노이즈 없이 봤을 때. 예상랩과 차이가 크면 CSV 점이 거칠어'
           '\n           컨트롤러의 스플라인 곡률이 튀고, 그 스파이크에서 쓸데없이 감속한다.'
-          '\n  추종조향 = atan(L·κ)/max_steer. 80% 넘으면 보정 여유가 없다.'
+          '\n  추종조향 = atan(L·κ)/유효조향 (실측 있으면 실측). 80% 넘으면 보정 여유가 없고 100% 넘으면 못 돈다.'
           '\n  벽min = 라인에서 가장 가까운 벽(점유 픽셀)까지 [m]. 차 반폭(~0.15) 보다 커야 한다.')
     return rows
 
 
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 대화형 — 인자 없이 실행하면 맵부터 값까지 하나씩 묻는다 (Enter = [기본값])
+# ══════════════════════════════════════════════════════════════════════════════
+PRESETS = {
+    # 이름: (safety, steer_util, dkappa_max, grip(None=race 값), 출력 접미사)
+    '안전': (0.40, 0.65, 1.0, None, 'safe'),
+    '기본': (0.35, 0.70, 1.5, None, 'mt'),
+    '공격': (0.22, 0.85, 2.0, 1.0, 'aggro'),
+}
+
+
+def _ask(msg, default, cast=str, check=None):
+    """[기본값] 을 보여주고 Enter 면 기본값. 잘못 넣으면 다시 묻는다."""
+    while True:
+        try:
+            raw = input(f'  {msg} [{default}]: ').strip()
+        except EOFError:
+            raw = ''
+        if not raw:
+            return default
+        try:
+            val = cast(raw)
+        except ValueError:
+            print('    ✗ 형식이 틀렸습니다. 다시 입력하세요.')
+            continue
+        if check and not check(val):
+            print('    ✗ 범위를 벗어났습니다. 다시 입력하세요.')
+            continue
+        return val
+
+
+def _pick(title, items, default_idx=1, show=None):
+    """번호 목록에서 하나 고르기. 이름을 직접 쳐도 된다."""
+    print(f'\n  {title}')
+    for i, it in enumerate(items, 1):
+        print(f'    {i:3d}. {show(it) if show else it}')
+    while True:
+        try:
+            raw = input(f'  번호 또는 이름 [{default_idx}]: ').strip()
+        except EOFError:
+            raw = ''
+        if not raw:
+            return items[default_idx - 1]
+        if raw.isdigit() and 1 <= int(raw) <= len(items):
+            return items[int(raw) - 1]
+        hit = [it for it in items if (it if isinstance(it, str) else it[0]) == raw]
+        if hit:
+            return hit[0]
+        print('    ✗ 목록에 없습니다.')
+
+
+def interactive(args):
+    if not sys.stdin.isatty():
+        sys.exit('✗ --map 이 없고 터미널도 아니라 물어볼 수 없습니다. --map 을 주세요.')
+    print('\n' + '=' * 62)
+    print('  최소시간 라인 생성 — 값마다 Enter 를 치면 [기본값] 을 씁니다')
+    print('  (각 값의 뜻: docs/웨이포인트_가이드.md)')
+    print('=' * 62)
+
+    # 1) 맵
+    maps = sorted(os.path.basename(p)[:-5] for p in glob.glob(os.path.join(MAPS_DIR, '*.yaml')))
+    if not maps:
+        sys.exit('✗ 맵이 없습니다.')
+    try:
+        cur = (yaml.safe_load(open(os.path.join(_REPO, 'race_script.yaml'))) or {}).get('map_name', '')
+    except OSError:
+        cur = ''
+
+    all_wp = [os.path.basename(p)[:-4] for p in glob.glob(os.path.join(WP_DIR, '*.csv'))]
+
+    def owner(wp):
+        # 라인 이름의 접두사 중 가장 긴 맵 — c11_clean_wp_x 는 c11 이 아니라 c11_clean 것
+        cands = [m for m in maps if wp.startswith(m + '_')]
+        return max(cands, key=len) if cands else None
+    wp_of = {}
+    for w in all_wp:
+        wp_of.setdefault(owner(w), []).append(w)
+
+    def show_map(m):
+        nwp = len(wp_of.get(m, []))
+        nsk = len(glob.glob(os.path.join(MAPS_DIR, m, 'sketch_*.csv')))
+        tag = ('★지금 ' if m == cur else '') + (f'라인 {nwp}개 ' if nwp else '') + (f'스케치 {nsk}개' if nsk else '')
+        return f'{m:32s} {tag}'
+    args.map = _pick('맵', maps, maps.index(cur) + 1 if cur in maps else 1, show_map)
+
+    # 2) 할 일
+    job = _pick('할 일', ['라인 만들기', '이 맵의 라인 비교만 (--eval)'], 1)
+    try:
+        car0 = open(os.path.join(_REPO, '.car')).read().strip()
+    except OSError:
+        car0 = 'car1'
+    args.car = _ask('차 (car1/car2)', car0, str, lambda c: os.path.exists(
+        os.path.join(_REPO, 'config', f'vehicle_{c}.yaml')))
+    if job.startswith('이 맵'):
+        args.eval = ''
+        return
+
+    # 3) 기준선
+    sketches = sorted(glob.glob(os.path.join(MAPS_DIR, args.map, 'sketch_*.csv')))
+    lines = sorted(wp_of.get(args.map, []))
+    has_disp = bool(os.environ.get('DISPLAY') or os.environ.get('WAYLAND_DISPLAY'))
+    opts = [('클릭', '지도에 클릭해서 찍기' + ('' if has_disp else '  (⚠ 화면 없음 — 안 됨)')),
+            ('스케치', f'저장된 스케치로 ({len(sketches)}개)'),
+            ('라인', f'기존 라인을 기준으로 ({len(lines)}개)'),
+            ('자동', '자동 중심선 (양쪽 벽이 있는 복도형 트랙만)')]
+    d = 2 if sketches else (1 if has_disp else 3)
+    kind = _pick('기준선 (어느 틈으로·어느 방향으로 갈지 정함)', opts, d, lambda o: o[1])[0]
+    args.sketch = args.like = args.sketch_file = None
+    args.sketch = False
+    if kind == '클릭':
+        args.sketch = True
+        if lines and _ask('참고용으로 기존 라인을 깔까요? (y/n)', 'n') == 'y':
+            args.like = _pick('참고 라인', lines, 1)
+    elif kind == '스케치':
+        if not sketches:
+            sys.exit('✗ 저장된 스케치가 없습니다. 클릭으로 먼저 찍으세요.')
+        args.sketch_file = _pick('스케치', sketches, len(sketches), os.path.basename)
+    elif kind == '라인':
+        if not lines:
+            sys.exit('✗ 이 맵의 라인이 없습니다.')
+        args.like = _pick('기준 라인', lines, 1)
+
+    # 4) 프리셋 → 값 하나씩 (프리셋 값이 기본값)
+    names = list(PRESETS)
+    pr = _pick('프리셋 (다음 질문들의 기본값이 됩니다)', names, 2,
+               lambda n: f'{n}  safety {PRESETS[n][0]} / 조향 {PRESETS[n][1]} / '
+                         f'dκ {PRESETS[n][2]} / grip {PRESETS[n][3] or "race 값"}')
+    sf, su, dk, gr, suffix = PRESETS[pr]
+    prm0 = load_params(args.mode, args.car)
+    eff_deg = math.degrees(prm0['steer_eff'])
+    print(f'\n  값 입력 — Enter = [기본값]   ({args.car}: 조향 한계 {eff_deg:.1f}°'
+          f'{" 실측" if prm0["steer_eff_measured"] else " 명목"}, race η {prm0["grip_util"]:.2f})')
+    pos = lambda x: x > 0
+    args.safety = _ask('safety      벽~차 중심 최소 거리 [m] (차 반폭 0.15 + 여유)', sf, float, pos)
+    args.steer_util = _ask(f'steer-util  조향 한계({eff_deg:.1f}°) 중 라인이 쓸 비율 (0~1)', su, float,
+                           lambda x: 0.2 <= x <= 1.0)
+    args.dkappa_max = _ask('dkappa-max  곡률 변화 상한 [1/m²] (작을수록 부드러움, 0=끔)', dk, float,
+                           lambda x: x >= 0)
+    args.grip = _ask('grip        CSV 속도 상한을 적을 η (높게 적으면 컨트롤러 η 를 올릴 때 빨라짐)',
+                     gr if gr is not None else round(prm0['grip_util'], 2), float, lambda x: 0.1 <= x <= 1.0)
+    rs0 = 0.01 if (args.sketch or args.sketch_file) else (0.003 if args.like else 0.0005)
+    args.ref_smooth = _ask('ref-smooth  기준선 평활 (손·이미지 스케치면 0.003~0.01)', rs0, float,
+                           lambda x: x >= 0)
+    args.w_max = _ask('w-max       기준선에서 좌우로 움직일 최대 폭 [m]', args.w_max, float, pos)
+    args.passes = _ask('passes      결과로 다시 풀 횟수 (2↑: 경로가 옮겨감 — 경계가 다 그려진 맵만)',
+                       args.passes, int, lambda x: 1 <= x <= 5)
+    out0 = f'{args.map}_wp_{suffix}'
+    args.out = _ask('출력 이름', out0, str)
+    tgt = args.out + (f'_p{args.passes}' if args.passes > 1 and not re.search(r'_p\d+$', args.out) else '')
+    if os.path.exists(os.path.join(WP_DIR, tgt + '.csv')):
+        args.force = _ask(f'{tgt} 가 이미 있습니다. 덮어쓸까요? (y/n)', 'n') == 'y'
+        if not args.force:
+            sys.exit('  취소 — 다른 이름으로 다시 실행하세요.')
+
+    # 같은 결과를 다시 만들 수 있게 명령 한 줄로 보여준다
+    ref = ('--sketch' if args.sketch else
+           f'--sketch-file {os.path.relpath(args.sketch_file, _REPO)}' if args.sketch_file else
+           f'--like {args.like}' if args.like else '')
+    print(f'\n  같은 설정으로 다시 만들기:\n    ./race.sh mintime {args.map} --car {args.car} {ref} '
+          f'--safety {args.safety} --steer-util {args.steer_util} --dkappa-max {args.dkappa_max} '
+          f'--grip {args.grip} --ref-smooth {args.ref_smooth} --w-max {args.w_max} '
+          f'--passes {args.passes} --out {args.out}' + (' --force' if args.force else '') + '\n')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[1])
-    ap.add_argument('--map', required=True)
+    ap.add_argument('--map', default=None, help='없으면 대화형으로 맵부터 하나씩 묻는다')
     ap.add_argument('--eval', nargs='?', const='', default=None,
                     help='기존 라인 비교만 (선택: 이름 필터)')
     ap.add_argument('--like', default=None,
@@ -539,7 +715,8 @@ def main():
     ap.add_argument('--ref-smooth', type=float, default=0.0005,
                     help='기준선 스플라인 평활 (CSV 점 노이즈 제거)')
     ap.add_argument('--steer-util', type=float, default=0.70,
-                    help='라인 곡률이 쓸 수 있는 조향 비율 (추종 여유 = 1 − 이 값)')
+                    help='라인 곡률이 쓸 수 있는 조향 비율 (추종 여유 = 1 − 이 값). '
+                         '기준은 실측 유효 조향(geometry.steer_eff_max), 없으면 명목 max_steer')
     ap.add_argument('--dkappa-max', type=float, default=1.5,
                     help='|dκ/ds| 상한 [1/m²]. 작을수록 PP(L1) 가 따라가기 쉽다. 0=끔')
     ap.add_argument('--w-dk', type=float, default=0.02, help='dκ/ds 매끈함 가중')
@@ -551,6 +728,8 @@ def main():
                          '트랙 경계가 지도에 다 그려져 있을 때만 올릴 것')
     ap.add_argument('--verbose', action='store_true')
     args = ap.parse_args()
+    if args.map is None:
+        interactive(args)
 
     prm = load_params(args.mode, args.car)
     if args.grip is not None:
@@ -562,6 +741,13 @@ def main():
     print(f"[mintime] 차량 {prm['car']}  μ_eff {prm['mu_eff']:.3f}  η {prm['grip_util']:.2f}  "
           f"a_g {prm['a_g']:.2f}  가속 {prm['a_acc']:.2f}  제동 {prm['a_brk']:.2f} ㎧²  "
           f"v_min {prm['v_min']:.2f}  L {prm['wheelbase']:.3f}  max_steer {prm['max_steer']:.4f}")
+    if prm['steer_eff_measured']:
+        print(f"[mintime] 조향 판단 기준 = **실측** 유효 조향 {prm['steer_eff']:.3f} rad "
+              f"({math.degrees(prm['steer_eff']):.1f}°, R {prm['wheelbase']/math.tan(prm['steer_eff']):.3f} m) "
+              f"— 명목 {math.degrees(prm['max_steer']):.1f}° 의 {100*prm['steer_eff']/prm['max_steer']:.0f}%")
+    else:
+        print(f"[mintime] ⚠ 실측 유효 조향 없음 — 명목 max_steer 로 판단 (실제 한계는 보통 더 작다."
+              f" 1호차는 77%). ./race.sh steer-meas 로 재서 vehicle yaml 에 넣을 것")
 
     if args.eval is not None:
         eval_table(args.map, prm, args.eval or None)
@@ -621,14 +807,33 @@ def main():
         if bad.any():
             print(f'  ⚠ 기준선이 양쪽 벽 모두 safety 안: {int(bad.sum())}점 — --safety 를 낮출 것')
 
-        kcap = math.tan(args.steer_util * prm['max_steer']) / prm['wheelbase']
-        print(f'  곡률 상한 κ ≤ {kcap:.3f} (R ≥ {1/kcap:.3f} m, 조향 {100*args.steer_util:.0f}%)'
+        kcap = math.tan(args.steer_util * prm['steer_eff']) / prm['wheelbase']
+        print(f'  곡률 상한 κ ≤ {kcap:.3f} (R ≥ {1/kcap:.3f} m, '
+              f'{"실측" if prm["steer_eff_measured"] else "명목"} 조향의 {100*args.steer_util:.0f}%)'
               f'   |dκ/ds| ≤ {args.dkappa_max}')
 
         # 2) OCP — 매끈한 문제부터 풀고(웜스타트) 실제 제약으로
         r = solve_mintime(kr, h, wl, wr, prm, kappa_cap=kcap, dkappa_max=0.0,
                           w_dk=max(args.w_dk, 0.2), v_max=args.v_max, verbose=args.verbose)
         print(f'  1단계(매끈) T={r["T"]:.3f}s ok={r["ok"]}')
+        if not r['ok']:
+            # 곡률 상한이 기준선보다 훨씬 빡빡하면 n=0 초기값에서 IPOPT 가 길을 못 찾는다.
+            # 느슨한 상한에서 먼저 풀고 그 해를 시작점으로 조금씩 조인다 (continuation).
+            prev = None
+            for f in (2.0, 1.6, 1.35, 1.18, 1.08, 1.0):
+                rr = solve_mintime(kr, h, wl, wr, prm, kappa_cap=kcap * f, dkappa_max=0.0,
+                                   w_dk=max(args.w_dk, 0.2), v_max=args.v_max, init=prev,
+                                   verbose=args.verbose)
+                print(f'    단계적 조이기 κ≤{kcap*f:.3f}: ok={rr["ok"]}')
+                if rr['ok']:
+                    prev = rr
+            if rr['ok']:
+                r = rr
+            elif prev is not None:
+                r = prev          # 2단계도 실패하겠지만, 어디서 막히는지 벽min 등을 보여준다
+            if not rr['ok']:
+                print(f'  ✗ κ≤{kcap:.3f} 에서 해가 없음 — 이 통로에서 그 곡률 상한으로는 못 돈다 '
+                      f'(--steer-util 을 올리거나 기준 경로를 넓은 쪽으로)')
         # 3) 벽 여유 검증 루프 — 법선 광선은 비스듬한 벽을 못 보므로, 풀린 라인의
         #    실제 최근접 벽거리를 재서 safety 를 어긴 곳만 폭을 좁혀 다시 푼다.
         for it in range(6):

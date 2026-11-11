@@ -68,7 +68,9 @@
 #                              (R_min / 추종조향 / 여유 / 한계초과점). 인자 없으면
 #                              지금 맵 것만, all 이면 전부, 그 외는 이름에 포함된 것.
 #                              여유가 20% 밑이면 조향이 포화돼 바깥으로 벌어진다.
+#    ./race.sh steer-meas [로그조각] [--car car1]  주행 로그로 실제 조향 한계 측정
 #    ./race.sh wp-show [이름]  ★ 라인 오버레이 사진 띄우기 (노트북, ROS 불필요)
+#    ./race.sh mintime         ★ 대화형: 맵 선택 → 값 하나씩 (Enter=기본값)
 #    ./race.sh mintime <맵> --sketch  ★ 최소시간 라인 (경로+속도 동시 최적화). 지도에 경로를
 #                              클릭으로 찍거나(--sketch), 기존 라인을 기준으로(--like <라인>)
 #                              --eval 이면 기존 라인들을 같은 물리로 비교만
@@ -148,9 +150,13 @@ export RACE_VEHICLE_OVERLAY="$SCRIPT_DIR/config/.vehicle_overlay.yaml"
 #   ~/f1tenth_ws 를 빌드하지 않아 install/setup.bash 가 없고, 아래 VESC 심링크·
 #   배터리 확인도 차가 없으면 의미가 없다. 그래서 0 ~ 1-2 를 건너뛴다.
 case "${1:-}" in
-  wp|wplist|wp-show|wpshow|mintime|waypoints-mintime) OFFLINE_CMD=1 ;;
+  wp|wplist|wp-show|wpshow|mintime|waypoints-mintime|steer-meas) OFFLINE_CMD=1 ;;
   *) OFFLINE_CMD= ;;
 esac
+# 파일 도구는 **이 저장소**의 maps/·waypoints/ 를 봐야 한다. RACE_WS(~/f1tenth_ws)의
+# src/race_stack 은 젯슨에선 이 repo 로 가는 심링크지만, 노트북에선 옛 클론을 가리킬
+# 수 있다 (실제로 ~/26-jetson-f1tenth 를 가리켜 새 맵이 '없음' 으로 나왔다).
+[ -n "$OFFLINE_CMD" ] && export RACE_WS="$SCRIPT_DIR"
 if [ -z "$OFFLINE_CMD" ]; then
 source /opt/ros/humble/setup.bash
 source "$WS/install/setup.bash"
@@ -785,6 +791,11 @@ except OSError:
 _pp_ov, _pp_rs = (ov.get('pure_pursuit') or {}), (cfg.get('pure_pursuit') or {})
 L  = float(_pp_ov.get('wheelbase', _pp_rs.get('wheelbase', 0.33)))
 MS = float(_pp_ov.get('max_steer', _pp_rs.get('max_steer', 0.40)))
+# ★ 실측 유효 조향 (vehicle yaml geometry.steer_eff_max → overlay line 절).
+#   명목 MS 는 서보 리밋에서 계산한 '명령 한계' 라 실제로는 그만큼 안 꺾인다
+#   (1호차 2026-11-11: 27.5° 명령 → 실제 21.2°). 판정은 실측으로 한다.
+MS_NOM = MS
+MS = float((ov.get('line') or {}).get('steer_eff_max') or MS_NOM)
 KMAX = math.tan(MS) / L
 cur  = (os.environ.get('RACE_WAYPOINTS') or cfg.get('waypoints') or '')
 mapn = cfg.get('map_name') or ''
@@ -818,8 +829,12 @@ def kappa(x, y):
     return np.where(den > 1e-12, 2.0 * area2 / np.maximum(den, 1e-12), 0.0)
 
 
-print(f'\n차: wheelbase {L:.3f} m, max_steer {MS:.4f} rad '
-      f'→ R_min {1 / KMAX:.3f} m (κ_max {KMAX:.3f})')
+if MS != MS_NOM:
+    print(f'\n차: wheelbase {L:.3f} m, 실측 유효 조향 {MS:.3f} rad ({math.degrees(MS):.1f}°, '
+          f'명목 {math.degrees(MS_NOM):.1f}°) → R_min {1 / KMAX:.3f} m (κ_max {KMAX:.3f})')
+else:
+    print(f'\n차: wheelbase {L:.3f} m, max_steer {MS:.4f} rad (명목 — 실측 없음, 실제론 더 작을 수 있음) '
+          f'→ R_min {1 / KMAX:.3f} m (κ_max {KMAX:.3f})')
 print(f'웨이포인트 {len(names)}개 중 {len(shown)}개 표시 ({why})   ★ = 지금 선택된 것\n')
 print('    이름                                 점수  간격   속도(m/s)      '
       'R_min   추종조향  여유  한계초과')
@@ -853,7 +868,7 @@ for n in shown:
           f'{pct:5.0f}%  {100 - pct:4.0f}%  {over:3d}점  {flag}')
 
 print(f"""
-  추종조향 = atan(wheelbase / R_min) ÷ max_steer — 라인을 **따라가기만** 할 때 쓰는 조향.
+  추종조향 = atan(wheelbase / R_min) ÷ 유효조향(실측, 없으면 명목) — 라인을 **따라가기만** 할 때 쓰는 조향.
     여유가 20% 밑이면 오차 보정 권한이 없어 조향이 포화되고 바깥으로 벌어진다.
     30% 이상을 권한다. 여유를 늘리려면 생성 시 --kappa-margin 을 낮출 것.
   한계초과 = 핸들을 끝까지 꺾어도 못 도는 점. 1점이라도 있으면 그 라인은 못 쓴다.
@@ -877,6 +892,12 @@ PY
     else
       exec python3 -m race_stack.gen_waypoints_kappa "${@:2}"
     fi ;;
+  steer-meas)
+    # 주행 로그에서 차가 **실제로** 도는 조향 한계(유효 최대 조향)를 잰다.
+    # 결과의 권장값을 config/vehicle_<차>.yaml geometry.steer_eff_max 에 넣으면
+    # mintime 생성기와 ./race.sh wp 판정이 그 값을 쓴다.
+    export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
+    exec python3 -W ignore -m race_stack.steer_limit_logs "${@:2}" ;;
   wp-show|wpshow)
     # 라인 오버레이 사진(PNG)을 바로 띄운다. 인자: 없음=지금 맵 목록에서 번호 선택 /
     # 정확한 이름=바로 열기 / 이름조각=걸리는 것들 / all=전부. PNG 없으면 즉석에서 그림.
@@ -891,8 +912,11 @@ PY
     #   의존: pip install --user --no-deps casadi   (numpy 1.26.4 보호)
     NAME=${2:-}
     export PYTHONPATH="$SCRIPT_DIR/src/race_stack:${PYTHONPATH:-}"
-    if [[ -z "$NAME" || "$NAME" == -* ]]; then
-      echo "사용법: ./race.sh mintime <맵> [--sketch | --like <기준라인>] [--out 이름] [--eval]"; exit 1
+    if [[ -z "$NAME" ]]; then
+      # 인자 없음 → 대화형 (맵 선택부터 값 하나씩, Enter = 기본값)
+      exec python3 -W ignore -m race_stack.gen_raceline_mintime
+    elif [[ "$NAME" == -* ]]; then
+      exec python3 -W ignore -m race_stack.gen_raceline_mintime "${@:2}"
     fi
     exec python3 -W ignore -m race_stack.gen_raceline_mintime --map "$NAME" "${@:3}" ;;
   waypoints-tumftm)
