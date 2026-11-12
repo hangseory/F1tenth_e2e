@@ -57,3 +57,6 @@ config/.vehicle_overlay.yaml
 
 # 제어판이 띄울 때마다 만드는 로그 폴더 (logs/panel/<시각>/<프로그램>.log)
 logs/panel/
+
+# servo.sh 가 실행 시 만드는 유지 스크립트 (생성물)
+.servo_hold.py
