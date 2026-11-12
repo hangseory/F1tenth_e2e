@@ -90,6 +90,10 @@ class MapController(Node):
         self.declare_parameter('waypoint_file', '')
         self.declare_parameter('max_speed', 3.0)
         self.declare_parameter('min_speed', 0.5)
+        # 저속 모드(조이스틱 A)에서 묶을 속도. X 로 해제. 0 이면 기능 끔.
+        #   ★ 바닥(min_speed) 바로 위에 둔다 — 더 낮추면 센서리스 FOC 가
+        #     로터를 놓쳐 정지-재출발이 되돌아온다 (_slow_cap 주석 참고).
+        self.declare_parameter('slow_speed', 1.5)
 
         # ── 차량 기하 (pure_pursuit 절과 공유) ───────────────────────────
         self.declare_parameter('wheelbase', 0.33)
@@ -393,6 +397,9 @@ class MapController(Node):
         self.carpath_pub = self.create_publisher(Path,   '/car_path',       10)
 
         self.create_subscription(Bool, '/race/enabled', self.enabled_cb, LATCHED_IN)
+        # A=저속 / X=정속 (joystick_teleop 가 래치로 낸다)
+        self._slow_mode = False
+        self.create_subscription(Bool, '/race/slow', self._slow_cb, LATCHED_IN)
         self.create_subscription(PoseWithCovarianceStamped, '/amcl_pose',
                                  self.pose_cb, 10)
         self.create_subscription(
@@ -658,6 +665,35 @@ class MapController(Node):
         if now - self._fr_spd_t > float(self.p('frenet_timeout')):
             return 1.0
         return self._fr_spd
+
+    def _slow_cap(self, speed: float) -> float:
+        """저속 모드(조이스틱 A)면 속도를 slow_speed 로 묶는다. X 로 해제.
+
+        대회 중 "부딪힐 것 같다" 싶을 때 사람이 멈추지 않고 개입하는 수단이다
+        (2026-11-11, MAGP 요청). E-STOP 과 달리 차는 계속 달린다.
+
+        ★ 바닥(_speed_floor) **뒤**에 건다 — 저속 모드는 바닥을 이겨야 한다.
+          다만 slow_speed 를 모터가 못 미는 대역(약 1.0㎧ 아래)으로 두면
+          저속 구간 정지-재출발이 되돌아온다. 그래서 기본값을 1.5 로 두었다
+          (바닥 1.4 바로 위). 더 낮추려면 그 대가를 알고 낮출 것.
+        ★ 마찰원 한계(v_lock)와 출발 램프는 뒤에서 그대로 걸린다 — 저속
+          모드가 그것들을 **올리는** 일은 없다. 항상 min 으로만 작용한다.
+        """
+        if not getattr(self, '_slow_mode', False):
+            return speed
+        cap = float(self.p('slow_speed'))
+        return min(speed, cap) if cap > 0.0 else speed
+
+    def _slow_cb(self, msg: Bool):
+        on = bool(msg.data)
+        if on == getattr(self, '_slow_mode', False):
+            return
+        self._slow_mode = on
+        if on:
+            self.get_logger().warn(
+                f"★ 저속 모드 ON — {float(self.p('slow_speed')):.2f}㎧ 로 묶습니다")
+        else:
+            self.get_logger().warn('★ 저속 모드 OFF — 정속 복귀')
 
     def _speed_floor(self, speed: float) -> float:
         """speed.min_speed(하드웨어 바닥)를 **배율 뒤에** 다시 세운다.
@@ -1069,6 +1105,7 @@ class MapController(Node):
         speed *= self._frenet_speed_scale()
         # ★ 하드웨어 바닥을 **배율 뒤에** 다시 세운다 (2026-11-11). 아래 주석 참고.
         speed = self._speed_floor(speed)
+        speed = self._slow_cap(speed)             # A=저속 / X=정속
         speed = self._launch_limit(speed, 0.02)   # 타이머 주기 50Hz
         # 조향이 포화되면 그 곡률을 마찰 예산 안에서 돌 수 있는 속도로 자른다.
         v_lock = steer_speed_limit(

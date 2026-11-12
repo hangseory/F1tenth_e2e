@@ -44,6 +44,10 @@ LAP_RE = re.compile(r'LAP\s+(\d+)\s*완료!\s*\(([\d.]+)s\)')
 STAGE_RE = re.compile(r'다음 단계\s*—\s*(.+?)\s*════')
 # 출발
 GO_RE = re.compile(r'════════\s*출발!')
+# 저속 모드 (조이스틱 A=저속 / X=정속). joystick_teleop 가 2초마다 반복해 찍는다.
+#   켜둔 걸 잊으면 "왜 이렇게 느리지" 로 한참 헤매므로 맨 아랫줄에 박아둔다.
+SLOW_ON_RE  = re.compile(r'★ 저속 모드(?!\s*OFF)')
+SLOW_OFF_RE = re.compile(r'★ (?:정속 복귀|저속 모드 OFF)')
 
 CSI = '\033['
 SAVE, REST = '\0337', '\0338'
@@ -55,6 +59,7 @@ class Bar:
         self.rows, self.cols = self._size()
         self.text = '대기 중 — 출발 버튼을 누르세요'
         self.last_lap = ''
+        self.slow = False
         self.armed = False
 
     def _size(self):
@@ -123,6 +128,8 @@ class Bar:
         if not self.armed:
             return
         body = self.text + (('   |   ' + self.last_lap) if self.last_lap else '')
+        if self.slow:
+            body = '★ 저속 모드 (X=정속)   |   ' + body
         avail = max(self.cols - 2, 8)          # 양옆 여백 1칸씩
         body = self._fit(body, avail)
         pad = ' ' * max(0, avail - self._dw(body))
@@ -152,6 +159,16 @@ def main():
             raw = line.rstrip('\n')
             m = LOG_RE.search(raw)
             node, msg = (m.group(1), m.group(2)) if m else ('', raw)
+
+            if SLOW_OFF_RE.search(msg):
+                bar.slow = False
+                bar.draw()
+            elif SLOW_ON_RE.search(msg):
+                if bar.slow:
+                    # 2초마다 오는 반복 알림은 화면에 안 흘린다 — 로그를 덮는다.
+                    continue
+                bar.slow = True
+                bar.draw()
 
             if node == 'mission_manager' or not m:
                 if BANNER_RE.match(msg):

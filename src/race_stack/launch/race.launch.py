@@ -517,6 +517,9 @@ def generate_launch_description():
                 'axis_speed':       int(  jc.get('axis_speed',       5)),
                 'btn_reverse':      int(  jc.get('btn_reverse',      5)),
                 'btn_toggle':       int(  jc.get('btn_toggle',       4)),
+                # A=저속 / X=정속 (자율 모드에서만 듣는다 — 수동의 A/X 는 프리셋)
+                'btn_slow':         int(  jc.get('btn_slow',         0)),
+                'btn_normal':       int(  jc.get('btn_normal',       2)),
                 'steer_invert':     bool( jc.get('steer_invert',     False)),
                 'speed_invert':     bool( jc.get('speed_invert',     False)),
                 'trigger_invert':   bool( jc.get('trigger_invert',   True)),
@@ -711,6 +714,9 @@ def generate_launch_description():
             parameters=[{
                 'mode':            mode,
                 'waypoint_file':   wp_csv,
+                # A=저속 / X=정속. 0 이면 기능 끔. 바닥(min_speed) 바로 위에 둘 것 —
+                # 더 낮추면 센서리스 FOC 가 로터를 놓쳐 정지-재출발이 돌아온다.
+                'slow_speed':      float(cfg['speed'].get('slow_speed', 1.5)),
                 'max_speed':       max_speed,
                 # ★ bench 는 여기서 끝난다 — 컨트롤러가 발행 직전에 속도를 0 으로
                 #   못박는다. 중간 계산(클램프)에 얹지 말 것 (2026-08-09 사고).

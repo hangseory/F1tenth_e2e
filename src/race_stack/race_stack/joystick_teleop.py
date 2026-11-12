@@ -58,6 +58,13 @@ class JoystickTeleop(Node):
         self.declare_parameter('axis_speed',       5)      # RT 트리거
         self.declare_parameter('btn_reverse',      5)      # RB — 후진 전환
         self.declare_parameter('btn_toggle',       4)      # LB — 수동↔자율 토글
+        # ── 저속 모드 (A 누르면 저속 / X 누르면 정속) ──────────────────
+        #   대회 중 "부딪힐 것 같다" 싶을 때 사람이 즉시 속도를 죽이는 손잡이다.
+        #   E-STOP 과 다르다 — 멈추지 않고 **계속 달리되 느리게** 간다.
+        #   ★ 자율 모드에서만 듣는다. 수동 모드의 A/X 는 위치 프리셋이라
+        #     (아래 _check_pose_presets) 같은 버튼을 두 뜻으로 쓰면 안 된다.
+        self.declare_parameter('btn_slow',         0)      # A — 저속
+        self.declare_parameter('btn_normal',       2)      # X — 정속 복귀
         # ── LB 토글의 의미는 어느 스택에 붙느냐로 갈린다 ────────────────
         #  · ./race.sh joy (수동 전용, 트랙 밖에서 굴릴 때)
         #      allow_toggle=False, start_auto=False
@@ -117,6 +124,8 @@ class JoystickTeleop(Node):
         self.ax_speed      = p('axis_speed')
         self.btn_rev       = p('btn_reverse')
         self.btn_tog       = p('btn_toggle')
+        self.btn_slow      = p('btn_slow')
+        self.btn_norm      = p('btn_normal')
         self.inv_steer     = p('steer_invert')
         self.inv_speed     = bool(p('speed_invert'))
         self.inv_trigger   = p('trigger_invert')
@@ -167,6 +176,15 @@ class JoystickTeleop(Node):
         # LT 당김 → 정렬 명령 (auto_localize 가 현재 위치 기준 스캔정렬). 기동 자동
         # 정렬을 끈 대신, 필요할 때만 사람이 명령한다.
         self.pub_reloc = self.create_publisher(Bool, '/race/relocalize', 10)
+        # 저속 모드. 래치로 낸다 — 컨트롤러가 늦게 떠도 현재 상태를 받는다.
+        self.pub_slow = self.create_publisher(
+            Bool, '/race/slow',
+            QoSProfile(depth=1, durability=DurabilityPolicy.TRANSIENT_LOCAL))
+        self.slow_mode = False
+        self._prev_slow_btn = False
+        self._prev_norm_btn = False
+        self.pub_slow.publish(Bool(data=False))
+        self._slow_banner = self.create_timer(2.0, self._slow_tick)
         self._prev_lt = False
         self._presets = {}
         for _k in ('up', 'down', 'left', 'right', 'a', 'b', 'x', 'y'):
@@ -318,6 +336,29 @@ class JoystickTeleop(Node):
         mag = (mag - self.steer_dz) / (1.0 - self.steer_dz)
         return min(mag, 1.0) * (1.0 if raw > 0 else -1.0)
 
+    def _set_slow(self, on: bool):
+        """저속 모드 전환. 상태는 래치로 내보내고, 화면에 크게 남긴다.
+
+        ★ E-STOP 과 다르다 — 차는 **계속 달린다**. 속도만 낮춘다.
+          "부딪힐 것 같다" 싶을 때 사람이 멈추지 않고 개입하는 수단이다
+          (대회 중 MAGP 요청, 2026-11-11).
+        속도를 실제로 깎는 곳은 컨트롤러다 (map_controller._slow_cap).
+        여기서는 의사만 낸다 — 컨트롤러가 바뀌어도 이 조작은 그대로다.
+        """
+        self.slow_mode = bool(on)
+        self.pub_slow.publish(Bool(data=self.slow_mode))
+        if self.slow_mode:
+            self.get_logger().warn(
+                '★ 저속 모드 ON  (A) — 느리게 계속 달립니다. 정속 복귀는 X')
+        else:
+            self.get_logger().warn('★ 정속 복귀 (X) — 저속 모드 해제')
+
+    def _slow_tick(self):
+        """저속일 동안 2초마다 한 줄. 켜둔 걸 잊지 않게, 그리고 statusline 이
+        맨 아랫줄에 고정할 수 있게 같은 문구를 반복한다."""
+        if self.slow_mode:
+            self.get_logger().warn('★ 저속 모드 — X 를 누르면 정속')
+
     def _check_pose_presets(self, msg: Joy):
         """수동 모드에서 D-pad/버튼 상승엣지 → 해당 프리셋 /initialpose 발행.
         입력 8개: D-pad ↑↓←→(축 7/6) + A/B/X/Y(버튼 0~3). F710 X모드 기준."""
@@ -378,6 +419,20 @@ class JoystickTeleop(Node):
                 if not self.auto_mode:
                     self._publish(0.0, 0.0)  # 수동 전환 시 즉시 정지
         self.prev_lb = lb
+
+        # ── A = 저속 / X = 정속 (자율 모드에서만) ──────────────────────
+        #   "부딪힐 것 같다" 싶을 때 멈추지 않고 **느리게 계속 가는** 손잡이.
+        #   수동 모드에서는 A/X 가 위치 프리셋이므로 건드리지 않는다.
+        def _btn(i):
+            i = int(i)
+            return 0 <= i < len(msg.buttons) and bool(msg.buttons[i])
+        _sb, _nb = _btn(self.btn_slow), _btn(self.btn_norm)
+        if self.auto_mode:
+            if _sb and not self._prev_slow_btn and not self.slow_mode:
+                self._set_slow(True)
+            if _nb and not self._prev_norm_btn and self.slow_mode:
+                self._set_slow(False)
+        self._prev_slow_btn, self._prev_norm_btn = _sb, _nb
 
         # ── LT 당김(상승엣지) → 정렬 명령 (/race/relocalize) ───────────
         #   기동 자동정렬은 꺼져 있고(직선서 오정렬 방지), 필요할 때만 LT 로 명령.
