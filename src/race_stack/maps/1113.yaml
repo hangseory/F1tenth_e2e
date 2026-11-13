@@ -1,0 +1,6 @@
+image: /home/jetson/yax/src/race_stack/maps/1113.pgm
+resolution: 0.050000
+origin: [-0.881305, -4.450000, 0.0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196

@@ -1,0 +1,9 @@
+free_thresh: 0.196
+image: 1109-2_clean.pgm
+negate: 0
+occupied_thresh: 0.65
+origin:
+- -11.648034
+- -4.831087
+- 0.0
+resolution: 0.05
