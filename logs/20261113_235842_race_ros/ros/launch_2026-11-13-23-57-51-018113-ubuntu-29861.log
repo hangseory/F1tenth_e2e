@@ -1,0 +1,77 @@
+1794581871.0217316 [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-11-13-23-57-51-018113-ubuntu-29861
+1794581871.0222661 [INFO] [launch]: Default logging verbosity is set to INFO
+1794581871.5773966 [INFO] [joy_node-1]: process started with pid [29863]
+1794581871.5784607 [INFO] [joy_teleop-2]: process started with pid [29865]
+1794581871.5789087 [INFO] [ackermann_to_vesc_node-3]: process started with pid [29867]
+1794581871.5794623 [INFO] [vesc_to_odom_node-4]: process started with pid [29869]
+1794581871.5798752 [INFO] [vesc_driver_node-5]: process started with pid [29871]
+1794581871.5932608 [INFO] [urg_node_driver-6]: process started with pid [29873]
+1794581871.5995159 [INFO] [ackermann_mux-7]: process started with pid [29875]
+1794581871.6104987 [INFO] [static_transform_publisher-8]: process started with pid [29885]
+1794581871.6218410 [INFO] [imu_odom-9]: process started with pid [29887]
+1794581871.6271763 [INFO] [localization_monitor-10]: process started with pid [29891]
+1794581871.6475642 [INFO] [cartographer_node-11]: process started with pid [29902]
+1794581871.6489284 [INFO] [cartographer_occupancy_grid_node-12]: process started with pid [29920]
+1794581871.6495929 [INFO] [cartographer_localizer-13]: process started with pid [29928]
+1794581871.6501210 [INFO] [mission_manager-14]: process started with pid [29931]
+1794581871.6506608 [INFO] [frenet_planner-15]: process started with pid [29949]
+1794581871.6513886 [INFO] [echo-16]: process started with pid [29951]
+1794581871.6701152 [INFO] [echo-16]: process has finished cleanly [pid 29951]
+1794581871.6866915 [vesc_driver_node-5] [0m[INFO] [1794581871.505154471] [IoContext::IoContext]: Thread(s) Created: 2[0m
+1794581871.6982963 [static_transform_publisher-8] [33m[WARN] [1794581871.496384580] []: Old-style arguments are deprecated; see --help for new-style arguments[0m
+1794581871.6993284 [static_transform_publisher-8] [0m[INFO] [1794581871.559346948] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+1794581871.6998019 [static_transform_publisher-8] translation: ('0.270000', '0.000000', '0.110000')
+1794581871.7002249 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1794581871.7006221 [static_transform_publisher-8] from 'base_link' to 'laser'[0m
+1794581871.7020295 [ackermann_mux-7] [0m[INFO] [1794581871.583277970] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.[0m
+1794581871.7077141 [ackermann_mux-7] [0m[INFO] [1794581871.592985658] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.[0m
+1794581871.7104402 [vesc_driver_node-5] [0m[INFO] [1794581871.648023216] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581871.7196329 [urg_node_driver-6] [0m[INFO] [1794581871.661010228] [urg_node]: Connected to network device with ID: B2244325[0m
+1794581871.7285056 [vesc_driver_node-5] [0m[INFO] [1794581871.666584932] [vesc_driver_node]: Connected to VESC with firmware version 6.6[0m
+1794581871.7468464 [vesc_driver_node-5] [0m[INFO] [1794581871.681103946] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581871.7726700 [urg_node_driver-6] [0m[INFO] [1794581871.771287799] [urg_node]: Streaming data.[0m
+1794581872.2801416 [joy_node-1] [0m[INFO] [1794581872.278642362] [joy]: No haptic (rumble) available, skipping initialization[0m
+1794581872.2815554 [joy_node-1] [0m[INFO] [1794581872.279129998] [joy]: Opened joystick: Logitech Gamepad F710.  deadzone: 0.050000[0m
+1794581875.5263383 [INFO] [joystick_teleop-17]: process started with pid [30094]
+1794581878.4989886 [INFO] [auto_localize-18]: process started with pid [30116]
+1794581879.5965614 [INFO] [map_controller-19]: process started with pid [30118]
+1794581920.1073608 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1794581920.1979396 [urg_node_driver-6] [0m[INFO] [1794581920.088255978] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2096052 [static_transform_publisher-8] [0m[INFO] [1794581920.088275692] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2376311 [vesc_driver_node-5] [0m[INFO] [1794581920.088536102] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2435861 [ackermann_mux-7] [0m[INFO] [1794581920.089518248] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2572150 [vesc_to_odom_node-4] [0m[INFO] [1794581920.089532650] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2612326 [joy_node-1] [0m[INFO] [1794581920.090484905] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2663138 [ackermann_to_vesc_node-3] [0m[INFO] [1794581920.096440059] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794581920.2978539 [vesc_driver_node-5] terminate called after throwing an instance of 'rclcpp::exceptions::RCLError'
+1794581920.2995455 [vesc_driver_node-5]   what():  failed to publish message: publisher pointer is invalid, at ./src/rcl/publisher.c:400
+1794581920.5436237 [ERROR] [vesc_driver_node-5]: process has died [pid 29871, exit code -6, cmd '/home/jetson/ros2_ws/install/vesc_driver/lib/vesc_driver/vesc_driver_node --ros-args -r __node:=vesc_driver_node --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/vesc.yaml'].
+1794581921.1801610 [INFO] [static_transform_publisher-8]: process has finished cleanly [pid 29885]
+1794581921.3057144 [joy_teleop-2] Traceback (most recent call last):
+1794581921.3064568 [joy_teleop-2]   File "/opt/ros/humble/lib/joy_teleop/joy_teleop", line 33, in <module>
+1794581921.3067017 [joy_teleop-2]     sys.exit(load_entry_point('joy-teleop==1.6.0', 'console_scripts', 'joy_teleop')())
+1794581921.3076491 [joy_teleop-2]   File "/opt/ros/humble/lib/python3.10/site-packages/joy_teleop/joy_teleop.py", line 442, in main
+1794581921.3095832 [joy_teleop-2]     rclpy.shutdown()
+1794581921.3098660 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1794581921.3100762 [joy_teleop-2]     _shutdown(context=context)
+1794581921.3102705 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1794581921.3104541 [joy_teleop-2]     return context.shutdown()
+1794581921.3106318 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1794581921.3108087 [joy_teleop-2]     self.__context.shutdown()
+1794581921.3111196 [joy_teleop-2] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1794581921.3168986 [INFO] [vesc_to_odom_node-4]: process has finished cleanly [pid 29869]
+1794581921.3282843 [INFO] [joy_node-1]: process has finished cleanly [pid 29863]
+1794581921.4016552 [INFO] [ackermann_mux-7]: process has finished cleanly [pid 29875]
+1794581921.4504292 [INFO] [ackermann_to_vesc_node-3]: process has finished cleanly [pid 29867]
+1794581921.4537368 [INFO] [cartographer_occupancy_grid_node-12]: process has finished cleanly [pid 29920]
+1794581921.5607829 [INFO] [cartographer_node-11]: process has finished cleanly [pid 29902]
+1794581921.6733057 [ERROR] [joy_teleop-2]: process has died [pid 29865, exit code 1, cmd '/opt/ros/humble/lib/joy_teleop/joy_teleop --ros-args -r __node:=joy_teleop --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/joy_teleop.yaml'].
+1794581921.7018788 [INFO] [cartographer_localizer-13]: process has finished cleanly [pid 29928]
+1794581921.8005676 [INFO] [auto_localize-18]: process has finished cleanly [pid 30116]
+1794581921.8323762 [ERROR] [joystick_teleop-17]: process has died [pid 30094, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/joystick_teleop --ros-args -r __node:=joystick_teleop --params-file /tmp/launch_params_j9tmir41'].
+1794581921.8434551 [INFO] [imu_odom-9]: process has finished cleanly [pid 29887]
+1794581921.8462815 [ERROR] [localization_monitor-10]: process has died [pid 29891, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/localization_monitor --ros-args -r __node:=localization_monitor --params-file /tmp/launch_params_sknkk8gk'].
+1794581921.8510170 [INFO] [urg_node_driver-6]: process has finished cleanly [pid 29873]
+1794581921.8625224 [ERROR] [mission_manager-14]: process has died [pid 29931, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/mission_manager --ros-args -r __node:=mission_manager --params-file /tmp/launch_params_8gaks7z2'].
+1794581921.8826456 [INFO] [frenet_planner-15]: process has finished cleanly [pid 29949]
+1794581921.9670944 [INFO] [map_controller-19]: process has finished cleanly [pid 30118]
