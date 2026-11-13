@@ -1,0 +1,246 @@
+[INFO] [1794581871.974465990] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794581871.977872720] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581871.978736204] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581871.979112788] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581871.979195485] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581871.979307913] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581871.979353005] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581871.979670415] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581871.979720180] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581871.979807070] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581871.979845922] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581871.982640235] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581871.984255350] [cartographer logger]: I1113 23:57:51.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581872.057859386] [cartographer logger]: I1113 23:57:52.000000 29902 map_builder_bridge.cpp:117] Loading saved state '/home/jetson/f1tenth_ws/src/race_stack/maps/1113.pbstream'...
+[INFO] [1794581873.813965203] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794581873.814595382] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581873.814672766] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581873.815958694] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581873.816465372] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581873.816727352] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581873.816810913] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581873.817226349] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581873.817283859] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581873.817380957] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581873.817566065] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581873.817830573] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581873.817877426] [cartographer logger]: I1113 23:57:53.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581873.819647149] [cartographer logger]: I1113 23:57:53.000000 29902 map_builder_bridge.cpp:136] Added trajectory with ID '1'.
+[INFO] [1794581873.842607758] [cartographer logger]: I1113 23:57:53.000000 29902 ordered_multi_queue.cc:172] All sensor data for trajectory 1 is available starting at '639301786738630624'.
+[INFO] [1794581873.872670688] [cartographer logger]: I1113 23:57:53.000000 29902 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794581873.873011364] [cartographer logger]: I1113 23:57:53.000000 29902 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794581873.896061966] [cartographer logger]: I1113 23:57:53.000000 29902 pose_graph_2d.cc:148] Inserted submap (1, 0).
+[INFO] [1794581873.928692367] [cartographer logger]: I1113 23:57:53.000000 29994 constraint_builder_2d.cc:275] Node (1, 0) with 201 points on submap (0, 1) differs by translation 1.93 rotation 0.005 with score 67.3%.
+[INFO] [1794581873.928849696] [cartographer logger]: I1113 23:57:53.000000 29993 constraint_builder_2d.cc:275] Node (1, 0) with 201 points on submap (0, 0) differs by translation 1.92 rotation 0.004 with score 71.7%.
+[WARN] [1794581879.781721577] [cartographer logger]: W1113 23:57:59.000000 29902 range_data_collator.cc:82] Dropped 296 earlier points.
+[WARN] [1794581879.922520509] [cartographer logger]: W1113 23:57:59.000000 29902 range_data_collator.cc:82] Dropped 363 earlier points.
+[WARN] [1794581880.140449293] [cartographer logger]: W1113 23:58:00.000000 29902 range_data_collator.cc:82] Dropped 293 earlier points.
+[WARN] [1794581880.322776151] [cartographer logger]: W1113 23:58:00.000000 29902 range_data_collator.cc:82] Dropped 124 earlier points.
+[WARN] [1794581880.578862242] [cartographer logger]: W1113 23:58:00.000000 29902 range_data_collator.cc:82] Dropped 24 earlier points.
+[WARN] [1794581881.220392459] [cartographer logger]: W1113 23:58:01.000000 29902 range_data_collator.cc:82] Dropped 114 earlier points.
+[WARN] [1794581881.701201124] [cartographer logger]: W1113 23:58:01.000000 29902 range_data_collator.cc:82] Dropped 19 earlier points.
+[INFO] [1794581883.833736288] [cartographer logger]: I1113 23:58:03.000000 29902 node.cpp:569] Shutdown the subscriber of [scan]
+[INFO] [1794581883.835609860] [cartographer logger]: I1113 23:58:03.000000 29902 node.cpp:569] Shutdown the subscriber of [odom]
+[INFO] [1794581883.835690316] [cartographer logger]: I1113 23:58:03.000000 29902 map_builder_bridge.cpp:152] Finishing trajectory with ID '1'...
+[INFO] [1794581883.840987799] [cartographer logger]: I1113 23:58:03.000000 29994 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794581883.841139494] [cartographer logger]: I1113 23:58:03.000000 29994 constraint_builder_2d.cc:290] 2 computations resulted in 2 additional constraints.
+[INFO] [1794581883.841318009] [cartographer logger]: I1113 23:58:03.000000 29994 constraint_builder_2d.cc:292] Score histogram:
+Count: 2  Min: 0.672697  Max: 0.716853  Mean: 0.694775
+[0.672697, 0.677113)	          ##########	Count: 1 (50%)	Total: 1 (50%)
+[0.677113, 0.681528)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.681528, 0.685944)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.685944, 0.690360)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.690360, 0.694775)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.694775, 0.699191)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.699191, 0.703606)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.703606, 0.708022)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.708022, 0.712437)	                    	Count: 0 (0%)	Total: 1 (50%)
+[0.712437, 0.716853]	          ##########	Count: 1 (50%)	Total: 2 (100%)
+[WARN] [1794581883.844467683] [cartographer logger]: W1113 23:58:03.000000 29994 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794581884.014739637] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794581884.017559259] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581884.017820502] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581884.018487196] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581884.018583366] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581884.018742167] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581884.018794428] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581884.019164483] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581884.019220585] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581884.019330292] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581884.019541034] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581884.019810662] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581884.019862572] [cartographer logger]: I1113 23:58:04.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581884.023401982] [cartographer logger]: I1113 23:58:04.000000 29902 map_builder_bridge.cpp:136] Added trajectory with ID '2'.
+[INFO] [1794581884.055431696] [cartographer logger]: I1113 23:58:04.000000 29902 ordered_multi_queue.cc:172] All sensor data for trajectory 2 is available starting at '639301786840738217'.
+[INFO] [1794581884.076837356] [cartographer logger]: I1113 23:58:04.000000 29902 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794581884.077277210] [cartographer logger]: I1113 23:58:04.000000 29902 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794581884.119746319] [cartographer logger]: I1113 23:58:04.000000 29902 pose_graph_2d.cc:148] Inserted submap (2, 0).
+[INFO] [1794581889.129225605] [cartographer logger]: I1113 23:58:09.000000 29993 constraint_builder_2d.cc:275] Node (2, 1) with 201 points on submap (0, 0) differs by translation 1.47 rotation 0.263 with score 72.5%.
+[INFO] [1794581889.134175334] [cartographer logger]: I1113 23:58:09.000000 29994 constraint_builder_2d.cc:275] Node (2, 1) with 201 points on submap (0, 1) differs by translation 1.47 rotation 0.266 with score 68.8%.
+[WARN] [1794581891.139913012] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.160146435] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.219594543] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.238313633] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.258730787] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.278638897] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.318430185] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.338865037] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.361648740] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.379393681] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.417853632] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.438180121] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.459525659] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.478738848] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.520520551] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.538385696] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.557915399] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.578660523] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.619133641] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.639508359] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.678622137] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.698073079] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.718139221] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.737818443] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.758324438] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.778469084] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.818177740] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.841801658] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.857936800] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.897954704] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.917971465] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.940350358] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.957993817] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581891.978503044] [cartographer logger]: W1113 23:58:11.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.018194096] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.038313681] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.058468949] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.098312558] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.118732653] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.140628422] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.158127383] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.178089704] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.218487865] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.238421831] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.258420571] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.277708006] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.318250950] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.338414860] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.358422849] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.401087549] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.420370727] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.439762428] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.478578506] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.498060137] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.518223726] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.537790550] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.558644610] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.597864890] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.618337920] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.639246866] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.658758484] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.677738462] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.718502070] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.738228494] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.758544835] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.798154915] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.820510283] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.838750729] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.861639432] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.878360777] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.920268119] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.939297223] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581892.958273970] [cartographer logger]: W1113 23:58:12.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.008130101] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.020230455] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.037913753] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.058273456] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.098630040] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.118350413] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.138410308] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.158417783] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.199415553] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.218097867] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.237843586] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.258679338] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.299076246] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.318175435] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.362868979] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.363724716] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.398746797] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.419807788] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.440423261] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.460838650] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.498229456] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.518028876] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.542484138] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.558444219] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.600829076] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.619731413] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.640556219] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.658451796] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.698164729] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.717895375] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.742136599] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.758671395] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.798525655] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.818266062] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.842345605] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.878078479] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.898198509] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.920137255] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.944634537] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[WARN] [1794581893.958427962] [cartographer logger]: W1113 23:58:13.000000 29902 local_trajectory_builder_2d.cc:218] Dropped empty horizontal range data.
+[INFO] [1794581895.525726881] [cartographer logger]: I1113 23:58:15.000000 29994 constraint_builder_2d.cc:275] Node (2, 4) with 200 points on submap (0, 0) matches with score 69.1%.
+[WARN] [1794581895.838624268] [cartographer logger]: W1113 23:58:15.000000 29902 range_data_collator.cc:82] Dropped 2 earlier points.
+[WARN] [1794581895.939951507] [cartographer logger]: W1113 23:58:15.000000 29902 range_data_collator.cc:82] Dropped 49 earlier points.
+[WARN] [1794581896.622459435] [cartographer logger]: W1113 23:58:16.000000 29902 range_data_collator.cc:82] Dropped 133 earlier points.
+[WARN] [1794581898.081904679] [cartographer logger]: W1113 23:58:18.000000 29902 range_data_collator.cc:82] Dropped 16 earlier points.
+[INFO] [1794581899.024642358] [cartographer logger]: I1113 23:58:19.000000 29902 collated_trajectory_builder.cc:81] odom rate: 49.99 Hz 2.00e-02 s +/- 9.15e-04 s (pulsed at 100.10% real time)
+[INFO] [1794581899.024797701] [cartographer logger]: I1113 23:58:19.000000 29902 collated_trajectory_builder.cc:81] scan rate: 39.96 Hz 2.50e-02 s +/- 5.04e-03 s (pulsed at 99.98% real time)
+[INFO] [1794581899.461470909] [cartographer logger]: I1113 23:58:19.000000 29902 motion_filter.cc:42] Motion filter reduced the number of nodes to 1%.
+[INFO] [1794581900.220959480] [cartographer logger]: I1113 23:58:20.000000 29902 node.cpp:569] Shutdown the subscriber of [scan]
+[INFO] [1794581900.225452356] [cartographer logger]: I1113 23:58:20.000000 29902 node.cpp:569] Shutdown the subscriber of [odom]
+[INFO] [1794581900.225558191] [cartographer logger]: I1113 23:58:20.000000 29902 map_builder_bridge.cpp:152] Finishing trajectory with ID '2'...
+[INFO] [1794581900.229868424] [cartographer logger]: I1113 23:58:20.000000 29994 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794581900.230009687] [cartographer logger]: I1113 23:58:20.000000 29994 constraint_builder_2d.cc:290] 3 computations resulted in 3 additional constraints.
+[INFO] [1794581900.230107329] [cartographer logger]: I1113 23:58:20.000000 29994 constraint_builder_2d.cc:292] Score histogram:
+Count: 5  Min: 0.672697  Max: 0.724907  Mean: 0.698755
+[0.672697, 0.677918)	                ####	Count: 1 (20%)	Total: 1 (20%)
+[0.677918, 0.683139)	                    	Count: 0 (0%)	Total: 1 (20%)
+[0.683139, 0.688360)	                ####	Count: 1 (20%)	Total: 2 (40%)
+[0.688360, 0.693581)	                ####	Count: 1 (20%)	Total: 3 (60%)
+[0.693581, 0.698802)	                    	Count: 0 (0%)	Total: 3 (60%)
+[0.698802, 0.704023)	                    	Count: 0 (0%)	Total: 3 (60%)
+[0.704023, 0.709244)	                    	Count: 0 (0%)	Total: 3 (60%)
+[0.709244, 0.714465)	                    	Count: 0 (0%)	Total: 3 (60%)
+[0.714465, 0.719686)	                ####	Count: 1 (20%)	Total: 4 (80%)
+[0.719686, 0.724907]	                ####	Count: 1 (20%)	Total: 5 (100%)
+[WARN] [1794581900.233248835] [cartographer logger]: W1113 23:58:20.000000 29994 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794581900.413603522] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794581900.414367152] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581900.414450712] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794581900.414725396] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581900.414775546] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794581900.414873860] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581900.414960141] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794581900.415386584] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581900.415442366] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794581900.415543912] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581900.415587373] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794581900.415828005] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581900.415875818] [cartographer logger]: I1113 23:58:20.000000 29902 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794581900.417537428] [cartographer logger]: I1113 23:58:20.000000 29902 map_builder_bridge.cpp:136] Added trajectory with ID '3'.
+[INFO] [1794581900.425964755] [cartographer logger]: I1113 23:58:20.000000 29902 ordered_multi_queue.cc:172] All sensor data for trajectory 3 is available starting at '639301787004449236'.
+[INFO] [1794581900.455296590] [cartographer logger]: I1113 23:58:20.000000 29902 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794581900.455566601] [cartographer logger]: I1113 23:58:20.000000 29902 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794581900.480799009] [cartographer logger]: I1113 23:58:20.000000 29902 pose_graph_2d.cc:148] Inserted submap (3, 0).
+[INFO] [1794581900.490173696] [cartographer logger]: I1113 23:58:20.000000 29993 constraint_builder_2d.cc:275] Node (3, 0) with 216 points on submap (0, 0) differs by translation 0.13 rotation 0.048 with score 66.1%.
+[INFO] [1794581900.499782776] [cartographer logger]: I1113 23:58:20.000000 29994 constraint_builder_2d.cc:275] Node (3, 0) with 216 points on submap (0, 1) differs by translation 0.11 rotation 0.037 with score 66.3%.
+[WARN] [1794581901.481847153] [cartographer logger]: W1113 23:58:21.000000 29902 range_data_collator.cc:82] Dropped 43 earlier points.
+[WARN] [1794581909.883696431] [cartographer logger]: W1113 23:58:29.000000 29902 range_data_collator.cc:82] Dropped 11 earlier points.
+[INFO] [1794581910.555063259] [cartographer logger]: I1113 23:58:30.000000 29993 constraint_builder_2d.cc:275] Node (3, 2) with 213 points on submap (0, 0) matches with score 69.4%.
+[WARN] [1794581912.661857351] [cartographer logger]: W1113 23:58:32.000000 29902 range_data_collator.cc:82] Dropped 13 earlier points.
+[INFO] [1794581915.439440860] [cartographer logger]: I1113 23:58:35.000000 29902 collated_trajectory_builder.cc:81] odom rate: 50.01 Hz 2.00e-02 s +/- 2.10e-03 s (pulsed at 100.11% real time)
+[INFO] [1794581915.439595275] [cartographer logger]: I1113 23:58:35.000000 29902 collated_trajectory_builder.cc:81] scan rate: 39.88 Hz 2.51e-02 s +/- 4.99e-03 s (pulsed at 99.91% real time)
+[WARN] [1794581917.461690557] [cartographer logger]: W1113 23:58:37.000000 29902 range_data_collator.cc:82] Dropped 32 earlier points.
+[INFO] [1794581920.093800340] [rclcpp]: signal_handler(SIGINT/SIGTERM)

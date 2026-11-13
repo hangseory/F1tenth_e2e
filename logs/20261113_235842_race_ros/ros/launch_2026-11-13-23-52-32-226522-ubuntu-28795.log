@@ -1,0 +1,37 @@
+1794581552.2306612 [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-11-13-23-52-32-226522-ubuntu-28795
+1794581552.2313778 [INFO] [launch]: Default logging verbosity is set to INFO
+1794581553.1685877 [INFO] [joy_node-1]: process started with pid [28804]
+1794581553.1700068 [ERROR] [joy_node-1]: process has died [pid 28804, exit code -9, cmd '/opt/ros/humble/lib/joy/joy_node --ros-args -r __node:=joy --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/joy_teleop.yaml'].
+1794581553.1715384 [INFO] [joy_teleop-2]: process started with pid [28806]
+1794581553.1721387 [ERROR] [joy_teleop-2]: process has died [pid 28806, exit code -9, cmd '/opt/ros/humble/lib/joy_teleop/joy_teleop --ros-args -r __node:=joy_teleop --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/joy_teleop.yaml'].
+1794581553.1726286 [INFO] [ackermann_to_vesc_node-3]: process started with pid [28808]
+1794581553.1731045 [INFO] [vesc_to_odom_node-4]: process started with pid [28810]
+1794581553.1735711 [INFO] [vesc_driver_node-5]: process started with pid [28812]
+1794581553.1742699 [INFO] [urg_node_driver-6]: process started with pid [28816]
+1794581553.1784203 [INFO] [ackermann_mux-7]: process started with pid [28823]
+1794581553.1870041 [INFO] [static_transform_publisher-8]: process started with pid [28837]
+1794581553.1944067 [INFO] [imu_odom-9]: process started with pid [28842]
+1794581553.2034519 [INFO] [localization_monitor-10]: process started with pid [28844]
+1794581553.2099237 [INFO] [cartographer_node-11]: process started with pid [28846]
+1794581553.2155390 [INFO] [cartographer_occupancy_grid_node-12]: process started with pid [28850]
+1794581553.2204156 [INFO] [cartographer_localizer-13]: process started with pid [28859]
+1794581553.2211916 [INFO] [mission_manager-14]: process started with pid [28884]
+1794581553.2215843 [INFO] [frenet_planner-15]: process started with pid [28886]
+1794581553.2218902 [INFO] [echo-16]: process started with pid [28895]
+1794581553.2256021 [INFO] [echo-16]: process has finished cleanly [pid 28895]
+1794581553.2323477 [vesc_driver_node-5] [0m[INFO] [1794581552.764688431] [IoContext::IoContext]: Thread(s) Created: 2[0m
+1794581553.2379539 [vesc_driver_node-5] [0m[INFO] [1794581552.812709803] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581553.2384841 [vesc_driver_node-5] [0m[INFO] [1794581552.830683397] [vesc_driver_node]: Connected to VESC with firmware version 6.6[0m
+1794581553.2387874 [vesc_driver_node-5] [0m[INFO] [1794581552.831093357] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581553.2408261 [ackermann_mux-7] [0m[INFO] [1794581552.953666277] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.[0m
+1794581553.2411792 [ackermann_mux-7] [0m[INFO] [1794581552.979931038] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.[0m
+1794581553.2419362 [static_transform_publisher-8] [33m[WARN] [1794581552.950451975] []: Old-style arguments are deprecated; see --help for new-style arguments[0m
+1794581553.2424748 [static_transform_publisher-8] [0m[INFO] [1794581553.007251820] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+1794581553.2429779 [static_transform_publisher-8] translation: ('0.270000', '0.000000', '0.110000')
+1794581553.2432101 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1794581553.2434139 [static_transform_publisher-8] from 'base_link' to 'laser'[0m
+1794581553.3245809 [urg_node_driver-6] [0m[INFO] [1794581553.322245020] [urg_node]: Connected to network device with ID: B2244325[0m
+1794581553.4531932 [urg_node_driver-6] [0m[INFO] [1794581553.451585333] [urg_node]: Streaming data.[0m
+1794581557.0437338 [INFO] [joystick_teleop-17]: process started with pid [29023]
+1794581559.9177148 [INFO] [auto_localize-18]: process started with pid [29060]
+1794581561.1180983 [INFO] [map_controller-19]: process started with pid [29068]

@@ -1,0 +1,237 @@
+[INFO] [1794583175.622171502] [map_controller]: 웨이포인트 400개 로드
+[INFO] [1794583176.554245868] [map_controller]: 곡률 사전 계산: max=5.753 mean=1.725 1/m
+[ERROR] [1794583176.609969310] [map_controller]: speed_scale=0.7092 은 **무시된다** (폐기됨). 속도를 배수로 스케일하면 요구 횡가속이 제곱으로 변해 어느 코너가 한계인지까지 바뀐다. grip_util 로 마찰 예산을 조절할 것.
+[WARN] [1794583176.611894670] [map_controller]: a_brake 는 폐기됐다 — a_lon_brk 를 쓸 것.
+[INFO] [1794583176.612787859] [map_controller]: 속도 프로파일 η=0.50  예산 2.54㎧² (가속 1.39 / 제동 2.40)
+[INFO] [1794583176.614855594] [map_controller]:   v 1.40~1.40㎧ (중앙 1.40) | 예상 랩 3.2s
+[INFO] [1794583176.618946708] [map_controller]:   조향 l1=max(1.200, 0.750·v)→코너상한 max(0.50·v, 0.40/|κ|)  alpha=0.650(τ46ms)  slip_gain=0.50  speed_lag=0.40s  max_steer=0.480
+[INFO] [1794583176.620357807] [map_controller]: Pacejka LUT: Fy=[-1.064, 1.064]
+[INFO] [1794583176.748787927] [map_controller]: 범퍼 후진 ON: 정면 ±40°, 범퍼 윤곽 0.17→0.20m +1cm (+속도×0.20s), 2점 이상 → 1.5㎧ 후진 (조향 ≤70%), 10cm 떨어지면 전진 (상한 2.0s)
+[INFO] [1794583176.750233491] [map_controller]: MapController ready (mode=race grip_util=0.50)
+[INFO] [1794583176.757082545] [map_controller]: 초기 pose 시드: (2.639, -0.029, 0.058rad) — AMCL 첫 수신 전까지 이 가정으로 주행합니다
+[WARN] [1794583176.773140750] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[INFO] [1794583176.799023108] [map_controller]: AMCL pose 첫 수신 (2.281, -0.030) — 시드 가정 해제. 시드와의 차이 0.36m
+[WARN] [1794583179.788296038] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794583182.793358649] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794583185.812196106] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[INFO] [1794583186.542251446] [map_controller]: [출발제한] 상한 0.80㎧²  1.40→0.02㎧
+[INFO] [1794583186.545189360] [map_controller]: [MAP] κ=3.113  L1=1.20  steer=1.6°  spd=0.02m/s  (실측 0.00)
+[INFO] [1794583187.044436800] [map_controller]: [출발제한] 상한 0.90㎧²  1.40→0.38㎧
+[INFO] [1794583187.046843524] [map_controller]: [MAP] κ=2.718  L1=1.20  steer=4.8°  spd=0.38m/s  (실측 0.00)
+[INFO] [1794583187.573254424] [map_controller]: [출발제한] 상한 1.01㎧²  1.40→0.82㎧
+[INFO] [1794583187.579173998] [map_controller]: [MAP] κ=2.287  L1=1.20  steer=5.0°  spd=0.82m/s  (실측 0.14)
+[INFO] [1794583188.083059289] [map_controller]: [출발제한] 상한 1.11㎧²  1.40→1.37㎧
+[INFO] [1794583188.084776288] [map_controller]: [MAP] κ=1.548  L1=1.20  steer=5.4°  spd=1.37m/s  (실측 0.09)
+[INFO] [1794583188.593405483] [map_controller]: [MAP] κ=0.789  L1=1.20  steer=6.6°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583189.096366794] [map_controller]: [MAP] κ=2.261  L1=1.20  steer=8.0°  spd=1.40m/s  (실측 0.09)
+[INFO] [1794583189.599648434] [map_controller]: [MAP] κ=4.639  L1=1.20  steer=8.8°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583190.123121472] [map_controller]: [MAP] κ=4.298  L1=1.20  steer=9.6°  spd=1.40m/s  (실측 0.12)
+[INFO] [1794583190.635839754] [map_controller]: [MAP] κ=0.346  L1=1.20  steer=10.5°  spd=1.40m/s  (실측 0.14)
+[INFO] [1794583191.136263445] [map_controller]: [MAP] κ=0.623  L1=1.20  steer=11.8°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583191.641028272] [map_controller]: [MAP] κ=1.829  L1=1.20  steer=12.8°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583192.163703665] [map_controller]: [MAP] κ=0.589  L1=1.20  steer=14.3°  spd=1.40m/s  (실측 0.12)
+[INFO] [1794583192.668101656] [map_controller]: [MAP] κ=0.058  L1=1.20  steer=15.1°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583193.181268457] [map_controller]: [MAP] κ=2.500  L1=1.20  steer=16.5°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583193.702680876] [map_controller]: [MAP] κ=0.037  L1=1.20  steer=17.7°  spd=1.40m/s  (실측 0.11)
+[WARN] [1794583193.759996119] [map_controller]: AMCL 보정 19cm / 0° 를 5cm / 2° 로 제한 (누적 1회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583194.215931323] [map_controller]: [MAP] κ=2.460  L1=1.20  steer=25.8°  spd=1.32m/s  (실측 0.16)
+[INFO] [1794583194.728949469] [map_controller]: [MAP] κ=2.271  L1=1.20  steer=26.3°  spd=1.30m/s  (실측 0.10)
+[INFO] [1794583195.257818638] [map_controller]: [MAP] κ=2.569  L1=1.20  steer=26.8°  spd=1.29m/s  (실측 0.10)
+[INFO] [1794583195.789774716] [map_controller]: [MAP] κ=1.218  L1=1.20  steer=27.2°  spd=1.28m/s  (실측 0.10)
+[INFO] [1794583196.296214468] [map_controller]: [MAP] κ=0.864  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.10)
+[INFO] [1794583196.805282648] [map_controller]: [MAP] κ=2.435  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.11)
+[INFO] [1794583197.316580261] [map_controller]: [MAP] κ=1.012  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.86)
+[INFO] [1794583197.818360869] [map_controller]: [MAP] κ=2.637  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.10)
+[WARN] [1794583197.967102267] [map_controller]: AMCL 보정 0cm / 0° 를 1cm / 0° 로 제한 (누적 2회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583198.326279808] [map_controller]: [MAP] κ=1.525  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.00)
+[INFO] [1794583198.843298995] [map_controller]: [MAP] κ=1.917  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.81)
+[WARN] [1794583198.946100439] [map_controller]: [BUMP #1] 트리거 여유 17.9cm@-17° (선 19.8cm = 1cm + 선행 18.8cm, 140점) 속도 +0.94㎧ → path δ=-19.2° heading오차 +25° (뒤 좌 1.01 / 우 0.44m)
+[INFO] [1794583198.960324037] [map_controller]: [BUMP #1] 후진 끝: 여유 15.3cm 확보  1.9cm / 0.02s heading오차 +25°→+25°
+[WARN] [1794583199.101506431] [map_controller]: [BUMP #2] 트리거 여유 0.4cm@-27° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 23점) 속도 +1.13㎧ → path δ=-19.2° heading오차 +23° (뒤 좌 1.06 / 우 0.52m)
+[INFO] [1794583200.876753255] [map_controller]: [BUMP #2] 후진 끝: 여유 10.2cm 확보  19.4cm / 1.78s heading오차 +23°→+17°
+[INFO] [1794583200.882087875] [map_controller]: [MAP] κ=0.590  L1=1.20  steer=-1.9°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583201.383361531] [map_controller]: [MAP] κ=0.803  L1=1.20  steer=25.7°  spd=1.32m/s  (실측 0.00)
+[INFO] [1794583201.897434116] [map_controller]: [MAP] κ=2.242  L1=1.20  steer=25.5°  spd=1.33m/s  (실측 0.11)
+[WARN] [1794583202.187637076] [map_controller]: [BUMP #3] 트리거 여유 10.8cm@-39° (선 12.6cm = 1cm + 선행 11.6cm, 44점) 속도 +0.58㎧ → path δ=-12.3° heading오차 +12° (뒤 좌 0.90 / 우 0.60m)
+[INFO] [1794583202.204120095] [map_controller]: [BUMP #3] 후진 끝: 여유 11.0cm 확보  1.3cm / 0.01s heading오차 +12°→+12°
+[WARN] [1794583202.250197330] [map_controller]: AMCL 보정 1cm / 1° 를 2cm / 0° 로 제한 (누적 8회) — 맵과 실제가 어긋났을 수 있다
+[WARN] [1794583202.381880478] [map_controller]: [BUMP #4] 트리거 여유 -0.0cm@-36° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 29점) 속도 +1.05㎧ → path δ=-12.0° heading오차 +12° (뒤 좌 0.94 / 우 0.33m)
+[INFO] [1794583204.253118352] [map_controller]: [BUMP #4] 후진 끝: 여유 10.4cm 확보  0.9cm / 1.87s heading오차 +12°→+5°
+[INFO] [1794583204.256618753] [map_controller]: [MAP] κ=0.291  L1=1.20  steer=4.9°  spd=1.40m/s  (실측 0.13)
+[INFO] [1794583204.757990860] [map_controller]: [MAP] κ=0.380  L1=1.20  steer=22.8°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583205.262138312] [map_controller]: [MAP] κ=3.023  L1=1.20  steer=22.6°  spd=1.40m/s  (실측 0.07)
+[INFO] [1794583205.803436610] [map_controller]: [MAP] κ=0.291  L1=1.20  steer=22.6°  spd=1.40m/s  (실측 0.11)
+[WARN] [1794583206.070908923] [map_controller]: [BUMP #5] 트리거 여유 6.3cm@-40° (선 9.2cm = 1cm + 선행 8.2cm, 32점) 속도 +0.41㎧ → path δ=-2.4° heading오차 +2° (뒤 좌 0.81 / 우 0.33m)
+[WARN] [1794583206.107258587] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 10회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583208.072306541] [map_controller]: [BUMP #5] 후진 끝: 시간 상한 (여유 6.3cm)  12.2cm / 2.00s heading오차 +2°→-4°
+[INFO] [1794583208.080348505] [map_controller]: [MAP] κ=2.325  L1=1.20  steer=9.8°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583208.596092067] [map_controller]: [MAP] κ=1.442  L1=1.20  steer=20.9°  spd=1.40m/s  (실측 0.05)
+[INFO] [1794583209.096781789] [map_controller]: [MAP] κ=1.442  L1=1.20  steer=20.6°  spd=1.40m/s  (실측 0.13)
+[WARN] [1794583209.473888063] [map_controller]: [BUMP #6] 트리거 여유 8.6cm@-39° (선 10.6cm = 1cm + 선행 9.6cm, 23점) 속도 +0.48㎧ → path δ=+4.8° heading오차 -5° (뒤 좌 0.78 / 우 0.28m)
+[INFO] [1794583211.272129348] [map_controller]: [BUMP #6] 후진 끝: 여유 10.1cm 확보  3.2cm / 1.80s heading오차 -5°→-9°
+[INFO] [1794583211.275341992] [map_controller]: [MAP] κ=1.347  L1=1.20  steer=11.9°  spd=1.40m/s  (실측 0.30)
+[INFO] [1794583211.804182303] [map_controller]: [MAP] κ=1.979  L1=1.20  steer=20.2°  spd=1.40m/s  (실측 0.81)
+[INFO] [1794583212.314160712] [map_controller]: [MAP] κ=2.232  L1=1.20  steer=20.6°  spd=1.40m/s  (실측 0.31)
+[INFO] [1794583212.814386940] [map_controller]: [MAP] κ=2.241  L1=1.20  steer=21.3°  spd=1.40m/s  (실측 0.86)
+[WARN] [1794583212.880196090] [map_controller]: [BUMP #7] 트리거 여유 21.9cm@-40° (선 22.3cm = 1cm + 선행 21.3cm, 3점) 속도 +1.06㎧ → path δ=+9.9° heading오차 -10° (뒤 좌 1.61 / 우 0.41m)
+[INFO] [1794583212.893752746] [map_controller]: [BUMP #7] 후진 끝: 여유 20.9cm 확보  2.1cm / 0.02s heading오차 -10°→-10°
+[WARN] [1794583213.094534446] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 14회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583213.326357938] [map_controller]: [MAP] κ=3.064  L1=1.20  steer=20.5°  spd=1.40m/s  (실측 1.36)
+[INFO] [1794583213.828687672] [map_controller]: [MAP] κ=0.750  L1=1.20  steer=21.4°  spd=1.40m/s  (실측 1.37)
+[INFO] [1794583214.342307341] [map_controller]: [MAP] κ=1.691  L1=1.20  steer=25.3°  spd=1.33m/s  (실측 1.34)
+[INFO] [1794583214.615101098] [map_controller]: [출발제한] 상한 1.39㎧²  1.03→1.02㎧
+[INFO] [1794583214.842749280] [map_controller]: [MAP] κ=1.778  L1=1.20  steer=26.8°  spd=1.11m/s  (실측 1.07)
+[INFO] [1794583215.116366078] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.16㎧
+[INFO] [1794583215.344467652] [map_controller]: [MAP] κ=2.254  L1=1.20  steer=25.4°  spd=1.33m/s  (실측 0.14)
+[INFO] [1794583215.856360075] [map_controller]: [MAP] κ=0.686  L1=1.20  steer=25.8°  spd=1.32m/s  (실측 0.14)
+[INFO] [1794583216.360647508] [map_controller]: [MAP] κ=3.386  L1=1.20  steer=25.7°  spd=1.32m/s  (실측 0.11)
+[WARN] [1794583216.759893710] [map_controller]: [BUMP #8] 트리거 여유 3.3cm@-38° (선 3.6cm = 1cm + 선행 2.6cm, 6점) 속도 +0.13㎧ → path δ=-6.6° heading오차 +7° (뒤 좌 0.70 / 우 0.69m)
+[INFO] [1794583218.035223857] [map_controller]: [BUMP #8] 후진 끝: 여유 11.2cm 확보  14.1cm / 1.28s heading오차 +7°→-4°
+[INFO] [1794583218.039712043] [map_controller]: [MAP] κ=0.686  L1=1.20  steer=10.3°  spd=1.40m/s  (실측 1.06)
+[WARN] [1794583218.190372176] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 20회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583218.553719161] [map_controller]: [MAP] κ=0.327  L1=1.20  steer=21.0°  spd=1.40m/s  (실측 1.03)
+[INFO] [1794583219.062435277] [map_controller]: [MAP] κ=4.197  L1=1.20  steer=20.1°  spd=1.40m/s  (실측 0.54)
+[INFO] [1794583219.603820352] [map_controller]: [MAP] κ=1.898  L1=1.20  steer=20.4°  spd=1.40m/s  (실측 0.27)
+[INFO] [1794583220.125191832] [map_controller]: [MAP] κ=0.585  L1=1.20  steer=21.2°  spd=1.40m/s  (실측 1.36)
+[WARN] [1794583220.152039722] [map_controller]: [BUMP #9] 트리거 여유 26.8cm@-27° (선 28.2cm = 1cm + 선행 27.2cm, 79점) 속도 +1.36㎧ → path δ=+16.4° heading오차 -16° (뒤 좌 0.63 / 우 0.75m)
+[INFO] [1794583220.165218858] [map_controller]: [BUMP #9] 후진 끝: 여유 24.1cm 확보  2.7cm / 0.01s heading오차 -16°→-16°
+[INFO] [1794583220.630349840] [map_controller]: [MAP] κ=2.821  L1=1.20  steer=22.2°  spd=1.40m/s  (실측 1.37)
+[WARN] [1794583220.830804279] [map_controller]: [BUMP #10] 트리거 여유 -1.7cm@-37° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 29점) 속도 +1.37㎧ → path δ=+3.7° heading오차 -4° (뒤 좌 0.64 / 우 0.25m)
+[INFO] [1794583220.879275077] [map_controller]: [BUMP #10] 후진 끝: 여유 31.8cm 확보  8.4cm / 0.05s heading오차 -4°→-2°
+[INFO] [1794583221.151907434] [map_controller]: [MAP] κ=2.458  L1=1.20  steer=25.8°  spd=1.32m/s  (실측 1.39)
+[INFO] [1794583221.666876657] [map_controller]: [MAP] κ=2.332  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.22)
+[INFO] [1794583222.167285663] [map_controller]: [MAP] κ=4.315  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.25)
+[WARN] [1794583222.359368425] [map_controller]: [BUMP #11] 트리거 여유 22.4cm@-36° (선 26.0cm = 1cm + 선행 25.0cm, 100점) 속도 +1.25㎧ → path δ=-6.2° heading오차 +6° (뒤 좌 0.92 / 우 0.47m)
+[INFO] [1794583222.394892609] [map_controller]: [BUMP #11] 후진 끝: 여유 19.5cm 확보  4.9cm / 0.03s heading오차 +6°→+6°
+[WARN] [1794583222.634188324] [map_controller]: [BUMP #12] 트리거 여유 0.9cm@-39° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 7점) 속도 +1.20㎧ → path δ=-3.2° heading오차 +3° (뒤 좌 0.92 / 우 0.28m)
+[WARN] [1794583222.651024794] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 21회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583224.212638051] [map_controller]: [BUMP #12] 후진 끝: 여유 11.0cm 확보  10.8cm / 1.58s heading오차 +3°→+1°
+[INFO] [1794583224.222237903] [map_controller]: [MAP] κ=0.380  L1=1.20  steer=6.0°  spd=1.40m/s  (실측 1.02)
+[INFO] [1794583224.734708064] [map_controller]: [MAP] κ=3.835  L1=1.20  steer=20.3°  spd=1.40m/s  (실측 1.14)
+[INFO] [1794583225.240971631] [map_controller]: [MAP] κ=2.483  L1=1.20  steer=20.3°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583225.747520232] [map_controller]: [MAP] κ=1.726  L1=1.20  steer=19.3°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583226.263671529] [map_controller]: [MAP] κ=1.525  L1=1.20  steer=19.3°  spd=1.40m/s  (실측 1.02)
+[WARN] [1794583226.421147963] [map_controller]: [BUMP #13] 트리거 여유 26.6cm@-40° (선 27.2cm = 1cm + 선행 26.2cm, 9점) 속도 +1.31㎧ → path δ=+15.6° heading오차 -16° (뒤 좌 0.84 / 우 0.58m)
+[INFO] [1794583226.445874709] [map_controller]: [BUMP #13] 후진 끝: 여유 24.9cm 확보  2.8cm / 0.03s heading오차 -16°→-14°
+[INFO] [1794583226.777109336] [map_controller]: [MAP] κ=2.139  L1=1.20  steer=18.6°  spd=1.40m/s  (실측 1.40)
+[WARN] [1794583227.210893206] [map_controller]: AMCL 보정 1cm / 1° 를 1cm / 0° 로 제한 (누적 25회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583227.279946256] [map_controller]: [MAP] κ=1.935  L1=1.20  steer=25.2°  spd=1.33m/s  (실측 1.39)
+[INFO] [1794583227.784968064] [map_controller]: [MAP] κ=1.674  L1=1.20  steer=27.5°  spd=0.99m/s  (실측 1.26)
+[INFO] [1794583227.915524189] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.02㎧
+[INFO] [1794583228.287671342] [map_controller]: [MAP] κ=2.333  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.13)
+[WARN] [1794583228.516646267] [map_controller]: [BUMP #14] 트리거 여유 25.5cm@-17° (선 26.6cm = 1cm + 선행 25.6cm, 14점) 속도 +1.28㎧ → path δ=-4.3° heading오차 +4° (뒤 좌 0.75 / 우 0.92m)
+[INFO] [1794583228.553677711] [map_controller]: [BUMP #14] 후진 끝: 여유 20.8cm 확보  7.7cm / 0.05s heading오차 +4°→+3°
+[WARN] [1794583228.747764928] [map_controller]: [BUMP #15] 트리거 여유 -0.6cm@-39° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 84점) 속도 +1.24㎧ → path δ=+1.0° heading오차 -1° (뒤 좌 0.77 / 우 0.58m)
+[INFO] [1794583229.098051116] [map_controller]: [BUMP #15] 후진 끝: 거리 상한 (여유 -9.0cm)  40.4cm / 0.35s heading오차 -1°→+18°
+[INFO] [1794583229.111443475] [map_controller]: [MAP] κ=1.817  L1=1.20  steer=-1.3°  spd=1.40m/s  (실측 0.00)
+[WARN] [1794583229.144113202] [map_controller]: [BUMP #16] 트리거 여유 -9.0cm@-35° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 249점) 속도 +0.00㎧ → path δ=-17.7° heading오차 +18° (뒤 좌 0.73 / 우 0.27m)
+[WARN] [1794583230.452420327] [map_controller]: AMCL 보정 2cm / 0° 를 2cm / 0° 로 제한 (누적 36회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583230.578865623] [map_controller]: [BUMP #16] 후진 끝: 여유 11.9cm 확보  25.4cm / 1.43s heading오차 +18°→-7°
+[INFO] [1794583230.586106209] [map_controller]: [MAP] κ=0.405  L1=1.20  steer=11.6°  spd=1.40m/s  (실측 1.01)
+[INFO] [1794583231.101026041] [map_controller]: [MAP] κ=1.560  L1=1.20  steer=19.9°  spd=1.40m/s  (실측 1.10)
+[INFO] [1794583231.615146091] [map_controller]: [MAP] κ=0.018  L1=1.20  steer=19.1°  spd=1.40m/s  (실측 0.43)
+[INFO] [1794583232.125322906] [map_controller]: [MAP] κ=4.728  L1=1.20  steer=20.2°  spd=1.40m/s  (실측 0.88)
+[WARN] [1794583232.614623596] [map_controller]: AMCL 보정 3cm / 1° 를 4cm / 1° 로 제한 (누적 39회) — 맵과 실제가 어긋났을 수 있다
+[WARN] [1794583232.627466427] [map_controller]: [BUMP #17] 트리거 여유 26.9cm@-36° (선 28.4cm = 1cm + 선행 27.4cm, 51점) 속도 +1.37㎧ → path δ=+15.1° heading오차 -15° (뒤 좌 0.64 / 우 0.74m)
+[INFO] [1794583232.642535751] [map_controller]: [BUMP #17] 후진 끝: 여유 24.2cm 확보  2.8cm / 0.01s heading오차 -15°→-16°
+[INFO] [1794583232.646339587] [map_controller]: [MAP] κ=0.480  L1=1.20  steer=17.4°  spd=1.40m/s  (실측 1.36)
+[INFO] [1794583233.159929145] [map_controller]: [MAP] κ=0.724  L1=1.20  steer=23.2°  spd=1.40m/s  (실측 1.37)
+[WARN] [1794583233.260283862] [map_controller]: [BUMP #18] 트리거 여유 0.2cm@-30° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 28점) 속도 +1.39㎧ → path δ=+3.2° heading오차 -3° (뒤 좌 0.65 / 우 0.24m)
+[INFO] [1794583233.315354061] [map_controller]: [BUMP #18] 후진 끝: 여유 28.4cm 확보  19.1cm / 0.05s heading오차 -3°→-2°
+[INFO] [1794583233.675211090] [map_controller]: [MAP] κ=0.490  L1=1.20  steer=27.4°  spd=1.27m/s  (실측 1.29)
+[INFO] [1794583234.186387104] [map_controller]: [MAP] κ=0.756  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.27)
+[WARN] [1794583234.341889109] [map_controller]: [BUMP #19] 트리거 여유 10.6cm@-38° (선 26.6cm = 1cm + 선행 25.6cm, 8점) 속도 +1.28㎧ → path δ=-4.6° heading오차 +5° (뒤 좌 0.90 / 우 0.29m)
+[INFO] [1794583234.369503299] [map_controller]: [BUMP #19] 후진 끝: 여유 13.6cm 확보  5.1cm / 0.03s heading오차 +5°→+5°
+[INFO] [1794583234.696066445] [map_controller]: [MAP] κ=2.940  L1=1.20  steer=27.0°  spd=1.28m/s  (실측 1.36)
+[WARN] [1794583235.016800071] [map_controller]: AMCL 보정 3cm / 2° 를 4cm / 1° 로 제한 (누적 45회) — 맵과 실제가 어긋났을 수 있다
+[WARN] [1794583235.089303049] [map_controller]: [BUMP #20] 트리거 여유 -0.7cm@-40° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 51점) 속도 +1.26㎧ → path δ=-9.0° heading오차 +9° (뒤 좌 0.97 / 우 0.32m)
+[INFO] [1794583237.101853101] [map_controller]: [BUMP #20] 후진 끝: 시간 상한 (여유 6.4cm)  14.5cm / 2.01s heading오차 +9°→-6°
+[INFO] [1794583237.108953328] [map_controller]: [MAP] κ=1.979  L1=1.20  steer=10.7°  spd=1.40m/s  (실측 0.13)
+[WARN] [1794583237.534581556] [map_controller]: AMCL 보정 2cm / 0° 를 1cm / 0° 로 제한 (누적 47회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583237.610443807] [map_controller]: [MAP] κ=2.825  L1=1.20  steer=19.6°  spd=1.40m/s  (실측 0.14)
+[INFO] [1794583238.118499578] [map_controller]: [MAP] κ=2.242  L1=1.20  steer=19.3°  spd=1.40m/s  (실측 0.07)
+[WARN] [1794583238.556538007] [map_controller]: [BUMP #21] 트리거 여유 7.3cm@-38° (선 8.0cm = 1cm + 선행 7.0cm, 3점) 속도 +0.35㎧ → path δ=+7.8° heading오차 -8° (뒤 좌 0.89 / 우 0.34m)
+[INFO] [1794583240.502319300] [map_controller]: [BUMP #21] 후진 끝: 여유 10.2cm 확보  10.9cm / 1.95s heading오차 -8°→-14°
+[INFO] [1794583240.518264147] [map_controller]: [MAP] κ=2.825  L1=1.20  steer=14.7°  spd=1.40m/s  (실측 1.05)
+[INFO] [1794583241.031620986] [map_controller]: [MAP] κ=1.596  L1=1.20  steer=17.3°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794583241.541453835] [map_controller]: [MAP] κ=2.116  L1=1.20  steer=17.4°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583242.074620634] [map_controller]: [MAP] κ=2.241  L1=1.20  steer=17.3°  spd=1.40m/s  (실측 0.51)
+[WARN] [1794583242.137408201] [map_controller]: [BUMP #22] 트리거 여유 14.4cm@-40° (선 15.7cm = 1cm + 선행 14.7cm, 13점) 속도 +0.73㎧ → path δ=+15.8° heading오차 -16° (뒤 좌 0.97 / 우 0.40m)
+[INFO] [1794583242.152005663] [map_controller]: [BUMP #22] 후진 끝: 여유 13.5cm 확보  1.5cm / 0.02s heading오차 -16°→-16°
+[WARN] [1794583242.219103231] [map_controller]: AMCL 보정 0cm / 0° 를 1cm / 0° 로 제한 (누적 49회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583242.580559879] [map_controller]: [MAP] κ=0.344  L1=1.20  steer=19.0°  spd=1.40m/s  (실측 1.35)
+[INFO] [1794583243.101816872] [map_controller]: [MAP] κ=2.878  L1=1.20  steer=24.3°  spd=1.36m/s  (실측 1.36)
+[INFO] [1794583243.616249836] [map_controller]: [MAP] κ=1.674  L1=1.20  steer=26.4°  spd=1.30m/s  (실측 1.30)
+[INFO] [1794583244.137938586] [map_controller]: [MAP] κ=0.930  L1=1.20  steer=27.3°  spd=1.27m/s  (실측 1.26)
+[WARN] [1794583244.287597136] [map_controller]: [BUMP #23] 트리거 여유 23.6cm@-33° (선 26.5cm = 1cm + 선행 25.5cm, 69점) 속도 +1.28㎧ → path δ=-2.5° heading오차 +3° (뒤 좌 0.67 / 우 1.04m)
+[INFO] [1794583244.326087034] [map_controller]: [BUMP #23] 후진 끝: 여유 23.6cm 확보  2.5cm / 0.03s heading오차 +3°→+2°
+[WARN] [1794583244.624509987] [map_controller]: [BUMP #24] 트리거 여유 -0.4cm@-30° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 58점) 속도 +1.27㎧ → path δ=-0.4° heading오차 +0° (뒤 좌 0.71 / 우 0.36m)
+[INFO] [1794583246.091929714] [map_controller]: [BUMP #24] 후진 끝: 여유 11.1cm 확보  14.7cm / 1.47s heading오차 +0°→-17°
+[INFO] [1794583246.096419690] [map_controller]: [MAP] κ=2.043  L1=1.20  steer=16.4°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583246.656891839] [map_controller]: [MAP] κ=3.113  L1=1.20  steer=17.2°  spd=1.40m/s  (실측 0.14)
+[INFO] [1794583247.263720861] [map_controller]: [MAP] κ=3.386  L1=1.20  steer=17.0°  spd=1.40m/s  (실측 0.06)
+[INFO] [1794583247.765922361] [map_controller]: [MAP] κ=2.287  L1=1.20  steer=17.1°  spd=1.40m/s  (실측 0.15)
+[WARN] [1794583248.033403974] [map_controller]: [BUMP #25] 트리거 여유 8.9cm@-40° (선 9.1cm = 1cm + 선행 8.1cm, 2점) 속도 +0.40㎧ → path δ=+19.2° heading오차 -21° (뒤 좌 0.62 / 우 0.31m)
+[INFO] [1794583248.244969055] [map_controller]: [BUMP #25] 후진 끝: 여유 10.0cm 확보  14.9cm / 0.20s heading오차 -21°→-19°
+[INFO] [1794583248.269693076] [map_controller]: [MAP] κ=4.587  L1=1.20  steer=17.5°  spd=1.40m/s  (실측 0.05)
+[INFO] [1794583248.774481750] [map_controller]: [MAP] κ=0.029  L1=1.20  steer=18.0°  spd=1.40m/s  (실측 0.15)
+[INFO] [1794583249.299424366] [map_controller]: [MAP] κ=4.639  L1=1.20  steer=18.0°  spd=1.40m/s  (실측 0.13)
+[WARN] [1794583249.687033165] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 56회) — 맵과 실제가 어긋났을 수 있다
+[WARN] [1794583249.693134279] [map_controller]: [BUMP #26] 트리거 여유 16.9cm@-30° (선 17.9cm = 1cm + 선행 16.9cm, 25점) 속도 +0.85㎧ → path δ=+9.7° heading오차 -10° (뒤 좌 0.57 / 우 0.23m)
+[INFO] [1794583249.716371327] [map_controller]: [BUMP #26] 후진 끝: 여유 15.4cm 확보  1.8cm / 0.02s heading오차 -10°→-9°
+[INFO] [1794583249.801416825] [map_controller]: [MAP] κ=0.066  L1=1.20  steer=17.2°  spd=1.40m/s  (실측 0.92)
+[INFO] [1794583250.328006928] [map_controller]: [MAP] κ=2.870  L1=1.20  steer=26.2°  spd=1.30m/s  (실측 1.38)
+[WARN] [1794583250.739667652] [map_controller]: [BUMP #27] 트리거 여유 18.1cm@-40° (선 26.4cm = 1cm + 선행 25.4cm, 35점) 속도 +1.27㎧ → path δ=-4.3° heading오차 +4° (뒤 좌 0.82 / 우 0.42m)
+[INFO] [1794583250.781129317] [map_controller]: [BUMP #27] 후진 끝: 여유 16.1cm 확보  5.0cm / 0.03s heading오차 +4°→+4°
+[INFO] [1794583250.833807186] [map_controller]: [MAP] κ=1.956  L1=1.20  steer=14.0°  spd=1.40m/s  (실측 1.27)
+[INFO] [1794583251.337493434] [map_controller]: [MAP] κ=2.232  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.26)
+[WARN] [1794583251.521499077] [map_controller]: [BUMP #28] 트리거 여유 -0.7cm@-40° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 61점) 속도 +1.27㎧ → path δ=-14.2° heading오차 +14° (뒤 좌 0.97 / 우 0.33m)
+[INFO] [1794583253.473875158] [map_controller]: [BUMP #28] 후진 끝: 여유 10.1cm 확보  18.0cm / 1.95s heading오차 +14°→-0°
+[INFO] [1794583253.479647650] [map_controller]: [MAP] κ=1.979  L1=1.20  steer=7.0°  spd=1.40m/s  (실측 0.78)
+[INFO] [1794583253.998035321] [map_controller]: [MAP] κ=1.596  L1=1.20  steer=19.9°  spd=1.40m/s  (실측 0.08)
+[INFO] [1794583254.507404602] [map_controller]: [MAP] κ=1.193  L1=1.20  steer=19.6°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794583255.011113172] [map_controller]: [MAP] κ=2.116  L1=1.20  steer=19.5°  spd=1.40m/s  (실측 0.10)
+[WARN] [1794583255.218004384] [map_controller]: [BUMP #29] 트리거 여유 16.0cm@-39° (선 18.0cm = 1cm + 선행 17.0cm, 29점) 속도 +0.85㎧ → path δ=+9.6° heading오차 -10° (뒤 좌 0.87 / 우 0.44m)
+[INFO] [1794583255.238870581] [map_controller]: [BUMP #29] 후진 끝: 여유 15.5cm 확보  1.7cm / 0.02s heading오차 -10°→-10°
+[INFO] [1794583255.543191281] [map_controller]: [MAP] κ=0.340  L1=1.20  steer=20.6°  spd=1.40m/s  (실측 1.34)
+[WARN] [1794583256.023818870] [map_controller]: AMCL 보정 3cm / 2° 를 5cm / 2° 로 제한 (누적 64회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583256.060679417] [map_controller]: [MAP] κ=1.436  L1=1.20  steer=25.3°  spd=1.33m/s  (실측 1.37)
+[INFO] [1794583256.568011646] [map_controller]: [MAP] κ=2.111  L1=1.20  steer=26.3°  spd=0.99m/s  (실측 1.29)
+[INFO] [1794583256.635146647] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.02㎧
+[INFO] [1794583257.077831208] [map_controller]: [MAP] κ=4.743  L1=1.20  steer=25.9°  spd=1.31m/s  (실측 1.12)
+[WARN] [1794583257.411087261] [map_controller]: [BUMP #30] 트리거 여유 26.3cm@-21° (선 27.2cm = 1cm + 선행 26.2cm, 17점) 속도 +1.31㎧ → path δ=+1.2° heading오차 -1° (뒤 좌 0.68 / 우 1.03m)
+[INFO] [1794583257.426567126] [map_controller]: [BUMP #30] 후진 끝: 여유 23.6cm 확보  2.6cm / 0.02s heading오차 -1°→-2°
+[INFO] [1794583257.590640616] [map_controller]: [MAP] κ=1.873  L1=1.20  steer=25.2°  spd=1.33m/s  (실측 1.27)
+[WARN] [1794583257.665024168] [map_controller]: [BUMP #31] 트리거 여유 0.1cm@-40° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 32점) 속도 +1.29㎧ → path δ=+3.5° heading오차 -3° (뒤 좌 0.69 / 우 0.34m)
+[INFO] [1794583257.854427494] [map_controller]: [BUMP #31] 후진 끝: 거리 상한 (여유 -9.9cm)  41.8cm / 0.19s heading오차 -3°→+2°
+[WARN] [1794583257.876907740] [map_controller]: [BUMP #32] 트리거 여유 -8.6cm@-37° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 87점) 속도 +1.01㎧ → free_side δ=+19.2° heading오차 +1° (뒤 좌 0.69 / 우 0.10m)
+[INFO] [1794583259.196347449] [map_controller]: [BUMP #32] 후진 끝: 거리 상한 (여유 0.9cm)  41.2cm / 1.32s heading오차 +1°→-10°
+[INFO] [1794583259.207349946] [map_controller]: [MAP] κ=0.789  L1=1.20  steer=21.5°  spd=1.40m/s  (실측 1.43)
+[INFO] [1794583259.724089650] [map_controller]: [MAP] κ=2.336  L1=1.20  steer=23.8°  spd=1.38m/s  (실측 1.28)
+[INFO] [1794583260.227131927] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.02㎧
+[INFO] [1794583260.228798171] [map_controller]: [MAP] κ=4.416  L1=1.20  steer=23.8°  spd=1.02m/s  (실측 0.66)
+[WARN] [1794583260.366657626] [map_controller]: AMCL 보정 1cm / 1° 를 1cm / 0° 로 제한 (누적 69회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583260.744754446] [map_controller]: [MAP] κ=0.721  L1=1.20  steer=24.2°  spd=1.36m/s  (실측 0.41)
+[INFO] [1794583261.247335164] [map_controller]: [MAP] κ=0.327  L1=1.20  steer=25.0°  spd=1.34m/s  (실측 1.29)
+[WARN] [1794583261.513990213] [map_controller]: [BUMP #33] 트리거 여유 25.5cm@-39° (선 27.4cm = 1cm + 선행 26.4cm, 11점) 속도 +1.32㎧ → path δ=+13.4° heading오차 -13° (뒤 좌 0.78 / 우 0.58m)
+[INFO] [1794583261.533141075] [map_controller]: [BUMP #33] 후진 끝: 여유 20.6cm 확보  13.2cm / 0.02s heading오차 -13°→-16°
+[INFO] [1794583261.756559927] [map_controller]: [MAP] κ=1.548  L1=1.20  steer=21.3°  spd=1.40m/s  (실측 1.37)
+[INFO] [1794583262.258600106] [map_controller]: [MAP] κ=0.245  L1=1.20  steer=21.7°  spd=1.40m/s  (실측 1.40)
+[INFO] [1794583262.766675377] [map_controller]: [MAP] κ=0.490  L1=1.20  steer=25.1°  spd=1.34m/s  (실측 1.40)
+[WARN] [1794583262.890203237] [map_controller]: AMCL 보정 1cm / 1° 를 1cm / 0° 로 제한 (누적 73회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583263.276075181] [map_controller]: [MAP] κ=3.168  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.25)
+[WARN] [1794583263.585402719] [map_controller]: [BUMP #34] 트리거 여유 24.0cm@-32° (선 26.1cm = 1cm + 선행 25.1cm, 48점) 속도 +1.25㎧ → path δ=-9.5° heading오차 +10° (뒤 좌 0.79 / 우 0.62m)
+[INFO] [1794583263.617426298] [map_controller]: [BUMP #34] 후진 끝: 여유 22.3cm 확보  5.0cm / 0.03s heading오차 +10°→+9°
+[INFO] [1794583263.776607228] [map_controller]: [MAP] κ=2.825  L1=1.20  steer=24.1°  spd=1.37m/s  (실측 1.27)
+[WARN] [1794583263.880565423] [map_controller]: [BUMP #35] 트리거 여유 0.6cm@-40° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 7점) 속도 +1.25㎧ → path δ=-9.8° heading오차 +10° (뒤 좌 0.83 / 우 0.32m)
+[INFO] [1794583265.080788836] [map_controller]: [BUMP #35] 후진 끝: scan_lost  37.8cm / 1.20s heading오차 +10°→+22°
+[INFO] [1794583265.099425116] [map_controller]: [MAP] κ=0.291  L1=1.20  steer=-3.2°  spd=1.40m/s  (실측 0.12)
+[WARN] [1794583265.130677783] [map_controller]: [BUMP #36] 트리거 여유 0.1cm@-40° (선 1.0cm = 1cm + 선행 0.0cm 유예중, 19점) 속도 -0.11㎧ → path δ=-19.2° heading오차 +21° (뒤 좌 0.75 / 우 0.34m)
+[INFO] [1794583265.833551837] [map_controller]: [BUMP #36] 후진 끝: 여유 12.3cm 확보  15.0cm / 0.70s heading오차 +21°→+7°
+[INFO] [1794583265.839418540] [map_controller]: [MAP] κ=2.825  L1=1.20  steer=1.5°  spd=1.40m/s  (실측 0.71)
+[WARN] [1794583266.267696748] [map_controller]: AMCL 보정 4cm / 1° 를 2cm / 1° 로 제한 (누적 81회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794583266.357017415] [map_controller]: [MAP] κ=4.083  L1=1.20  steer=17.4°  spd=1.40m/s  (실측 0.88)
+[INFO] [1794583266.867100783] [map_controller]: [MAP] κ=1.955  L1=1.20  steer=17.5°  spd=1.40m/s  (실측 0.42)
+[INFO] [1794583267.380925739] [map_controller]: [MAP] κ=1.713  L1=1.20  steer=17.8°  spd=1.40m/s  (실측 0.20)
+[INFO] [1794583267.903778390] [map_controller]: [MAP] κ=2.483  L1=1.20  steer=18.0°  spd=1.40m/s  (실측 0.76)
+[INFO] [1794583268.144706679] [map_controller]: [run_log] 517점, /home/jetson/yax/logs/20261114_002108_race_map 에 저장

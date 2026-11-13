@@ -1,0 +1,38 @@
+1794581940.2751467 [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-11-13-23-59-00-268242-ubuntu-30589
+1794581940.2757363 [INFO] [launch]: Default logging verbosity is set to INFO
+1794581940.9937372 [INFO] [joy_node-1]: process started with pid [30600]
+1794581940.9946163 [INFO] [joy_teleop-2]: process started with pid [30602]
+1794581940.9949753 [INFO] [ackermann_to_vesc_node-3]: process started with pid [30604]
+1794581940.9952407 [INFO] [vesc_to_odom_node-4]: process started with pid [30606]
+1794581940.9954686 [INFO] [vesc_driver_node-5]: process started with pid [30609]
+1794581940.9956868 [INFO] [urg_node_driver-6]: process started with pid [30617]
+1794581940.9959028 [INFO] [ackermann_mux-7]: process started with pid [30621]
+1794581940.9961143 [INFO] [static_transform_publisher-8]: process started with pid [30625]
+1794581940.9963241 [INFO] [imu_odom-9]: process started with pid [30637]
+1794581940.9965382 [INFO] [localization_monitor-10]: process started with pid [30646]
+1794581940.9967360 [INFO] [cartographer_node-11]: process started with pid [30673]
+1794581940.9969304 [INFO] [cartographer_occupancy_grid_node-12]: process started with pid [30684]
+1794581940.9971259 [INFO] [cartographer_localizer-13]: process started with pid [30694]
+1794581940.9973211 [INFO] [mission_manager-14]: process started with pid [30698]
+1794581940.9975164 [INFO] [frenet_planner-15]: process started with pid [30700]
+1794581940.9977093 [INFO] [echo-16]: process started with pid [30702]
+1794581941.0060265 [INFO] [echo-16]: process has finished cleanly [pid 30702]
+1794581941.0081439 [vesc_driver_node-5] [0m[INFO] [1794581940.780513217] [IoContext::IoContext]: Thread(s) Created: 2[0m
+1794581941.0084186 [vesc_driver_node-5] [0m[INFO] [1794581940.979191959] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581941.0085750 [vesc_driver_node-5] [0m[INFO] [1794581940.992340024] [vesc_driver_node]: Connected to VESC with firmware version 6.6[0m
+1794581941.0087132 [vesc_driver_node-5] [0m[INFO] [1794581940.992696315] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794581941.0156002 [urg_node_driver-6] [0m[INFO] [1794581940.925919443] [urg_node]: Connected to network device with ID: B2244325[0m
+1794581941.0180290 [ackermann_mux-7] [0m[INFO] [1794581940.891419411] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.[0m
+1794581941.0183232 [ackermann_mux-7] [0m[INFO] [1794581940.937457911] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.[0m
+1794581941.0188491 [static_transform_publisher-8] [33m[WARN] [1794581940.779235397] []: Old-style arguments are deprecated; see --help for new-style arguments[0m
+1794581941.0211847 [static_transform_publisher-8] [0m[INFO] [1794581940.980784979] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+1794581941.0213709 [static_transform_publisher-8] translation: ('0.270000', '0.000000', '0.110000')
+1794581941.0215096 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1794581941.0216382 [static_transform_publisher-8] from 'base_link' to 'laser'[0m
+1794581941.0473502 [urg_node_driver-6] [0m[INFO] [1794581941.045988892] [urg_node]: Streaming data.[0m
+1794581941.3395131 [joy_node-1] [0m[INFO] [1794581941.338064152] [joy]: No haptic (rumble) available, skipping initialization[0m
+1794581941.3408861 [joy_node-1] [0m[INFO] [1794581941.338516068] [joy]: Opened joystick: Logitech Gamepad F710.  deadzone: 0.050000[0m
+1794581944.9308908 [INFO] [joystick_teleop-17]: process started with pid [30837]
+1794581947.8059947 [INFO] [auto_localize-18]: process started with pid [30881]
+1794581948.9923120 [INFO] [map_controller-19]: process started with pid [30883]
+1794581984.7447584 [ERROR] [map_controller-19]: process has died [pid 30883, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/map_controller --ros-args -r __node:=map_controller --params-file /tmp/launch_params_nodpha9b'].

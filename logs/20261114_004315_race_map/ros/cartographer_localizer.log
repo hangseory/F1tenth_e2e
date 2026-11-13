@@ -1,0 +1,7 @@
+[INFO] [1794584487.509350557] [cartographer_localizer]: Cartographer 위치추정 준비: 저장 맵 로딩 후 초기 위치 적용
+[INFO] [1794584488.039245700] [cartographer_localizer]: Cartographer trajectory 1 시작 → /amcl_pose
+[INFO] [1794584497.939614430] [cartographer_localizer]: Cartographer trajectory 2 시작 → /amcl_pose
+[INFO] [1794584503.539164642] [cartographer_localizer]: Cartographer trajectory 3 시작 → /amcl_pose
+[INFO] [1794584507.649956932] [cartographer_localizer]: Cartographer trajectory 4 시작 → /amcl_pose
+[INFO] [1794584514.640052692] [cartographer_localizer]: Cartographer trajectory 5 시작 → /amcl_pose
+[WARN] [1794584541.957927886] [cartographer_localizer]: 차를 세운 뒤 초기 위치를 다시 지정하세요

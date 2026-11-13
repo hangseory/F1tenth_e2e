@@ -1,0 +1,113 @@
+[INFO] [1794588923.745456676] [frenet_planner]: 웨이포인트 400개, 간격 0.011m
+[INFO] [1794588923.760236480] [frenet_planner]: track mask built: 1127 / 11592 px (맵 자유공간, margin 0.28m)
+[INFO] [1794588923.762447591] [frenet_planner]: raycast map built: 벽을 0.25m(5px) 부풀림, 점유 9290 → 10433 px
+[INFO] [1794588923.763496745] [frenet_planner]: 맵 로드: 1113_clean.yaml
+[INFO] [1794588923.806388174] [frenet_planner]: FrenetPlanner ready — 후보 13개 (±0.60m/0.10m), 여유 0.30m, 호라이즌 2.9~7.0m (0.9s)
+[INFO] [1794588923.812591285] [frenet_planner]: [추월구간] 0% (폭≥1.10m, 끝에서 2.5m 잘라냄) → RViz /overtake_zone
+[INFO] [1794588923.905404833] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  77.8ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588924.435413128] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  34.5ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588924.978980195] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  35.1ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588925.498675677] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  36.2ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588925.999977575] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  34.3ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588926.571821009] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  57.8ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588927.109391723] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  42.5ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588927.626677208] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  36.2ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588928.160476921] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  36.9ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588928.661059917] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  54.7ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588929.186744937] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.8ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588929.693422945] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  41.1ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588930.251822170] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  43.5ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588930.789326098] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.9ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588931.490256985] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  190.4ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588932.058306249] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  62.0ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588932.575978499] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  37.3ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588933.129806634] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  41.8ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588933.659437765] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  39.4ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588934.179564591] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  38.0ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588934.690937631] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  37.2ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588935.223707071] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  41.0ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588935.745614243] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  39.2ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588936.351380722] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  125.7ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588936.855741568] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  38.4ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588937.378903756] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  39.3ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588937.930061885] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  38.4ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588938.453152135] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  37.9ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588938.967724798] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  37.3ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588939.480800774] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  36.6ms  속도×0.71  [추월금지 추종 gap=infm]
+[INFO] [1794588939.982233558] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.1ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588940.498114168] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  43.4ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588941.039642868] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  47.6ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588941.560866370] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.0ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588942.094242007] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.4ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588942.643145729] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  36.8ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588943.177794591] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  41.9ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588943.728849326] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.0ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588944.237277280] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.1ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588944.791948708] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  42.1ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588945.363584618] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  54.3ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588945.873696978] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.9ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588946.386590005] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.0ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588946.905302739] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  38.0ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588947.441738315] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  61.2ms  속도×0.78  [추월금지 추종 gap=infm]
+[INFO] [1794588947.949501897] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  45.9ms  속도×0.78  [추월금지 추종 gap=infm]
+[WARN] [1794588948.366150033] [frenet_planner]: [frenet] 통과 가능한 후보 없음 — 최대 여유 0.27m (요구 0.26m), d=+0.00m. 감속해야 하는 상황이다
+[INFO] [1794588948.475452848] [frenet_planner]: [frenet] BLOCKED  d=+0.00m  n_valid=0/13  n_obs=1  vmax=1.09/1.40  ttc=inf  48.2ms  속도×0.45  [추월금지 추종 gap=infm]
+[INFO] [1794588949.046870959] [frenet_planner]: [frenet] BLOCKED  d=+0.00m  n_valid=0/13  n_obs=8  vmax=0.99/1.40  ttc=13.83s  58.2ms  속도×0.45  [추월금지 추종 gap=1.38m]  동적 1개
+[INFO] [1794588949.558580044] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=12.67s  58.4ms  속도×0.71  [추월금지 추종 gap=1.27m]  동적 1개
+[INFO] [1794588950.158120245] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=17.07s  70.9ms  속도×0.71  [추월금지 추종 gap=1.71m]  동적 1개
+[INFO] [1794588950.713911422] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=15.96s  73.7ms  속도×0.71  [추월금지 추종 gap=1.60m]  동적 1개
+[INFO] [1794588951.225727774] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=15.86s  53.5ms  속도×0.71  [추월금지 추종 gap=1.59m]  동적 1개
+[INFO] [1794588951.768465858] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=17.16s  38.8ms  속도×0.71  [추월금지 추종 gap=1.72m]  동적 1개
+[INFO] [1794588952.293536430] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=13.54s  70.6ms  속도×0.71  [추월금지 추종 gap=1.35m]  동적 1개
+[INFO] [1794588952.844264627] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=8.66s  44.8ms  속도×0.71  [추월금지 추종 gap=0.87m]  동적 1개
+[INFO] [1794588953.360267131] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=7.95s  59.3ms  속도×0.71  [추월금지 추종 gap=0.79m]  동적 1개
+[INFO] [1794588953.877944440] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=5.95s  53.0ms  속도×0.71  [추월금지 추종 gap=0.60m]  동적 1개
+[INFO] [1794588954.482636488] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.87s  73.0ms  속도×0.61  [추월금지 추종 gap=0.09m]  동적 1개
+[INFO] [1794588955.040305997] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  149.4ms  속도×0.71  [추월금지 추종 gap=0.09m]  동적 1개
+[INFO] [1794588955.576545345] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  47.5ms  속도×0.78  [추월가능]  동적 1개
+[INFO] [1794588956.123920123] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  69.7ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588956.673273813] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  46.0ms  속도×0.78  [추월가능]  동적 1개
+[INFO] [1794588957.249283273] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  182.6ms  속도×0.78  [추월가능]  동적 1개
+[INFO] [1794588957.820685578] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  65.0ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588958.413056077] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  79.0ms  속도×0.71  [추월금지 추종 gap=2.15m]  동적 1개
+[INFO] [1794588958.941894291] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=3.63s  63.4ms  속도×0.71  [추월금지 추종 gap=2.13m]  동적 1개
+[INFO] [1794588959.489055110] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.75s  84.9ms  속도×0.25  [추월금지 추종 gap=1.96m]  동적 1개
+[INFO] [1794588960.072960026] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.51s  58.6ms  속도×0.25  [추월금지 추종 gap=1.15m]  동적 1개
+[INFO] [1794588960.574103204] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.84s  39.8ms  속도×0.25  [추월금지 추종 gap=1.08m]  동적 1개
+[INFO] [1794588961.137130294] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.54s  67.7ms  속도×0.25  [추월금지 추종 gap=1.26m]  동적 1개
+[INFO] [1794588961.728371382] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.74s  59.9ms  속도×0.46  [추월금지 추종 gap=1.93m]  동적 1개
+[INFO] [1794588962.307818170] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.64s  67.6ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588962.850596097] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.64s  80.8ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588963.482622210] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.46  ttc=1.66s  62.0ms  속도×0.68  [추월가능]  동적 1개
+[INFO] [1794588963.998572906] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.44  ttc=0.63s  120.1ms  속도×0.69  [추월가능]  동적 1개
+[INFO] [1794588964.576173074] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.05s  163.9ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588965.118656304] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=20.18s  68.0ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588965.624217865] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.23s  65.6ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588966.147370521] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.49  ttc=11.63s  50.5ms  속도×0.67  [추월가능]  동적 1개
+[INFO] [1794588966.656061943] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.49  ttc=11.56s  51.1ms  속도×0.67  [추월가능]  동적 1개
+[INFO] [1794588967.194451377] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.42  ttc=inf  62.7ms  속도×0.70  [추월금지 추종 gap=1.93m]  동적 1개
+[INFO] [1794588967.730127860] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  68.7ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588968.248169664] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  57.5ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588968.810413722] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.50  ttc=1.17s  74.5ms  속도×0.66  [추월가능]  동적 1개
+[INFO] [1794588969.338969560] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.97s  74.1ms  속도×0.71  [추월금지 추종 gap=1.57m]  동적 1개
+[INFO] [1794588969.877584922] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=11.51s  71.4ms  속도×0.78  [추월금지 추종 gap=1.15m]  동적 1개
+[INFO] [1794588970.398966226] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.41  ttc=10.84s  56.2ms  속도×0.77  [추월금지 추종 gap=1.08m]  동적 1개
+[INFO] [1794588970.904613806] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=10.60s  155.9ms  속도×0.78  [추월금지 추종 gap=1.06m]  동적 1개
+[INFO] [1794588971.469005998] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=8.87s  42.5ms  속도×0.64  [추월금지 추종 gap=0.89m]  동적 1개
+[INFO] [1794588972.035970370] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=9.54s  49.6ms  속도×0.70  [추월금지 추종 gap=0.95m]  동적 1개
+[INFO] [1794588972.572388285] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=12.23s  71.5ms  속도×0.78  [추월금지 추종 gap=1.22m]  동적 1개
+[INFO] [1794588973.072682382] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=12.57s  81.3ms  속도×0.78  [추월금지 추종 gap=1.26m]  동적 1개
+[INFO] [1794588973.671396768] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=3.82s  189.9ms  속도×0.71  [추월금지 추종 gap=1.71m]  동적 1개
+[INFO] [1794588974.217410129] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.23s  99.3ms  속도×0.63  [추월금지 추종 gap=1.10m]  동적 1개
+[INFO] [1794588974.822491120] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=8.59s  94.7ms  속도×0.42  [추월금지 추종 gap=0.86m]  동적 1개
+[INFO] [1794588975.429773942] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.88s  96.8ms  속도×0.25  [추월금지 추종 gap=0.58m]  동적 1개
+[INFO] [1794588976.124653762] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  275.5ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588976.651967545] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  98.6ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588977.189678303] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  57.6ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588977.777716570] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  69.8ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588978.327483492] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  67.1ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588978.918726150] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  59.4ms  속도×0.71  [추월금지 추종 gap=0.11m]  동적 1개
+[INFO] [1794588979.420262048] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.44  ttc=2.78s  68.5ms  속도×0.63  [추월금지 추종 gap=2.14m]  동적 1개
+[INFO] [1794588979.920717174] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.42  ttc=1.95s  64.1ms  속도×0.70  [추월가능]  동적 1개
+[INFO] [1794588980.439384055] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  44.3ms  속도×0.71  [추월가능]  동적 1개
+[INFO] [1794588981.018017539] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.90s  68.3ms  속도×0.25  [추월금지 추종 gap=1.98m]  동적 1개

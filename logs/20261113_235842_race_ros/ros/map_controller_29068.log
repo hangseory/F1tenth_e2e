@@ -1,0 +1,33 @@
+[WARN] [1794581565.299544919] [map_controller]: ★ BENCH 모드 — 속도를 0 으로 강제한다 (바퀴가 돌지 않는다). 조향은 정상 동작하므로 박스 위에서 확인할 수 있다.
+[INFO] [1794581565.302333388] [map_controller]: 웨이포인트 400개 로드
+[INFO] [1794581565.875199519] [map_controller]: 곡률 사전 계산: max=5.753 mean=1.725 1/m
+[ERROR] [1794581565.945901328] [map_controller]: speed_scale=0.7092 은 **무시된다** (폐기됨). 속도를 배수로 스케일하면 요구 횡가속이 제곱으로 변해 어느 코너가 한계인지까지 바뀐다. grip_util 로 마찰 예산을 조절할 것.
+[WARN] [1794581565.949945502] [map_controller]: a_brake 는 폐기됐다 — a_lon_brk 를 쓸 것.
+[INFO] [1794581565.956726785] [map_controller]: 속도 프로파일 η=0.50  예산 2.54㎧² (가속 1.39 / 제동 2.40)
+[INFO] [1794581565.957920120] [map_controller]:   v 0.66~1.06㎧ (중앙 0.85) | 예상 랩 5.3s
+[INFO] [1794581565.959142063] [map_controller]:   조향 l1=max(1.200, 0.750·v)→코너상한 max(0.50·v, 0.40/|κ|)  alpha=0.650(τ46ms)  slip_gain=0.50  speed_lag=0.40s  max_steer=0.480
+[INFO] [1794581565.961032436] [map_controller]: Pacejka LUT: Fy=[-1.064, 1.064]
+[INFO] [1794581566.127967617] [map_controller]: 범퍼 후진 ON: 정면 ±20° 에 범퍼(라이다+0.20m)+1cm → 1.5㎧ 후진, 10cm 떨어지면 전진
+[INFO] [1794581566.129539071] [map_controller]: MapController ready (mode=q2 grip_util=0.50)
+[INFO] [1794581566.134583840] [map_controller]: AMCL pose 첫 수신 (2.131, -0.025) — 시드 가정 해제. 시드와의 차이 0.51m
+[WARN] [1794581566.151118878] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581569.172516461] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581572.187797284] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581575.193747944] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581578.214160801] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581581.219375573] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581584.227938761] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581587.231976742] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581590.234344417] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581593.235884492] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581596.253324265] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581599.271149388] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581602.277967291] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581605.295438166] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581608.305786952] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581611.313559399] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581614.316335622] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581617.334251560] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581620.356721312] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581623.373647854] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581626.392768005] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)

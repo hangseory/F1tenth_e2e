@@ -1,0 +1,5 @@
+[WARN] [1794581940.779235397] []: Old-style arguments are deprecated; see --help for new-style arguments
+[INFO] [1794581940.980784979] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+translation: ('0.270000', '0.000000', '0.110000')
+rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+from 'base_link' to 'laser'

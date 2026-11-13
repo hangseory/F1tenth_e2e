@@ -1,0 +1,36 @@
+[INFO] [1794581953.345868362] [map_controller]: 웨이포인트 400개 로드
+[INFO] [1794581953.547538510] [map_controller]: 곡률 사전 계산: max=5.753 mean=1.725 1/m
+[ERROR] [1794581953.614767035] [map_controller]: speed_scale=0.7092 은 **무시된다** (폐기됨). 속도를 배수로 스케일하면 요구 횡가속이 제곱으로 변해 어느 코너가 한계인지까지 바뀐다. grip_util 로 마찰 예산을 조절할 것.
+[WARN] [1794581953.621808286] [map_controller]: a_brake 는 폐기됐다 — a_lon_brk 를 쓸 것.
+[INFO] [1794581953.624179137] [map_controller]: 속도 프로파일 η=0.50  예산 2.54㎧² (가속 1.39 / 제동 2.40)
+[INFO] [1794581953.626254568] [map_controller]:   v 1.40~1.40㎧ (중앙 1.40) | 예상 랩 3.2s
+[INFO] [1794581953.631450586] [map_controller]:   조향 l1=max(1.200, 0.750·v)→코너상한 max(0.50·v, 0.40/|κ|)  alpha=0.650(τ46ms)  slip_gain=0.50  speed_lag=0.40s  max_steer=0.480
+[INFO] [1794581953.644518783] [map_controller]: Pacejka LUT: Fy=[-1.064, 1.064]
+[INFO] [1794581953.735364163] [map_controller]: 범퍼 후진 ON: 정면 ±20° 에 범퍼(라이다+0.20m)+1cm → 1.5㎧ 후진, 10cm 떨어지면 전진
+[INFO] [1794581953.739470029] [map_controller]: MapController ready (mode=race grip_util=0.50)
+[INFO] [1794581953.746074342] [map_controller]: AMCL pose 첫 수신 (2.134, 0.021) — 시드 가정 해제. 시드와의 차이 0.51m
+[WARN] [1794581953.768277110] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581956.772943334] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581959.784002881] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581962.789799668] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581965.803534474] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581968.822345973] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581971.826052271] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[WARN] [1794581974.845142129] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)
+[INFO] [1794581977.244308115] [map_controller]: [출발제한] 상한 0.80㎧²  1.40→0.02㎧
+[INFO] [1794581977.245606508] [map_controller]: [MAP] κ=1.817  L1=1.20  steer=1.8°  spd=0.02m/s  (실측 0.00)
+[INFO] [1794581977.770336046] [map_controller]: [출발제한] 상한 0.91㎧²  1.40→0.44㎧
+[INFO] [1794581977.771493914] [map_controller]: [MAP] κ=1.817  L1=1.20  steer=5.3°  spd=0.44m/s  (실측 0.06)
+[INFO] [1794581978.278688380] [map_controller]: [출발제한] 상한 1.01㎧²  1.40→0.90㎧
+[INFO] [1794581978.280456897] [map_controller]: [MAP] κ=1.907  L1=1.20  steer=5.7°  spd=0.90m/s  (실측 0.09)
+[INFO] [1794581978.790019525] [map_controller]: [MAP] κ=1.668  L1=1.20  steer=7.0°  spd=1.40m/s  (실측 0.00)
+[INFO] [1794581979.306544464] [map_controller]: [MAP] κ=0.724  L1=1.20  steer=7.9°  spd=1.40m/s  (실측 0.10)
+[INFO] [1794581979.826858019] [map_controller]: [MAP] κ=4.298  L1=1.20  steer=9.1°  spd=1.40m/s  (실측 0.12)
+[INFO] [1794581980.344053262] [map_controller]: [MAP] κ=0.066  L1=1.20  steer=10.4°  spd=1.40m/s  (실측 0.15)
+[INFO] [1794581980.870365364] [map_controller]: [MAP] κ=3.440  L1=1.20  steer=11.8°  spd=1.40m/s  (실측 0.11)
+[INFO] [1794581981.371700292] [map_controller]: [MAP] κ=3.341  L1=1.20  steer=15.4°  spd=1.40m/s  (실측 0.94)
+[WARN] [1794581981.620101586] [map_controller]: AMCL 보정 1cm / 1° 를 2cm / 0° 로 제한 (누적 1회) — 맵과 실제가 어긋났을 수 있다
+[INFO] [1794581981.877027511] [map_controller]: [MAP] κ=0.956  L1=1.20  steer=27.3°  spd=1.27m/s  (실측 1.30)
+[INFO] [1794581982.387421333] [map_controller]: [MAP] κ=1.917  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.25)
+[WARN] [1794581982.642032167] [map_controller]: [BUMP #1] 트리거 gap=0.5cm → path δ=-27.5° (뒤 좌 0.96 / 우 0.62m)
+[INFO] [1794581983.665873049] [map_controller]: [run_log] 39점, /home/jetson/yax/logs/20261113_235943_race_map 에 저장

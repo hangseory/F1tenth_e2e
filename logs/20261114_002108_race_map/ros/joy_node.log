@@ -1,0 +1,3 @@
+[INFO] [1794583164.251578810] [joy]: No haptic (rumble) available, skipping initialization
+[INFO] [1794583164.254695228] [joy]: Opened joystick: Logitech Gamepad F710.  deadzone: 0.050000
+[INFO] [1794583268.047017799] [rclcpp]: signal_handler(SIGINT/SIGTERM)

@@ -1,0 +1,76 @@
+1794582076.1392806 [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-11-14-00-01-16-135265-ubuntu-31260
+1794582076.1398664 [INFO] [launch]: Default logging verbosity is set to INFO
+1794582076.9702985 [INFO] [joy_node-1]: process started with pid [31268]
+1794582076.9722281 [INFO] [joy_teleop-2]: process started with pid [31270]
+1794582076.9730134 [INFO] [ackermann_to_vesc_node-3]: process started with pid [31274]
+1794582076.9736173 [INFO] [vesc_to_odom_node-4]: process started with pid [31276]
+1794582076.9741805 [INFO] [vesc_driver_node-5]: process started with pid [31278]
+1794582076.9747388 [INFO] [urg_node_driver-6]: process started with pid [31287]
+1794582076.9753332 [INFO] [ackermann_mux-7]: process started with pid [31291]
+1794582076.9758966 [INFO] [static_transform_publisher-8]: process started with pid [31295]
+1794582076.9764385 [INFO] [imu_odom-9]: process started with pid [31306]
+1794582076.9770052 [INFO] [localization_monitor-10]: process started with pid [31310]
+1794582076.9775512 [INFO] [cartographer_node-11]: process started with pid [31354]
+1794582076.9780910 [INFO] [cartographer_occupancy_grid_node-12]: process started with pid [31356]
+1794582076.9786305 [INFO] [cartographer_localizer-13]: process started with pid [31359]
+1794582076.9791944 [INFO] [mission_manager-14]: process started with pid [31361]
+1794582076.9797409 [INFO] [frenet_planner-15]: process started with pid [31363]
+1794582076.9802802 [INFO] [echo-16]: process started with pid [31365]
+1794582077.0174584 [INFO] [echo-16]: process has finished cleanly [pid 31365]
+1794582077.0300350 [vesc_driver_node-5] [0m[INFO] [1794582076.772729570] [IoContext::IoContext]: Thread(s) Created: 2[0m
+1794582077.0461051 [vesc_driver_node-5] [0m[INFO] [1794582076.905262185] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794582077.0524528 [vesc_driver_node-5] [0m[INFO] [1794582076.929786399] [vesc_driver_node]: Connected to VESC with firmware version 6.6[0m
+1794582077.0569072 [vesc_driver_node-5] [0m[INFO] [1794582076.930173791] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794582077.0653906 [urg_node_driver-6] [0m[INFO] [1794582076.883693320] [urg_node]: Connected to network device with ID: B2244325[0m
+1794582077.0752652 [ackermann_mux-7] [0m[INFO] [1794582076.797487148] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.[0m
+1794582077.0867705 [ackermann_mux-7] [0m[INFO] [1794582076.799542006] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.[0m
+1794582077.0924611 [static_transform_publisher-8] [33m[WARN] [1794582076.770336219] []: Old-style arguments are deprecated; see --help for new-style arguments[0m
+1794582077.1130390 [static_transform_publisher-8] [0m[INFO] [1794582076.894292665] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+1794582077.1245427 [static_transform_publisher-8] translation: ('0.270000', '0.000000', '0.110000')
+1794582077.1300800 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1794582077.1351562 [static_transform_publisher-8] from 'base_link' to 'laser'[0m
+1794582077.1398802 [urg_node_driver-6] [0m[INFO] [1794582077.043637810] [urg_node]: Streaming data.[0m
+1794582077.1540265 [joy_node-1] [0m[INFO] [1794582077.103835576] [joy]: No haptic (rumble) available, skipping initialization[0m
+1794582077.1797106 [joy_node-1] [0m[INFO] [1794582077.104270684] [joy]: Opened joystick: Logitech Gamepad F710.  deadzone: 0.050000[0m
+1794582080.9150324 [INFO] [joystick_teleop-17]: process started with pid [31503]
+1794582083.8265369 [INFO] [auto_localize-18]: process started with pid [31541]
+1794582084.9527574 [INFO] [map_controller-19]: process started with pid [31543]
+1794582111.6284139 [ERROR] [map_controller-19]: process has died [pid 31543, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/map_controller --ros-args -r __node:=map_controller --params-file /tmp/launch_params_1jg5aael'].
+1794582122.9257288 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1794582123.2912071 [ackermann_mux-7] [0m[INFO] [1794582122.924077915] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.2925735 [INFO] [ackermann_to_vesc_node-3]: process has finished cleanly [pid 31274]
+1794582123.2934182 [INFO] [static_transform_publisher-8]: process has finished cleanly [pid 31295]
+1794582123.2947166 [vesc_driver_node-5] [0m[INFO] [1794582122.924801332] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.2962964 [joy_node-1] [0m[INFO] [1794582122.925812420] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.2975791 [ackermann_to_vesc_node-3] [0m[INFO] [1794582122.927230900] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.2985835 [static_transform_publisher-8] [0m[INFO] [1794582122.927275352] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.3003962 [urg_node_driver-6] [0m[INFO] [1794582122.929422562] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.3061726 [vesc_to_odom_node-4] [0m[INFO] [1794582122.932104118] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794582123.3073387 [vesc_driver_node-5] [0m[INFO] [1794582123.054535107] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794582123.4300716 [joy_teleop-2] Traceback (most recent call last):
+1794582123.4308035 [joy_teleop-2]   File "/opt/ros/humble/lib/joy_teleop/joy_teleop", line 33, in <module>
+1794582123.4322822 [joy_teleop-2]     sys.exit(load_entry_point('joy-teleop==1.6.0', 'console_scripts', 'joy_teleop')())
+1794582123.4327223 [joy_teleop-2]   File "/opt/ros/humble/lib/python3.10/site-packages/joy_teleop/joy_teleop.py", line 442, in main
+1794582123.4342725 [joy_teleop-2]     rclpy.shutdown()
+1794582123.4346344 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1794582123.4349678 [joy_teleop-2]     _shutdown(context=context)
+1794582123.4351726 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1794582123.4353378 [joy_teleop-2]     return context.shutdown()
+1794582123.4354923 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1794582123.4356375 [joy_teleop-2]     self.__context.shutdown()
+1794582123.4357822 [joy_teleop-2] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1794582123.6742864 [ERROR] [joy_teleop-2]: process has died [pid 31270, exit code 1, cmd '/opt/ros/humble/lib/joy_teleop/joy_teleop --ros-args -r __node:=joy_teleop --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/joy_teleop.yaml'].
+1794582123.6931562 [INFO] [cartographer_occupancy_grid_node-12]: process has finished cleanly [pid 31356]
+1794582123.6969831 [INFO] [ackermann_mux-7]: process has finished cleanly [pid 31291]
+1794582123.7104080 [INFO] [vesc_to_odom_node-4]: process has finished cleanly [pid 31276]
+1794582123.7137427 [INFO] [joy_node-1]: process has finished cleanly [pid 31268]
+1794582124.0169175 [ERROR] [joystick_teleop-17]: process has died [pid 31503, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/joystick_teleop --ros-args -r __node:=joystick_teleop --params-file /tmp/launch_params_0tnhednl'].
+1794582124.0467241 [ERROR] [mission_manager-14]: process has died [pid 31361, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/mission_manager --ros-args -r __node:=mission_manager --params-file /tmp/launch_params_8e_l0824'].
+1794582124.0902381 [INFO] [frenet_planner-15]: process has finished cleanly [pid 31363]
+1794582124.1805086 [INFO] [urg_node_driver-6]: process has finished cleanly [pid 31287]
+1794582124.3357091 [INFO] [vesc_driver_node-5]: process has finished cleanly [pid 31278]
+1794582124.4289329 [INFO] [cartographer_node-11]: process has finished cleanly [pid 31354]
+1794582124.6437182 [INFO] [cartographer_localizer-13]: process has finished cleanly [pid 31359]
+1794582124.7049041 [INFO] [auto_localize-18]: process has finished cleanly [pid 31541]
+1794582124.7304275 [INFO] [imu_odom-9]: process has finished cleanly [pid 31306]
+1794582124.7780581 [INFO] [localization_monitor-10]: process has finished cleanly [pid 31310]

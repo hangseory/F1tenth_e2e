@@ -1,0 +1,5 @@
+[INFO] [1794581552.764688431] [IoContext::IoContext]: Thread(s) Created: 2
+[INFO] [1794581552.812709803] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0
+[INFO] [1794581552.830683397] [vesc_driver_node]: Connected to VESC with firmware version 6.6
+[INFO] [1794581552.831093357] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0
+[INFO] [1794581628.067814865] [rclcpp]: signal_handler(SIGINT/SIGTERM)

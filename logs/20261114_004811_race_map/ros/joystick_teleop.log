@@ -1,0 +1,12 @@
+[INFO] [1794584824.415457501] [joystick_teleop]: JoystickTeleop ready  [현재: 자율 모드]
+  LB(버튼4) → 수동↔자율 토글 (지금 자율)
+  RT(축5) → 전진 속도 (선형, 놓으면 즉시 정지)
+  L스틱(축0) → 조향
+  RB(버튼5) 누른 채 RT → 후진
+  트리거: 기동 시 자동 휴지 캘리 (초기 추정 +1→-1, yaml invert=True)
+  ★ 캘리 동안 RT 손 떼고 가만히 — 평균값=휴지로 잡음
+  max_speed=6.0 m/s  [deadzone 0.05, expo 1.0]
+[INFO] [1794584826.178790083] [joystick_teleop]: 조향 상한 오버라이드 15.4° (스틱 끝까지 = 이 각도)
+[INFO] [1794584826.183987149] [joystick_teleop]: 최고속도 오버라이드 1.0㎧ (RT 끝까지 = 이 속도)
+[WARN] [1794584889.623949469] [joystick_teleop]: 모드 전환 → [수동]  컨트롤러 정지, 사람이 조종합니다 (AMCL·LiDAR 는 계속 동작 — 위치 추정은 끊기지 않음)
+[INFO] [1794584890.701577455] [joystick_teleop]: 트리거 자동 캘리 완료: 휴지 평균=+1.000 → rest=+1 press=-1  neutral=+1.00 full=-1.00  — 이제 RT 사용 가능

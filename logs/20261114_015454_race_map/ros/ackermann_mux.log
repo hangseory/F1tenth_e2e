@@ -1,0 +1,3 @@
+[INFO] [1794588844.335490053] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.
+[INFO] [1794588844.366745842] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.
+[INFO] [1794588894.445710915] [rclcpp]: signal_handler(SIGINT/SIGTERM)

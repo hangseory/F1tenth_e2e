@@ -1,0 +1,326 @@
+[INFO] [1794582077.109620760] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794582077.110435612] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582077.110504737] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582077.110775832] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582077.110857087] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582077.111001226] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582077.111046574] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582077.111309860] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582077.111356168] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582077.111452240] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582077.111490707] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582077.111786668] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582077.111845649] [cartographer logger]: I1114 00:01:17.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582077.131793385] [cartographer logger]: I1114 00:01:17.000000 31354 map_builder_bridge.cpp:117] Loading saved state '/home/jetson/f1tenth_ws/src/race_stack/maps/1113.pbstream'...
+[INFO] [1794582079.331102315] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794582079.331685020] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582079.331757570] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582079.332004214] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582079.332229865] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582079.332336242] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582079.332380469] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582079.332646571] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582079.332692975] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582079.332780534] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582079.332948164] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582079.333211578] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582079.333256126] [cartographer logger]: I1114 00:01:19.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582079.334969996] [cartographer logger]: I1114 00:01:19.000000 31354 map_builder_bridge.cpp:136] Added trajectory with ID '1'.
+[INFO] [1794582079.355637788] [cartographer logger]: I1114 00:01:19.000000 31354 ordered_multi_queue.cc:172] All sensor data for trajectory 1 is available starting at '639301788793757921'.
+[INFO] [1794582079.392491593] [cartographer logger]: I1114 00:01:19.000000 31354 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794582079.392841446] [cartographer logger]: I1114 00:01:19.000000 31354 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794582079.433605430] [cartographer logger]: I1114 00:01:19.000000 31354 pose_graph_2d.cc:148] Inserted submap (1, 0).
+[INFO] [1794582079.448715546] [cartographer logger]: I1114 00:01:19.000000 31395 constraint_builder_2d.cc:275] Node (1, 0) with 216 points on submap (0, 1) differs by translation 1.91 rotation 0.006 with score 81.4%.
+[INFO] [1794582079.460237429] [cartographer logger]: I1114 00:01:19.000000 31396 constraint_builder_2d.cc:275] Node (1, 0) with 216 points on submap (0, 0) differs by translation 1.91 rotation 0.009 with score 74.9%.
+[WARN] [1794582079.475281139] [cartographer logger]: W1114 00:01:19.000000 31354 range_data_collator.cc:82] Dropped 287 earlier points.
+[WARN] [1794582081.073654784] [cartographer logger]: W1114 00:01:21.000000 31354 range_data_collator.cc:82] Dropped 14 earlier points.
+[WARN] [1794582081.674452506] [cartographer logger]: W1114 00:01:21.000000 31354 range_data_collator.cc:82] Dropped 60 earlier points.
+[WARN] [1794582081.775126012] [cartographer logger]: W1114 00:01:21.000000 31354 range_data_collator.cc:82] Dropped 182 earlier points.
+[WARN] [1794582083.259667460] [cartographer logger]: W1114 00:01:23.000000 31354 range_data_collator.cc:82] Dropped 140 earlier points.
+[WARN] [1794582083.653594764] [cartographer logger]: W1114 00:01:23.000000 31354 range_data_collator.cc:82] Dropped 185 earlier points.
+[WARN] [1794582083.955182453] [cartographer logger]: W1114 00:01:23.000000 31354 range_data_collator.cc:82] Dropped 61 earlier points.
+[WARN] [1794582084.454183375] [cartographer logger]: W1114 00:01:24.000000 31354 range_data_collator.cc:82] Dropped 185 earlier points.
+[WARN] [1794582085.434418652] [cartographer logger]: W1114 00:01:25.000000 31354 range_data_collator.cc:82] Dropped 20 earlier points.
+[WARN] [1794582085.673882838] [cartographer logger]: W1114 00:01:25.000000 31354 range_data_collator.cc:82] Dropped 162 earlier points.
+[WARN] [1794582085.834463157] [cartographer logger]: W1114 00:01:25.000000 31354 range_data_collator.cc:82] Dropped 29 earlier points.
+[WARN] [1794582086.434357029] [cartographer logger]: W1114 00:01:26.000000 31354 range_data_collator.cc:82] Dropped 55 earlier points.
+[WARN] [1794582088.815559384] [cartographer logger]: W1114 00:01:28.000000 31354 range_data_collator.cc:82] Dropped 387 earlier points.
+[WARN] [1794582089.215761695] [cartographer logger]: W1114 00:01:29.000000 31354 range_data_collator.cc:82] Dropped 144 earlier points.
+[INFO] [1794582089.495124712] [cartographer logger]: I1114 00:01:29.000000 31395 constraint_builder_2d.cc:275] Node (1, 2) with 218 points on submap (0, 0) matches with score 79.0%.
+[INFO] [1794582089.733089234] [cartographer logger]: I1114 00:01:29.000000 31354 node.cpp:569] Shutdown the subscriber of [scan]
+[INFO] [1794582089.738066922] [cartographer logger]: I1114 00:01:29.000000 31354 node.cpp:569] Shutdown the subscriber of [odom]
+[INFO] [1794582089.738172274] [cartographer logger]: I1114 00:01:29.000000 31354 map_builder_bridge.cpp:152] Finishing trajectory with ID '1'...
+[INFO] [1794582089.747457739] [cartographer logger]: I1114 00:01:29.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794582089.747621625] [cartographer logger]: I1114 00:01:29.000000 31396 constraint_builder_2d.cc:290] 3 computations resulted in 3 additional constraints.
+[INFO] [1794582089.747776229] [cartographer logger]: I1114 00:01:29.000000 31396 constraint_builder_2d.cc:292] Score histogram:
+Count: 3  Min: 0.748947  Max: 0.81374  Mean: 0.784318
+[0.748947, 0.755426)	             #######	Count: 1 (33.3333%)	Total: 1 (33.3333%)
+[0.755426, 0.761906)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.761906, 0.768385)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.768385, 0.774864)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.774864, 0.781343)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.781343, 0.787823)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.787823, 0.794302)	             #######	Count: 1 (33.3333%)	Total: 2 (66.6667%)
+[0.794302, 0.800781)	                    	Count: 0 (0%)	Total: 2 (66.6667%)
+[0.800781, 0.807261)	                    	Count: 0 (0%)	Total: 2 (66.6667%)
+[0.807261, 0.813740]	             #######	Count: 1 (33.3333%)	Total: 3 (100%)
+[WARN] [1794582089.750302772] [cartographer logger]: W1114 00:01:29.000000 31396 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582089.934819330] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794582089.935490041] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582089.935570176] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582089.935840438] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582089.935890074] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582089.935993123] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582089.936038470] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582089.936315805] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582089.936533039] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582089.936635991] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582089.936679099] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582089.936919375] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582089.936966226] [cartographer logger]: I1114 00:01:29.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582089.938627098] [cartographer logger]: I1114 00:01:29.000000 31354 map_builder_bridge.cpp:136] Added trajectory with ID '2'.
+[INFO] [1794582089.964667696] [cartographer logger]: I1114 00:01:29.000000 31354 ordered_multi_queue.cc:172] All sensor data for trajectory 2 is available starting at '639301788899763624'.
+[INFO] [1794582089.991320312] [cartographer logger]: I1114 00:01:29.000000 31354 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794582089.991598191] [cartographer logger]: I1114 00:01:29.000000 31354 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794582090.023327893] [cartographer logger]: I1114 00:01:30.000000 31354 pose_graph_2d.cc:148] Inserted submap (2, 0).
+[WARN] [1794582091.934662386] [cartographer logger]: W1114 00:01:31.000000 31354 range_data_collator.cc:82] Dropped 75 earlier points.
+[INFO] [1794582094.635775583] [cartographer logger]: I1114 00:01:34.000000 31354 node.cpp:569] Shutdown the subscriber of [scan]
+[INFO] [1794582094.648717341] [cartographer logger]: I1114 00:01:34.000000 31354 node.cpp:569] Shutdown the subscriber of [odom]
+[INFO] [1794582094.649410454] [cartographer logger]: I1114 00:01:34.000000 31354 map_builder_bridge.cpp:152] Finishing trajectory with ID '2'...
+[INFO] [1794582094.653307347] [cartographer logger]: I1114 00:01:34.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794582094.653438782] [cartographer logger]: I1114 00:01:34.000000 31396 constraint_builder_2d.cc:290] 0 computations resulted in 0 additional constraints.
+[INFO] [1794582094.655483845] [cartographer logger]: I1114 00:01:34.000000 31396 constraint_builder_2d.cc:292] Score histogram:
+Count: 3  Min: 0.748947  Max: 0.81374  Mean: 0.784318
+[0.748947, 0.755426)	             #######	Count: 1 (33.3333%)	Total: 1 (33.3333%)
+[0.755426, 0.761906)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.761906, 0.768385)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.768385, 0.774864)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.774864, 0.781343)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.781343, 0.787823)	                    	Count: 0 (0%)	Total: 1 (33.3333%)
+[0.787823, 0.794302)	             #######	Count: 1 (33.3333%)	Total: 2 (66.6667%)
+[0.794302, 0.800781)	                    	Count: 0 (0%)	Total: 2 (66.6667%)
+[0.800781, 0.807261)	                    	Count: 0 (0%)	Total: 2 (66.6667%)
+[0.807261, 0.813740]	             #######	Count: 1 (33.3333%)	Total: 3 (100%)
+[WARN] [1794582094.661821097] [cartographer logger]: W1114 00:01:34.000000 31396 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582094.830662920] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794582094.831771618] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582094.831867722] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582094.832120831] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582094.832186468] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582094.832303918] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582094.832350641] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582094.832622184] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582094.832670219] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582094.832766483] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582094.832993958] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582094.833290654] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582094.833341122] [cartographer logger]: I1114 00:01:34.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582094.837163386] [cartographer logger]: I1114 00:01:34.000000 31354 map_builder_bridge.cpp:136] Added trajectory with ID '3'.
+[INFO] [1794582094.854183749] [cartographer logger]: I1114 00:01:34.000000 31354 ordered_multi_queue.cc:172] All sensor data for trajectory 3 is available starting at '639301788948666855'.
+[INFO] [1794582094.895820166] [cartographer logger]: I1114 00:01:34.000000 31354 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794582094.896108957] [cartographer logger]: I1114 00:01:34.000000 31354 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794582094.898492895] [cartographer logger]: I1114 00:01:34.000000 31354 pose_graph_2d.cc:148] Inserted submap (3, 0).
+[INFO] [1794582094.910325284] [cartographer logger]: I1114 00:01:34.000000 31396 constraint_builder_2d.cc:275] Node (3, 0) with 206 points on submap (0, 1) differs by translation 0.33 rotation 0.044 with score 75.7%.
+[INFO] [1794582094.919962165] [cartographer logger]: I1114 00:01:34.000000 31395 constraint_builder_2d.cc:275] Node (3, 0) with 206 points on submap (0, 0) differs by translation 0.33 rotation 0.044 with score 78.5%.
+[WARN] [1794582097.660772337] [cartographer logger]: W1114 00:01:37.000000 31354 range_data_collator.cc:82] Dropped 167 earlier points.
+[WARN] [1794582098.255141840] [cartographer logger]: W1114 00:01:38.000000 31354 range_data_collator.cc:82] Dropped 6 earlier points.
+[WARN] [1794582099.276530768] [cartographer logger]: W1114 00:01:39.000000 31354 range_data_collator.cc:82] Dropped 46 earlier points.
+[WARN] [1794582100.430157223] [cartographer logger]: W1114 00:01:40.000000 31354 range_data_collator.cc:82] Dropped 188 earlier points.
+[WARN] [1794582100.779503522] [cartographer logger]: W1114 00:01:40.000000 31354 range_data_collator.cc:82] Dropped 51 earlier points.
+[WARN] [1794582101.335786707] [cartographer logger]: W1114 00:01:41.000000 31354 range_data_collator.cc:82] Dropped 164 earlier points.
+[INFO] [1794582102.534844529] [cartographer logger]: I1114 00:01:42.000000 31354 node.cpp:569] Shutdown the subscriber of [scan]
+[INFO] [1794582102.537248979] [cartographer logger]: I1114 00:01:42.000000 31354 node.cpp:569] Shutdown the subscriber of [odom]
+[INFO] [1794582102.537324313] [cartographer logger]: I1114 00:01:42.000000 31354 map_builder_bridge.cpp:152] Finishing trajectory with ID '3'...
+[INFO] [1794582102.544039608] [cartographer logger]: I1114 00:01:42.000000 31395 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794582102.544201637] [cartographer logger]: I1114 00:01:42.000000 31395 constraint_builder_2d.cc:290] 2 computations resulted in 2 additional constraints.
+[INFO] [1794582102.544284620] [cartographer logger]: I1114 00:01:42.000000 31395 constraint_builder_2d.cc:292] Score histogram:
+Count: 5  Min: 0.748947  Max: 0.81374  Mean: 0.779049
+[0.748947, 0.755426)	                ####	Count: 1 (20%)	Total: 1 (20%)
+[0.755426, 0.761906)	                ####	Count: 1 (20%)	Total: 2 (40%)
+[0.761906, 0.768385)	                    	Count: 0 (0%)	Total: 2 (40%)
+[0.768385, 0.774864)	                    	Count: 0 (0%)	Total: 2 (40%)
+[0.774864, 0.781343)	                    	Count: 0 (0%)	Total: 2 (40%)
+[0.781343, 0.787823)	                ####	Count: 1 (20%)	Total: 3 (60%)
+[0.787823, 0.794302)	                ####	Count: 1 (20%)	Total: 4 (80%)
+[0.794302, 0.800781)	                    	Count: 0 (0%)	Total: 4 (80%)
+[0.800781, 0.807261)	                    	Count: 0 (0%)	Total: 4 (80%)
+[0.807261, 0.813740]	                ####	Count: 1 (20%)	Total: 5 (100%)
+[WARN] [1794582102.546262763] [cartographer logger]: W1114 00:01:42.000000 31395 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582102.730725378] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_driving.lua' for 'cartographer_driving.lua'.
+[INFO] [1794582102.731359733] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582102.731442620] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/home/jetson/f1tenth_ws/install/race_stack/share/race_stack/config/cartographer_2d.lua' for 'cartographer_2d.lua'.
+[INFO] [1794582102.731746260] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582102.731808249] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/map_builder.lua' for 'map_builder.lua'.
+[INFO] [1794582102.731924322] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582102.731971046] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/pose_graph.lua' for 'pose_graph.lua'.
+[INFO] [1794582102.732277279] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582102.732336004] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder.lua' for 'trajectory_builder.lua'.
+[INFO] [1794582102.732439052] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582102.732661214] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_2d.lua' for 'trajectory_builder_2d.lua'.
+[INFO] [1794582102.732918963] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582102.732965975] [cartographer logger]: I1114 00:01:42.000000 31354 configuration_file_resolver.cc:41] Found '/opt/ros/humble/share/cartographer/configuration_files/trajectory_builder_3d.lua' for 'trajectory_builder_3d.lua'.
+[INFO] [1794582102.734761032] [cartographer logger]: I1114 00:01:42.000000 31354 map_builder_bridge.cpp:136] Added trajectory with ID '4'.
+[INFO] [1794582102.757050640] [cartographer logger]: I1114 00:01:42.000000 31354 ordered_multi_queue.cc:172] All sensor data for trajectory 4 is available starting at '639301789027669381'.
+[INFO] [1794582102.774555575] [cartographer logger]: I1114 00:01:42.000000 31354 local_trajectory_builder_2d.cc:312] Extrapolator not yet initialized.
+[INFO] [1794582102.775297330] [cartographer logger]: I1114 00:01:42.000000 31354 local_trajectory_builder_2d.cc:135] Extrapolator is still initializing.
+[INFO] [1794582102.811873149] [cartographer logger]: I1114 00:01:42.000000 31354 pose_graph_2d.cc:148] Inserted submap (4, 0).
+[WARN] [1794582104.216834783] [cartographer logger]: W1114 00:01:44.000000 31354 range_data_collator.cc:82] Dropped 136 earlier points.
+[WARN] [1794582104.956718011] [cartographer logger]: W1114 00:01:44.000000 31354 range_data_collator.cc:82] Dropped 26 earlier points.
+[INFO] [1794582105.043620949] [cartographer logger]: I1114 00:01:45.000000 31395 constraint_builder_2d.cc:275] Node (4, 1) with 208 points on submap (0, 1) differs by translation 0.08 rotation 0.002 with score 71.0%.
+[INFO] [1794582105.052361365] [cartographer logger]: I1114 00:01:45.000000 31396 constraint_builder_2d.cc:275] Node (4, 1) with 208 points on submap (0, 0) differs by translation 0.08 rotation 0.005 with score 72.5%.
+[WARN] [1794582105.460867189] [cartographer logger]: W1114 00:01:45.000000 31354 range_data_collator.cc:82] Dropped 4 earlier points.
+[WARN] [1794582106.095778308] [cartographer logger]: W1114 00:01:46.000000 31354 range_data_collator.cc:82] Dropped 93 earlier points.
+[INFO] [1794582106.405090901] [cartographer logger]: I1114 00:01:46.000000 31396 constraint_builder_2d.cc:275] Node (4, 5) with 202 points on submap (0, 0) differs by translation 0.07 rotation 0.002 with score 78.7%.
+[INFO] [1794582106.417153087] [cartographer logger]: I1114 00:01:46.000000 31395 constraint_builder_2d.cc:275] Node (4, 5) with 202 points on submap (0, 1) differs by translation 0.07 rotation 0.000 with score 69.0%.
+[WARN] [1794582106.699055475] [cartographer logger]: W1114 00:01:46.000000 31354 range_data_collator.cc:82] Dropped 195 earlier points.
+[INFO] [1794582107.461737297] [cartographer logger]: I1114 00:01:47.000000 31396 constraint_builder_2d.cc:275] Node (4, 8) with 200 points on submap (0, 0) differs by translation 0.06 rotation 0.010 with score 81.7%.
+[INFO] [1794582107.462254747] [cartographer logger]: I1114 00:01:47.000000 31395 constraint_builder_2d.cc:275] Node (4, 8) with 200 points on submap (0, 1) differs by translation 0.08 rotation 0.006 with score 73.7%.
+[INFO] [1794582107.809656934] [cartographer logger]: I1114 00:01:47.000000 31396 constraint_builder_2d.cc:275] Node (4, 11) with 201 points on submap (0, 0) differs by translation 0.06 rotation 0.008 with score 79.8%.
+[INFO] [1794582107.846788845] [cartographer logger]: I1114 00:01:47.000000 31395 constraint_builder_2d.cc:275] Node (4, 11) with 201 points on submap (0, 1) differs by translation 0.08 rotation 0.005 with score 75.6%.
+[WARN] [1794582107.876608521] [cartographer logger]: W1114 00:01:47.000000 31354 range_data_collator.cc:82] Dropped 114 earlier points.
+[INFO] [1794582108.051137869] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 15) with 203 points on submap (0, 0) differs by translation 0.07 rotation 0.008 with score 74.4%.
+[INFO] [1794582108.092513094] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 15) with 203 points on submap (0, 1) differs by translation 0.08 rotation 0.005 with score 79.3%.
+[INFO] [1794582108.147542535] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 18) with 212 points on submap (0, 0) differs by translation 0.07 rotation 0.026 with score 72.7%.
+[INFO] [1794582108.160840147] [cartographer logger]: I1114 00:01:48.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 1
+[WARN] [1794582108.176334670] [cartographer logger]: W1114 00:01:48.000000 31354 range_data_collator.cc:82] Dropped 238 earlier points.
+[INFO] [1794582108.226790560] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 18) with 212 points on submap (0, 1) differs by translation 0.09 rotation 0.019 with score 80.9%.
+[INFO] [1794582108.260384521] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:290] 12 computations resulted in 12 additional constraints.
+[INFO] [1794582108.263187818] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:292] Score histogram:
+Count: 17  Min: 0.69027  Max: 0.816596  Mean: 0.763982
+[0.690270, 0.702902)	                   #	Count: 1 (5.88235%)	Total: 1 (5.88235%)
+[0.702902, 0.715535)	                   #	Count: 1 (5.88235%)	Total: 2 (11.7647%)
+[0.715535, 0.728168)	                  ##	Count: 2 (11.7647%)	Total: 4 (23.5294%)
+[0.728168, 0.740800)	                   #	Count: 1 (5.88235%)	Total: 5 (29.4118%)
+[0.740800, 0.753433)	                  ##	Count: 2 (11.7647%)	Total: 7 (41.1765%)
+[0.753433, 0.766066)	                  ##	Count: 2 (11.7647%)	Total: 9 (52.9412%)
+[0.766066, 0.778698)	                    	Count: 0 (0%)	Total: 9 (52.9412%)
+[0.778698, 0.791331)	                ####	Count: 3 (17.6471%)	Total: 12 (70.5882%)
+[0.791331, 0.803963)	                  ##	Count: 2 (11.7647%)	Total: 14 (82.3529%)
+[0.803963, 0.816596]	                ####	Count: 3 (17.6471%)	Total: 17 (100%)
+[WARN] [1794582108.306776725] [cartographer logger]: W1114 00:01:48.000000 31395 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582108.430638731] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 21) with 202 points on submap (0, 0) differs by translation 0.01 rotation 0.024 with score 82.1%.
+[INFO] [1794582108.461033746] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 21) with 202 points on submap (0, 1) differs by translation 0.01 rotation 0.019 with score 80.2%.
+[INFO] [1794582108.482500301] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 25) with 200 points on submap (0, 0) differs by translation 0.01 rotation 0.021 with score 83.1%.
+[INFO] [1794582108.489290478] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 28) with 206 points on submap (0, 0) differs by translation 0.01 rotation 0.013 with score 84.7%.
+[INFO] [1794582108.513215695] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 28) with 206 points on submap (0, 1) differs by translation 0.01 rotation 0.009 with score 85.7%.
+[INFO] [1794582108.525312666] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 25) with 200 points on submap (0, 1) differs by translation 0.01 rotation 0.014 with score 84.4%.
+[INFO] [1794582108.538687563] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 31) with 202 points on submap (0, 0) differs by translation 0.01 rotation 0.017 with score 85.5%.
+[WARN] [1794582108.572024191] [cartographer logger]: W1114 00:01:48.000000 31354 range_data_collator.cc:82] Dropped 52 earlier points.
+[INFO] [1794582108.572910982] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 35) with 200 points on submap (0, 0) differs by translation 0.01 rotation 0.020 with score 86.6%.
+[INFO] [1794582108.578910728] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 31) with 202 points on submap (0, 1) differs by translation 0.00 rotation 0.011 with score 86.5%.
+[INFO] [1794582108.580483494] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 35) with 200 points on submap (0, 1) differs by translation 0.01 rotation 0.016 with score 86.1%.
+[INFO] [1794582108.665554195] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 38) with 204 points on submap (0, 1) differs by translation 0.00 rotation 0.003 with score 86.8%.
+[WARN] [1794582108.682156295] [cartographer logger]: W1114 00:01:48.000000 31354 range_data_collator.cc:82] Dropped 38 earlier points.
+[INFO] [1794582108.704711802] [cartographer logger]: I1114 00:01:48.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 1
+[INFO] [1794582108.712061896] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 38) with 204 points on submap (0, 0) differs by translation 0.02 rotation 0.001 with score 87.9%.
+[INFO] [1794582108.722347745] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 41) with 205 points on submap (0, 0) differs by translation 0.01 rotation 0.009 with score 86.9%.
+[INFO] [1794582108.729449115] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 41) with 205 points on submap (0, 1) differs by translation 0.01 rotation 0.014 with score 83.6%.
+[INFO] [1794582108.731041979] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:290] 14 computations resulted in 14 additional constraints.
+[INFO] [1794582108.731150660] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:292] Score histogram:
+Count: 31  Min: 0.69027  Max: 0.878823  Mean: 0.802833
+[0.690270, 0.709125)	                   #	Count: 1 (3.22581%)	Total: 1 (3.22581%)
+[0.709125, 0.727981)	                  ##	Count: 3 (9.67742%)	Total: 4 (12.9032%)
+[0.727981, 0.746836)	                   #	Count: 2 (6.45161%)	Total: 6 (19.3548%)
+[0.746836, 0.765691)	                  ##	Count: 3 (9.67742%)	Total: 9 (29.0323%)
+[0.765691, 0.784547)	                    	Count: 0 (0%)	Total: 9 (29.0323%)
+[0.784547, 0.803402)	                ####	Count: 6 (19.3548%)	Total: 15 (48.3871%)
+[0.803402, 0.822257)	                 ###	Count: 4 (12.9032%)	Total: 19 (61.2903%)
+[0.822257, 0.841113)	                   #	Count: 2 (6.45161%)	Total: 21 (67.7419%)
+[0.841113, 0.859968)	                 ###	Count: 4 (12.9032%)	Total: 25 (80.6452%)
+[0.859968, 0.878823]	                ####	Count: 6 (19.3548%)	Total: 31 (100%)
+[WARN] [1794582108.747570602] [cartographer logger]: W1114 00:01:48.000000 31395 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582108.849852924] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 45) with 208 points on submap (0, 1) differs by translation 0.01 rotation 0.003 with score 85.6%.
+[INFO] [1794582108.907857036] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 48) with 209 points on submap (0, 0) differs by translation 0.00 rotation 0.005 with score 86.2%.
+[INFO] [1794582108.917886929] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 45) with 208 points on submap (0, 0) differs by translation 0.00 rotation 0.001 with score 88.4%.
+[INFO] [1794582108.951911964] [cartographer logger]: I1114 00:01:48.000000 31396 constraint_builder_2d.cc:275] Node (4, 48) with 209 points on submap (0, 1) differs by translation 0.02 rotation 0.012 with score 79.2%.
+[WARN] [1794582108.979941478] [cartographer logger]: W1114 00:01:48.000000 31354 range_data_collator.cc:82] Dropped 110 earlier points.
+[INFO] [1794582108.998563964] [cartographer logger]: I1114 00:01:48.000000 31395 constraint_builder_2d.cc:275] Node (4, 51) with 207 points on submap (0, 1) differs by translation 0.01 rotation 0.006 with score 83.6%.
+[INFO] [1794582109.024372370] [cartographer logger]: I1114 00:01:49.000000 31396 constraint_builder_2d.cc:275] Node (4, 51) with 207 points on submap (0, 0) differs by translation 0.01 rotation 0.011 with score 86.7%.
+[INFO] [1794582109.177538059] [cartographer logger]: I1114 00:01:49.000000 31396 constraint_builder_2d.cc:275] Node (4, 55) with 201 points on submap (0, 1) differs by translation 0.01 rotation 0.008 with score 82.1%.
+[INFO] [1794582109.193504587] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 55) with 201 points on submap (0, 0) differs by translation 0.00 rotation 0.010 with score 84.3%.
+[INFO] [1794582109.232725268] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 58) with 201 points on submap (0, 1) differs by translation 0.01 rotation 0.000 with score 83.6%.
+[INFO] [1794582109.244077378] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 61) with 211 points on submap (0, 0) differs by translation 0.00 rotation 0.002 with score 86.0%.
+[INFO] [1794582109.251092821] [cartographer logger]: I1114 00:01:49.000000 31396 constraint_builder_2d.cc:275] Node (4, 58) with 201 points on submap (0, 0) differs by translation 0.01 rotation 0.003 with score 85.7%.
+[INFO] [1794582109.254084357] [cartographer logger]: I1114 00:01:49.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 2
+[INFO] [1794582109.260249395] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 61) with 211 points on submap (0, 1) differs by translation 0.01 rotation 0.001 with score 81.1%.
+[INFO] [1794582109.263090679] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:290] 12 computations resulted in 12 additional constraints.
+[INFO] [1794582109.265132922] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:292] Score histogram:
+Count: 43  Min: 0.69027  Max: 0.883605  Mean: 0.81424
+[0.690270, 0.709603)	                    	Count: 1 (2.32558%)	Total: 1 (2.32558%)
+[0.709603, 0.728937)	                   #	Count: 3 (6.97674%)	Total: 4 (9.30233%)
+[0.728937, 0.748270)	                   #	Count: 2 (4.65116%)	Total: 6 (13.9535%)
+[0.748270, 0.767604)	                   #	Count: 3 (6.97674%)	Total: 9 (20.9302%)
+[0.767604, 0.786937)	                   #	Count: 2 (4.65116%)	Total: 11 (25.5814%)
+[0.786937, 0.806271)	                  ##	Count: 5 (11.6279%)	Total: 16 (37.2093%)
+[0.806271, 0.825604)	                 ###	Count: 6 (13.9535%)	Total: 22 (51.1628%)
+[0.825604, 0.844938)	                 ###	Count: 6 (13.9535%)	Total: 28 (65.1163%)
+[0.844938, 0.864271)	                ####	Count: 8 (18.6047%)	Total: 36 (83.7209%)
+[0.864271, 0.883605]	                 ###	Count: 7 (16.2791%)	Total: 43 (100%)
+[WARN] [1794582109.274435076] [cartographer logger]: W1114 00:01:49.000000 31395 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[WARN] [1794582109.316178871] [cartographer logger]: W1114 00:01:49.000000 31354 range_data_collator.cc:82] Dropped 41 earlier points.
+[INFO] [1794582109.324704131] [cartographer logger]: I1114 00:01:49.000000 31396 constraint_builder_2d.cc:275] Node (4, 65) with 208 points on submap (0, 1) differs by translation 0.01 rotation 0.000 with score 80.2%.
+[INFO] [1794582109.329017309] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 65) with 208 points on submap (0, 0) differs by translation 0.01 rotation 0.002 with score 85.1%.
+[INFO] [1794582109.729856616] [cartographer logger]: I1114 00:01:49.000000 31395 constraint_builder_2d.cc:275] Node (4, 68) with 202 points on submap (0, 1) differs by translation 0.02 rotation 0.007 with score 79.0%.
+[INFO] [1794582109.748904128] [cartographer logger]: I1114 00:01:49.000000 31396 constraint_builder_2d.cc:275] Node (4, 68) with 202 points on submap (0, 0) differs by translation 0.01 rotation 0.006 with score 86.0%.
+[INFO] [1794582110.445000895] [cartographer logger]: I1114 00:01:50.000000 31395 constraint_builder_2d.cc:275] Node (4, 71) with 202 points on submap (0, 0) differs by translation 0.01 rotation 0.004 with score 86.9%.
+[INFO] [1794582110.445374141] [cartographer logger]: I1114 00:01:50.000000 31396 constraint_builder_2d.cc:275] Node (4, 71) with 202 points on submap (0, 1) differs by translation 0.02 rotation 0.001 with score 81.7%.
+[WARN] [1794582113.956146643] [cartographer logger]: W1114 00:01:53.000000 31354 range_data_collator.cc:82] Dropped 64 earlier points.
+[WARN] [1794582114.059768352] [cartographer logger]: W1114 00:01:54.000000 31354 range_data_collator.cc:82] Dropped 128 earlier points.
+[WARN] [1794582114.156003963] [cartographer logger]: W1114 00:01:54.000000 31354 range_data_collator.cc:82] Dropped 97 earlier points.
+[WARN] [1794582114.256127372] [cartographer logger]: W1114 00:01:54.000000 31354 range_data_collator.cc:82] Dropped 102 earlier points.
+[WARN] [1794582114.755138082] [cartographer logger]: W1114 00:01:54.000000 31354 range_data_collator.cc:82] Dropped 17 earlier points.
+[INFO] [1794582115.338750358] [cartographer logger]: I1114 00:01:55.000000 31354 motion_filter.cc:42] Motion filter reduced the number of nodes to 14.8%.
+[WARN] [1794582116.257153776] [cartographer logger]: W1114 00:01:56.000000 31354 range_data_collator.cc:82] Dropped 244 earlier points.
+[INFO] [1794582117.736566779] [cartographer logger]: I1114 00:01:57.000000 31354 collated_trajectory_builder.cc:81] odom rate: 50.00 Hz 2.00e-02 s +/- 2.10e-03 s (pulsed at 100.10% real time)
+[INFO] [1794582117.736724455] [cartographer logger]: I1114 00:01:57.000000 31354 collated_trajectory_builder.cc:81] scan rate: 39.93 Hz 2.50e-02 s +/- 5.17e-03 s (pulsed at 99.93% real time)
+[WARN] [1794582119.079686865] [cartographer logger]: W1114 00:01:59.000000 31354 range_data_collator.cc:82] Dropped 55 earlier points.
+[WARN] [1794582119.437047567] [cartographer logger]: W1114 00:01:59.000000 31354 range_data_collator.cc:82] Dropped 83 earlier points.
+[WARN] [1794582119.536637195] [cartographer logger]: W1114 00:01:59.000000 31354 range_data_collator.cc:82] Dropped 48 earlier points.
+[WARN] [1794582120.516698740] [cartographer logger]: W1114 00:02:00.000000 31354 range_data_collator.cc:82] Dropped 47 earlier points.
+[INFO] [1794582120.579340184] [cartographer logger]: I1114 00:02:00.000000 31396 constraint_builder_2d.cc:275] Node (4, 75) with 202 points on submap (0, 0) matches with score 77.0%.
+[WARN] [1794582121.219296895] [cartographer logger]: W1114 00:02:01.000000 31354 range_data_collator.cc:82] Dropped 68 earlier points.
+[WARN] [1794582121.618702465] [cartographer logger]: W1114 00:02:01.000000 31354 range_data_collator.cc:82] Dropped 108 earlier points.
+[WARN] [1794582121.720703083] [cartographer logger]: W1114 00:02:01.000000 31354 range_data_collator.cc:82] Dropped 9 earlier points.
+[INFO] [1794582121.862122054] [cartographer logger]: I1114 00:02:01.000000 31396 pose_graph_2d.cc:538] Remaining work items in queue: 0
+[INFO] [1794582121.862266930] [cartographer logger]: I1114 00:02:01.000000 31396 constraint_builder_2d.cc:290] 7 computations resulted in 7 additional constraints.
+[INFO] [1794582121.862539623] [cartographer logger]: I1114 00:02:01.000000 31396 constraint_builder_2d.cc:292] Score histogram:
+Count: 50  Min: 0.69027  Max: 0.883605  Mean: 0.815431
+[0.690270, 0.709603)	                    	Count: 1 (2%)	Total: 1 (2%)
+[0.709603, 0.728937)	                   #	Count: 3 (6%)	Total: 4 (8%)
+[0.728937, 0.748270)	                   #	Count: 2 (4%)	Total: 6 (12%)
+[0.748270, 0.767604)	                   #	Count: 3 (6%)	Total: 9 (18%)
+[0.767604, 0.786937)	                   #	Count: 3 (6%)	Total: 12 (24%)
+[0.786937, 0.806271)	                 ###	Count: 7 (14%)	Total: 19 (38%)
+[0.806271, 0.825604)	                 ###	Count: 7 (14%)	Total: 26 (52%)
+[0.825604, 0.844938)	                  ##	Count: 6 (12%)	Total: 32 (64%)
+[0.844938, 0.864271)	                ####	Count: 10 (20%)	Total: 42 (84%)
+[0.864271, 0.883605]	                 ###	Count: 8 (16%)	Total: 50 (100%)
+[WARN] [1794582121.865790153] [cartographer logger]: W1114 00:02:01.000000 31396 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582121.904975335] [cartographer logger]: I1114 00:02:01.000000 31396 constraint_builder_2d.cc:275] Node (4, 84) with 200 points on submap (0, 1) differs by translation 0.02 rotation 0.014 with score 75.4%.
+[INFO] [1794582121.905258333] [cartographer logger]: I1114 00:02:01.000000 31395 constraint_builder_2d.cc:275] Node (4, 84) with 200 points on submap (0, 0) differs by translation 0.02 rotation 0.011 with score 74.4%.
+[INFO] [1794582121.969413300] [cartographer logger]: I1114 00:02:01.000000 31395 constraint_builder_2d.cc:275] Node (4, 87) with 202 points on submap (0, 0) differs by translation 0.03 rotation 0.002 with score 76.0%.
+[INFO] [1794582121.969837717] [cartographer logger]: I1114 00:02:01.000000 31396 constraint_builder_2d.cc:275] Node (4, 87) with 202 points on submap (0, 1) differs by translation 0.02 rotation 0.014 with score 71.7%.
+[INFO] [1794582122.062452436] [cartographer logger]: I1114 00:02:02.000000 31354 pose_graph_2d.cc:148] Inserted submap (4, 1).
+[INFO] [1794582122.083112790] [cartographer logger]: I1114 00:02:02.000000 31395 constraint_builder_2d.cc:275] Node (4, 90) with 203 points on submap (0, 1) differs by translation 0.03 rotation 0.011 with score 68.7%.
+[INFO] [1794582122.089442282] [cartographer logger]: I1114 00:02:02.000000 31396 constraint_builder_2d.cc:275] Node (4, 90) with 203 points on submap (0, 0) differs by translation 0.03 rotation 0.007 with score 75.4%.
+[INFO] [1794582122.151678276] [cartographer logger]: I1114 00:02:02.000000 31396 constraint_builder_2d.cc:275] Node (4, 94) with 213 points on submap (0, 0) differs by translation 0.04 rotation 0.005 with score 68.1%.
+[INFO] [1794582122.154534597] [cartographer logger]: I1114 00:02:02.000000 31395 constraint_builder_2d.cc:275] Node (4, 94) with 213 points on submap (0, 1) differs by translation 0.04 rotation 0.004 with score 58.9%.
+[INFO] [1794582122.230484411] [cartographer logger]: I1114 00:02:02.000000 31396 constraint_builder_2d.cc:275] Node (4, 97) with 205 points on submap (0, 0) differs by translation 0.09 rotation 0.004 with score 61.8%.
+[INFO] [1794582122.244353764] [cartographer logger]: I1114 00:02:02.000000 31395 constraint_builder_2d.cc:275] Node (4, 97) with 205 points on submap (0, 1) differs by translation 0.08 rotation 0.008 with score 56.8%.
+[INFO] [1794582122.400838939] [cartographer logger]: I1114 00:02:02.000000 31395 pose_graph_2d.cc:538] Remaining work items in queue: 1
+[INFO] [1794582122.409996335] [cartographer logger]: I1114 00:02:02.000000 31396 constraint_builder_2d.cc:275] Node (4, 104) with 202 points on submap (0, 0) differs by translation 0.10 rotation 0.009 with score 58.2%.
+[INFO] [1794582122.414230462] [cartographer logger]: I1114 00:02:02.000000 31395 constraint_builder_2d.cc:290] 14 computations resulted in 11 additional constraints.
+[INFO] [1794582122.414493906] [cartographer logger]: I1114 00:02:02.000000 31395 constraint_builder_2d.cc:292] Score histogram:
+Count: 61  Min: 0.568033  Max: 0.883605  Mean: 0.79059
+[0.568033, 0.599590)	                   #	Count: 3 (4.91803%)	Total: 3 (4.91803%)
+[0.599590, 0.631147)	                    	Count: 1 (1.63934%)	Total: 4 (6.55738%)
+[0.631147, 0.662704)	                    	Count: 0 (0%)	Total: 4 (6.55738%)
+[0.662704, 0.694261)	                   #	Count: 3 (4.91803%)	Total: 7 (11.4754%)
+[0.694261, 0.725819)	                   #	Count: 3 (4.91803%)	Total: 10 (16.3934%)
+[0.725819, 0.757376)	                 ###	Count: 8 (13.1148%)	Total: 18 (29.5082%)
+[0.757376, 0.788933)	                  ##	Count: 5 (8.19672%)	Total: 23 (37.7049%)
+[0.788933, 0.820490)	                ####	Count: 12 (19.6721%)	Total: 35 (57.377%)
+[0.820490, 0.852048)	                 ###	Count: 10 (16.3934%)	Total: 45 (73.7705%)
+[0.852048, 0.883605]	               #####	Count: 16 (26.2295%)	Total: 61 (100%)
+[WARN] [1794582122.420103502] [cartographer logger]: W1114 00:02:02.000000 31395 preprocessor.cc:62] Specified options.num_threads: 7 exceeds maximum available from the threading model Ceres was compiled with: 6.  Bounding to maximum number available.
+[INFO] [1794582122.931319480] [rclcpp]: signal_handler(SIGINT/SIGTERM)

@@ -1,0 +1,3 @@
+[INFO] [1794581553.322245020] [urg_node]: Connected to network device with ID: B2244325
+[INFO] [1794581553.451585333] [urg_node]: Streaming data.
+[INFO] [1794581628.069132714] [rclcpp]: signal_handler(SIGINT/SIGTERM)

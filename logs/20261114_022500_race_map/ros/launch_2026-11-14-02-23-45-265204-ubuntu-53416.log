@@ -1,0 +1,475 @@
+1794590625.2689145 [INFO] [launch]: All log files can be found below /home/jetson/.ros/log/2026-11-14-02-23-45-265204-ubuntu-53416
+1794590625.2695978 [INFO] [launch]: Default logging verbosity is set to INFO
+1794590626.0781569 [INFO] [joy_node-1]: process started with pid [53432]
+1794590626.0807977 [INFO] [joy_teleop-2]: process started with pid [53434]
+1794590626.0823288 [INFO] [ackermann_to_vesc_node-3]: process started with pid [53436]
+1794590626.0840178 [INFO] [vesc_to_odom_node-4]: process started with pid [53438]
+1794590626.0861945 [INFO] [vesc_driver_node-5]: process started with pid [53442]
+1794590626.1053474 [INFO] [urg_node_driver-6]: process started with pid [53448]
+1794590626.1075537 [INFO] [ackermann_mux-7]: process started with pid [53451]
+1794590626.1090004 [INFO] [static_transform_publisher-8]: process started with pid [53455]
+1794590626.1101711 [INFO] [imu_odom-9]: process started with pid [53457]
+1794590626.1347427 [INFO] [localization_monitor-10]: process started with pid [53470]
+1794590626.1378005 [INFO] [cartographer_node-11]: process started with pid [53474]
+1794590626.1395760 [INFO] [cartographer_occupancy_grid_node-12]: process started with pid [53477]
+1794590626.1409342 [INFO] [cartographer_localizer-13]: process started with pid [53496]
+1794590626.1834991 [INFO] [mission_manager-14]: process started with pid [53498]
+1794590626.1842446 [INFO] [frenet_planner-15]: process started with pid [53500]
+1794590626.1845105 [INFO] [echo-16]: process started with pid [53530]
+1794590626.1864624 [INFO] [echo-16]: process has finished cleanly [pid 53530]
+1794590626.2551901 [echo-16] [race.launch] mode=race controller=map max_speed=8.0 map=1113_clean
+1794590626.2574470 [vesc_driver_node-5] [0m[INFO] [1794590625.874074649] [IoContext::IoContext]: Thread(s) Created: 2[0m
+1794590626.2577558 [vesc_driver_node-5] [0m[INFO] [1794590625.977041838] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794590626.2579191 [vesc_driver_node-5] [0m[INFO] [1794590625.995728445] [vesc_driver_node]: Connected to VESC with firmware version 7.0[0m
+1794590626.2580671 [vesc_driver_node-5] [0m[INFO] [1794590625.996098665] [vesc_driver_node]: -=60_MK6_HP=- hardware paired 0[0m
+1794590626.2585599 [static_transform_publisher-8] [33m[WARN] [1794590625.867395526] []: Old-style arguments are deprecated; see --help for new-style arguments[0m
+1794590626.2587383 [static_transform_publisher-8] [0m[INFO] [1794590625.938021501] [static_baselink_to_laser]: Spinning until stopped - publishing transform
+1794590626.2588794 [static_transform_publisher-8] translation: ('0.270000', '0.000000', '0.110000')
+1794590626.2796950 [static_transform_publisher-8] rotation: ('0.000000', '0.000000', '0.000000', '1.000000')
+1794590626.2800255 [static_transform_publisher-8] from 'base_link' to 'laser'[0m
+1794590626.2813632 [ackermann_mux-7] [0m[INFO] [1794590626.146080204] [ackermann_mux]: Topic handler 'topics.joystick' subscribed to topic 'teleop': timeout = 0.200000s , priority = 100.[0m
+1794590626.2823117 [ackermann_mux-7] [0m[INFO] [1794590626.220162033] [ackermann_mux]: Topic handler 'topics.navigation' subscribed to topic 'drive': timeout = 0.200000s , priority = 10.[0m
+1794590626.4143450 [urg_node_driver-6] [0m[INFO] [1794590626.412945309] [urg_node]: Connected to network device with ID: B2244325[0m
+1794590626.5346501 [urg_node_driver-6] [0m[INFO] [1794590626.533103090] [urg_node]: Streaming data.[0m
+1794590626.7077038 [joy_node-1] [0m[INFO] [1794590626.705752386] [joy]: No haptic (rumble) available, skipping initialization[0m
+1794590626.7083795 [joy_node-1] [0m[INFO] [1794590626.706234865] [joy]: Opened joystick: Logitech Gamepad F710.  deadzone: 0.050000[0m
+1794590627.8674400 [mission_manager-14] [0m[INFO] [1794590627.866214433] [mission_manager]: 초기화 중 — 위치 정렬을 기다립니다…[0m
+1794590627.8693397 [mission_manager-14] [0m[INFO] [1794590627.867701648] [mission_manager]: MissionManager: laps=0, time_limit=0s, start_gate=ON[0m
+1794590628.0277596 [imu_odom-9] [0m[INFO] [1794590628.026455593] [imu_odom]: ImuOdom 시작 — IMU yaw 사용, 축=z(+1), 속도부호=+1, 단위=deg[0m
+1794590629.8189008 [mission_manager-14] [0m[INFO] [1794590629.817821452] [mission_manager]: 초기화 중 — 남은 항목: 위치 정렬(auto_localize), 컨트롤러(/drive)[0m
+1794590629.9739723 [INFO] [joystick_teleop-17]: process started with pid [53653]
+1794590630.1233976 [frenet_planner-15] [0m[INFO] [1794590630.121955063] [frenet_planner]: 웨이포인트 400개, 간격 0.011m[0m
+1794590630.1703813 [frenet_planner-15] [0m[INFO] [1794590630.169230381] [frenet_planner]: track mask built: 1127 / 11592 px (맵 자유공간, margin 0.28m)[0m
+1794590630.1735549 [frenet_planner-15] [0m[INFO] [1794590630.172696251] [frenet_planner]: raycast map built: 벽을 0.25m(5px) 부풀림, 점유 9290 → 10433 px[0m
+1794590630.1745508 [frenet_planner-15] [0m[INFO] [1794590630.173746140] [frenet_planner]: 맵 로드: 1113_clean.yaml[0m
+1794590630.3103399 [frenet_planner-15] [0m[INFO] [1794590630.309189044] [frenet_planner]: FrenetPlanner ready — 후보 13개 (±0.60m/0.10m), 여유 0.30m, 호라이즌 2.9~7.0m (0.9s)[0m
+1794590630.3206522 [frenet_planner-15] [0m[INFO] [1794590630.319646943] [frenet_planner]: [추월구간] 0% (폭≥1.10m, 끝에서 2.5m 잘라냄) → RViz /overtake_zone[0m
+1794590630.3959084 [localization_monitor-10] [0m[INFO] [1794590630.394446235] [localization_monitor]: 맵 84x138px  해상도 0.05m  원점 (-0.88,-4.45)  점유 9290px[0m
+1794590630.4835663 [frenet_planner-15] [0m[INFO] [1794590630.482314292] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  131.1ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590630.9745972 [imu_odom-9] [0m[INFO] [1794590630.973417972] [imu_odom]: 자이로 바이어스 확정: +0.1390 deg/s (151샘플) — 정지 시마다 갱신됩니다[0m
+1794590631.0067759 [frenet_planner-15] [0m[INFO] [1794590631.005617102] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  44.8ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590631.5598154 [frenet_planner-15] [0m[INFO] [1794590631.558534769] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  45.1ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590631.6507499 [joystick_teleop-17] [0m[INFO] [1794590631.640851546] [joystick_teleop]: JoystickTeleop ready  [현재: 자율 모드]
+1794590631.6514175 [joystick_teleop-17]   LB(버튼4) → 수동↔자율 토글 (지금 자율)
+1794590631.6516223 [joystick_teleop-17]   RT(축5) → 전진 속도 (선형, 놓으면 즉시 정지)
+1794590631.6527665 [joystick_teleop-17]   L스틱(축0) → 조향
+1794590631.6530597 [joystick_teleop-17]   RB(버튼5) 누른 채 RT → 후진
+1794590631.6532695 [joystick_teleop-17]   트리거: 기동 시 자동 휴지 캘리 (초기 추정 +1→-1, yaml invert=True)
+1794590631.6534615 [joystick_teleop-17]   ★ 캘리 동안 RT 손 떼고 가만히 — 평균값=휴지로 잡음
+1794590631.6536138 [joystick_teleop-17]   max_speed=6.0 m/s  [deadzone 0.05, expo 1.0][0m
+1794590631.8154535 [mission_manager-14] [0m[INFO] [1794590631.814296004] [mission_manager]: 초기화 중 — 남은 항목: 위치 정렬(auto_localize), 컨트롤러(/drive)[0m
+1794590632.1034114 [frenet_planner-15] [0m[INFO] [1794590632.102289042] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  34.7ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590632.6494691 [frenet_planner-15] [0m[INFO] [1794590632.648301307] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  41.8ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590632.9038939 [INFO] [auto_localize-18]: process started with pid [53698]
+1794590633.1647642 [joystick_teleop-17] [0m[INFO] [1794590633.163179148] [joystick_teleop]: 조향 상한 오버라이드 15.4° (스틱 끝까지 = 이 각도)[0m
+1794590633.1664319 [joystick_teleop-17] [0m[INFO] [1794590633.165505270] [joystick_teleop]: 최고속도 오버라이드 1.0㎧ (RT 끝까지 = 이 속도)[0m
+1794590633.2759204 [frenet_planner-15] [0m[INFO] [1794590633.274686288] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  118.7ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590633.8106139 [frenet_planner-15] [0m[INFO] [1794590633.809502232] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  36.7ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590633.8168218 [mission_manager-14] [0m[INFO] [1794590633.815680251] [mission_manager]: 초기화 중 — 남은 항목: 위치 정렬(auto_localize), 컨트롤러(/drive)[0m
+1794590634.0721099 [INFO] [map_controller-19]: process started with pid [53700]
+1794590634.3337367 [frenet_planner-15] [0m[INFO] [1794590634.332571981] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  43.5ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590634.8757463 [frenet_planner-15] [0m[INFO] [1794590634.874603225] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  142.6ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590635.3914435 [frenet_planner-15] [0m[INFO] [1794590635.389586190] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  36.6ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590635.8177321 [mission_manager-14] [0m[INFO] [1794590635.816622920] [mission_manager]: 초기화 중 — 남은 항목: 위치 정렬(auto_localize), 컨트롤러(/drive)[0m
+1794590635.9419105 [frenet_planner-15] [0m[INFO] [1794590635.940767484] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  71.3ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590636.2476053 [auto_localize-18] [0m[INFO] [1794590636.246102384] [auto_localize]: 맵 로드: 84x138px @ 0.05m, 장애물 9290px (표면 260px)[0m
+1794590636.3190801 [auto_localize-18] [0m[INFO] [1794590636.317945391] [auto_localize]: AutoLocalize 시작 — init (2.64, -0.03, 3.3°) 주변 ±0.5m ±15.0° 탐색[0m
+1794590636.3416505 [auto_localize-18] [31m[ERROR] [1794590636.323799848] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.64,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590636.4904430 [frenet_planner-15] [0m[INFO] [1794590636.489314071] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  48.7ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590637.0005538 [frenet_planner-15] [0m[INFO] [1794590636.999376946] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  37.5ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590637.3513043 [auto_localize-18] [31m[ERROR] [1794590637.350218532] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.64,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590637.5157275 [frenet_planner-15] [0m[INFO] [1794590637.514575056] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  45.3ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590637.8175333 [mission_manager-14] [0m[INFO] [1794590637.816382644] [mission_manager]: 초기화 중 — 남은 항목: 위치 정렬(auto_localize), 컨트롤러(/drive)[0m
+1794590638.0638967 [frenet_planner-15] [0m[INFO] [1794590638.062746719] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  64.4ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590638.1223378 [map_controller-19] [0m[INFO] [1794590638.121336060] [map_controller]: 웨이포인트 400개 로드[0m
+1794590638.2227781 [auto_localize-18] [31m[ERROR] [1794590638.221698496] [auto_localize]: ⚠ AMCL 위치 점프 232cm — (+2.64,-0.03) → (+0.33,-0.14). 컨트롤러가 이 값을 그대로 믿습니다[0m
+1794590638.3257723 [auto_localize-18] [0m[INFO] [1794590638.324689624] [auto_localize]: 벽 방향 정렬: 스캔 179.2°(집중도 0.99) / 맵 90.2°(집중도 0.40) → yaw +91.0° (init 대비 +87.7°), 이후 ±6° 미세탐색[0m
+1794590638.3651178 [auto_localize-18] [0m[INFO] [1794590638.364028659] [auto_localize]: 정렬 결과: (+2.839, -0.029, +95.0°)  평균오차 4.1cm  |  init 대비 20.0cm +4.0°[0m
+1794590638.3683627 [auto_localize-18] [0m[INFO] [1794590638.367086068] [auto_localize]: 해의 뾰족함 (±20cm 흔들 때 오차 증가): 진행방향 +2.62cm / 옆방향 +68.07cm[0m
+1794590638.3710997 [auto_localize-18] [0m[INFO] [1794590638.370478335] [auto_localize]: /initialpose 발행 — AMCL 이 이 자리로 재시드합니다[0m
+1794590638.3731980 [mission_manager-14] [0m[INFO] [1794590638.372453342] [mission_manager]: 위치 정렬 완료 — 평균오차 4.1cm[0m
+1794590638.4627903 [localization_monitor-10] [0m[INFO] [1794590638.461559966] [localization_monitor]: [loc:정지] 잔차 평균  22.8㎝  중앙  19.8㎝  90%  41.2㎝  근거리<2m 23.4㎝ / 원거리 10.8㎝  빔 783/9스캔[0m
+1794590638.5820272 [frenet_planner-15] [0m[INFO] [1794590638.580936284] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.3ms  속도×0.78  [추월금지 추종 gap=infm][0m
+1794590638.7679214 [map_controller-19] [0m[INFO] [1794590638.766859313] [map_controller]: 곡률 사전 계산: max=5.753 mean=1.725 1/m[0m
+1794590638.8137603 [auto_localize-18] [31m[ERROR] [1794590638.812746460] [auto_localize]: ⚠ AMCL 위치 점프 251cm — (+0.33,-0.15) → (+2.84,-0.03). 컨트롤러가 이 값을 그대로 믿습니다[0m
+1794590638.8155510 [map_controller-19] [31m[ERROR] [1794590638.814254763] [map_controller]: speed_scale=0.7092 은 **무시된다** (폐기됨). 속도를 배수로 스케일하면 요구 횡가속이 제곱으로 변해 어느 코너가 한계인지까지 바뀐다. grip_util 로 마찰 예산을 조절할 것.[0m
+1794590638.8165865 [map_controller-19] [33m[WARN] [1794590638.815803644] [map_controller]: a_brake 는 폐기됐다 — a_lon_brk 를 쓸 것.[0m
+1794590638.8173957 [map_controller-19] [0m[INFO] [1794590638.816866974] [map_controller]: 속도 프로파일 η=0.50  예산 2.54㎧² (가속 1.39 / 제동 2.40)[0m
+1794590638.8181043 [map_controller-19] [0m[INFO] [1794590638.817733113] [map_controller]:   v 1.40~1.40㎧ (중앙 1.40) | 예상 랩 3.2s[0m
+1794590638.8188128 [map_controller-19] [0m[INFO] [1794590638.818574676] [map_controller]:   조향 l1=max(1.200, 0.750·v)→코너상한 max(0.50·v, 0.40/|κ|)  alpha=0.650(τ46ms)  slip_gain=0.50  speed_lag=0.40s  max_steer=0.480[0m
+1794590638.8208451 [map_controller-19] [0m[INFO] [1794590638.819789530] [map_controller]: Pacejka LUT: Fy=[-1.064, 1.064][0m
+1794590638.8220749 [auto_localize-18] [31m[ERROR] [1794590638.819895838] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.84,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590638.9234207 [map_controller-19] [0m[INFO] [1794590638.922346116] [map_controller]: 범퍼 후진 ON: 정면 ±40°, 범퍼 윤곽 0.17→0.18m +3cm (+속도×0.20s), 2점 이상 → 1.5㎧ 후진 (조향 ≤70%), 10cm 떨어지면 전진 (상한 2.0s)[0m
+1794590638.9285274 [map_controller-19] [0m[INFO] [1794590638.927761328] [map_controller]: MapController ready (mode=race grip_util=0.50)[0m
+1794590638.9406164 [map_controller-19] [0m[INFO] [1794590638.939585989] [map_controller]: AMCL pose 첫 수신 (2.840, -0.032) — 시드 가정 해제. 시드와의 차이 0.20m[0m
+1794590638.9533436 [map_controller-19] [33m[WARN] [1794590638.952337624] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)[0m
+1794590639.1500554 [frenet_planner-15] [0m[INFO] [1794590639.148904158] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=69  vmax=0.99/1.40  ttc=inf  60.7ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590639.6764290 [frenet_planner-15] [0m[INFO] [1794590639.675289854] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=68  vmax=0.99/1.40  ttc=2.30s  44.2ms  속도×0.71  [추월가능][0m
+1794590639.8165810 [mission_manager-14] [0m[INFO] [1794590639.815293832] [mission_manager]: 
+1794590639.8172693 [mission_manager-14] ╔══════════════════════════════════════════════════════╗
+1794590639.8175077 [mission_manager-14] ║              출  발  준  비  완  료                  ║
+1794590639.8176742 [mission_manager-14] ╠══════════════════════════════════════════════════════╣
+1794590639.8178284 [mission_manager-14] ║  위치 정합  평균오차   4.1 cm                      ║
+1794590639.8179784 [mission_manager-14] ║  AMCL       (+2.84, -0.03)  공분산합 0.110          ║
+1794590639.8181438 [mission_manager-14] ║  컨트롤러   OK                                       ║
+1794590639.8182881 [mission_manager-14] ╠══════════════════════════════════════════════════════╣
+1794590639.8184285 [mission_manager-14] ║  조이스틱 버튼1 을 누르면 출발합니다              ║
+1794590639.8185699 [mission_manager-14] ╚══════════════════════════════════════════════════════╝[0m
+1794590639.8407383 [auto_localize-18] [31m[ERROR] [1794590639.839649194] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.84,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590640.2917202 [frenet_planner-15] [0m[INFO] [1794590640.290581561] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=69  vmax=0.99/1.40  ttc=2.33s  121.4ms  속도×0.71  [추월가능][0m
+1794590640.4690149 [localization_monitor-10] [0m[INFO] [1794590640.467786043] [localization_monitor]: [loc:정지] 잔차 평균  33.1㎝  중앙  27.1㎝  90%  49.8㎝  근거리<2m 31.8㎝ / 원거리 42.7㎝  빔 3045/81스캔[0m
+1794590640.8204846 [frenet_planner-15] [0m[INFO] [1794590640.819379398] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=69  vmax=0.99/1.40  ttc=2.33s  41.9ms  속도×0.71  [추월가능][0m
+1794590640.8431532 [auto_localize-18] [31m[ERROR] [1794590640.842008465] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.84,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590641.3361988 [frenet_planner-15] [0m[INFO] [1794590641.335040596] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=69  vmax=0.99/1.40  ttc=2.31s  40.3ms  속도×0.71  [추월가능][0m
+1794590641.8176231 [mission_manager-14] [0m[INFO] [1794590641.815777394] [mission_manager]: [출발 대기] 정합 4.1cm | AMCL (+2.84, -0.03) 공분산합 0.110 — 버튼을 누르세요[0m
+1794590641.8579080 [auto_localize-18] [31m[ERROR] [1794590641.856878917] [auto_localize]: ⚠ AMCL 이 **벽 안쪽**을 가리킵니다 (+2.84,-0.03) — 물리적으로 불가능한 추정입니다. 위치추정이 깨진 상태입니다[0m
+1794590641.8888278 [frenet_planner-15] [0m[INFO] [1794590641.887683091] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=68  vmax=0.99/1.40  ttc=2.31s  43.0ms  속도×0.71  [추월가능][0m
+1794590641.9597557 [map_controller-19] [33m[WARN] [1794590641.958690040] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)[0m
+1794590642.3919754 [frenet_planner-15] [0m[INFO] [1794590642.390706002] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=68  vmax=0.99/1.40  ttc=2.31s  41.4ms  속도×0.71  [추월가능][0m
+1794590642.4656293 [localization_monitor-10] [0m[INFO] [1794590642.463469326] [localization_monitor]: [loc:정지] 잔차 평균  40.6㎝  중앙  41.6㎝  90%  56.2㎝  근거리<2m 39.0㎝ / 원거리 49.0㎝  빔 2079/79스캔[0m
+1794590642.5562618 [auto_localize-18] [33m[WARN] [1794590642.555009404] [auto_localize]: 수동 /initialpose 수신 (+0.74, -0.01) — 자동 정렬을 **건너뜁니다**. 자동 정렬하려면 align_on_manual:=true.[0m
+1794590642.9262280 [frenet_planner-15] [0m[INFO] [1794590642.925065168] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=68  vmax=0.99/1.40  ttc=2.31s  48.2ms  속도×0.71  [추월가능][0m
+1794590642.9567971 [auto_localize-18] [31m[ERROR] [1794590642.955249066] [auto_localize]: ⚠ AMCL 위치 점프 211cm — (+2.84,-0.03) → (+0.73,-0.01). 컨트롤러가 이 값을 그대로 믿습니다[0m
+1794590643.4777052 [frenet_planner-15] [0m[INFO] [1794590643.475272675] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.67s  40.3ms  속도×0.78  [추월가능][0m
+1794590643.8166926 [mission_manager-14] [0m[INFO] [1794590643.815532680] [mission_manager]: [출발 대기] 정합 4.1cm | AMCL (+0.73, -0.01) 공분산합 0.110 — 버튼을 누르세요[0m
+1794590644.0525687 [frenet_planner-15] [0m[INFO] [1794590644.051432907] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.67s  126.5ms  속도×0.78  [추월가능][0m
+1794590644.4674754 [localization_monitor-10] [0m[INFO] [1794590644.466178339] [localization_monitor]: [loc:정지] 잔차 평균  18.9㎝  중앙  19.4㎝  90%  41.1㎝  근거리<2m 16.7㎝ / 원거리 43.0㎝  빔 4746/80스캔[0m
+1794590644.5648153 [frenet_planner-15] [0m[INFO] [1794590644.563706607] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  42.2ms  속도×0.78  [추월가능][0m
+1794590644.9737873 [map_controller-19] [33m[WARN] [1794590644.972397384] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)[0m
+1794590645.0735230 [frenet_planner-15] [0m[INFO] [1794590645.072407138] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  40.0ms  속도×0.78  [추월가능][0m
+1794590645.6370447 [frenet_planner-15] [0m[INFO] [1794590645.635932156] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  39.6ms  속도×0.78  [추월가능][0m
+1794590645.8172553 [mission_manager-14] [0m[INFO] [1794590645.814714160] [mission_manager]: [출발 대기] 정합 4.1cm | AMCL (+0.73, -0.01) 공분산합 0.110 — 버튼을 누르세요[0m
+1794590646.1765566 [frenet_planner-15] [0m[INFO] [1794590646.175447742] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  50.2ms  속도×0.78  [추월가능][0m
+1794590646.4861937 [localization_monitor-10] [0m[INFO] [1794590646.484854037] [localization_monitor]: [loc:정지] 잔차 평균  16.2㎝  중앙  16.4㎝  90%  36.9㎝  근거리<2m 14.1㎝ / 원거리 41.5㎝  빔 5622/80스캔[0m
+1794590646.6792660 [frenet_planner-15] [0m[INFO] [1794590646.678106803] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  40.5ms  속도×0.78  [추월가능][0m
+1794590647.2644143 [frenet_planner-15] [0m[INFO] [1794590647.263284474] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.66s  58.0ms  속도×0.78  [추월가능][0m
+1794590647.7824507 [frenet_planner-15] [0m[INFO] [1794590647.781370839] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.65s  38.6ms  속도×0.78  [추월가능][0m
+1794590647.8180995 [mission_manager-14] [0m[INFO] [1794590647.817009054] [mission_manager]: [출발 대기] 정합 4.1cm | AMCL (+0.73, -0.01) 공분산합 0.110 — 버튼을 누르세요[0m
+1794590647.9754176 [map_controller-19] [33m[WARN] [1794590647.974240714] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)[0m
+1794590648.3231571 [frenet_planner-15] [0m[INFO] [1794590648.321991134] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.66s  37.6ms  속도×0.78  [추월가능][0m
+1794590648.4701180 [localization_monitor-10] [0m[INFO] [1794590648.468686140] [localization_monitor]: [loc:정지] 잔차 평균  16.1㎝  중앙  16.4㎝  90%  36.9㎝  근거리<2m 14.0㎝ / 원거리 41.3㎝  빔 5623/80스캔[0m
+1794590648.4752262 [auto_localize-18] [33m[WARN] [1794590648.474356848] [auto_localize]: 수동 /initialpose 수신 (+0.61, -0.06) — 자동 정렬을 **건너뜁니다**. 자동 정렬하려면 align_on_manual:=true.[0m
+1794590648.8486094 [frenet_planner-15] [0m[INFO] [1794590648.847450725] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=15.66s  38.4ms  속도×0.78  [추월가능][0m
+1794590649.4209385 [frenet_planner-15] [0m[INFO] [1794590649.419868569] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  55.5ms  속도×0.78  [추월가능][0m
+1794590649.8159127 [mission_manager-14] [0m[INFO] [1794590649.814643069] [mission_manager]: [출발 대기] 정합 4.1cm | AMCL (+0.61, -0.06) 공분산합 0.110 — 버튼을 누르세요[0m
+1794590650.0469732 [frenet_planner-15] [0m[INFO] [1794590650.045788394] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  129.3ms  속도×0.78  [추월가능][0m
+1794590650.4741144 [localization_monitor-10] [0m[INFO] [1794590650.472386716] [localization_monitor]: [loc:정지] 잔차 평균  16.0㎝  중앙   9.2㎝  90%  33.6㎝  근거리<2m 14.6㎝ / 원거리 35.0㎝  빔 6080/80스캔[0m
+1794590650.5851979 [frenet_planner-15] [0m[INFO] [1794590650.584062535] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  37.3ms  속도×0.78  [추월가능][0m
+1794590650.9765284 [map_controller-19] [33m[WARN] [1794590650.975499137] [map_controller]: 정지 중: /race/enabled=false (mission_manager 가 껐음)[0m
+1794590651.1190274 [frenet_planner-15] [0m[INFO] [1794590651.117866615] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  38.0ms  속도×0.78  [추월가능][0m
+1794590651.6476605 [frenet_planner-15] [0m[INFO] [1794590651.646506980] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  39.7ms  속도×0.78  [추월가능][0m
+1794590651.6648417 [mission_manager-14] [0m[INFO] [1794590651.663588577] [mission_manager]: ════════ 출발! (조이스틱 버튼1) ════════[0m
+1794590651.7015412 [map_controller-19] [0m[INFO] [1794590651.700543153] [map_controller]: [출발제한] 상한 0.80㎧²  1.40→0.02㎧[0m
+1794590651.7046964 [map_controller-19] [0m[INFO] [1794590651.701845850] [map_controller]: [MAP] κ=2.043  L1=1.20  steer=2.4°  spd=0.02m/s  (실측 0.00)[0m
+1794590652.2007611 [frenet_planner-15] [0m[INFO] [1794590652.198129833] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.11s  37.7ms  속도×0.78  [추월가능][0m
+1794590652.2225807 [map_controller-19] [0m[INFO] [1794590652.221572014] [map_controller]: [출발제한] 상한 0.91㎧²  1.40→0.46㎧[0m
+1794590652.2243855 [map_controller-19] [0m[INFO] [1794590652.222763444] [map_controller]: [MAP] κ=2.043  L1=1.20  steer=6.8°  spd=0.46m/s  (실측 0.14)[0m
+1794590652.4794912 [localization_monitor-10] [0m[INFO] [1794590652.477732723] [localization_monitor]: [loc:정지] 잔차 평균  15.9㎝  중앙   9.2㎝  90%  33.0㎝  근거리<2m 14.8㎝ / 원거리 32.9㎝  빔 6109/79스캔[0m
+1794590652.7340600 [map_controller-19] [0m[INFO] [1794590652.733052349] [map_controller]: [출발제한] 상한 1.01㎧²  1.40→0.96㎧[0m
+1794590652.7357762 [map_controller-19] [0m[INFO] [1794590652.734988314] [map_controller]: [MAP] κ=3.019  L1=1.20  steer=7.0°  spd=0.96m/s  (실측 0.36)[0m
+1794590652.7518513 [frenet_planner-15] [0m[INFO] [1794590652.750701803] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=16.00s  38.5ms  속도×0.78  [추월가능][0m
+1794590652.8677118 [map_controller-19] [33m[WARN] [1794590652.866606268] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 1회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590652.9747646 [mission_manager-14] [0m[INFO] [1794590652.973629557] [mission_manager]: LAP 1 완료! (1.31s)[0m
+1794590653.2406323 [map_controller-19] [0m[INFO] [1794590653.239484492] [map_controller]: [MAP] κ=1.829  L1=1.20  steer=16.3°  spd=1.40m/s  (실측 1.52)[0m
+1794590653.3426659 [frenet_planner-15] [0m[INFO] [1794590653.341555144] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.06s  68.0ms  속도×0.71  [추월가능][0m
+1794590653.7568541 [map_controller-19] [0m[INFO] [1794590653.755823638] [map_controller]: [MAP] κ=2.130  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.61)[0m
+1794590653.7919095 [map_controller-19] [33m[WARN] [1794590653.786048849] [map_controller]: [BUMP #1] 트리거 여유 34.1cm@-39° (선 35.0cm = 3cm + 선행 32.0cm, 11점) 속도 +1.60㎧ → BRAKING/path δ=+0.0° heading오차 +20° (뒤 좌 0.69 / 우 0.70m)[0m
+1794590653.8874443 [frenet_planner-15] [0m[INFO] [1794590653.886295732] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.38s  176.0ms  속도×0.71  [추월가능][0m
+1794590654.3321614 [map_controller-19] [0m[INFO] [1794590654.331106599] [map_controller]: [BUMP #1] 후진 끝: 여유 30.1cm + 관성 0.1cm ≥ 10cm  밀기 0.0cm/0.53s + 관성 0.0cm/0.02s heading오차 +20°→+45° 누적후진 0.0cm[0m
+1794590654.3373148 [map_controller-19] [0m[INFO] [1794590654.336539539] [map_controller]: [MAP] κ=0.097  L1=1.20  steer=-2.9°  spd=1.40m/s  (실측 0.00)[0m
+1794590654.4044304 [frenet_planner-15] [0m[INFO] [1794590654.403314227] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.32s  60.1ms  속도×0.71  [추월가능][0m
+1794590654.4810882 [localization_monitor-10] [0m[INFO] [1794590654.479899721] [localization_monitor]: [loc:정지] 잔차 평균  11.8㎝  중앙   7.7㎝  90%  27.6㎝  근거리<2m 11.5㎝ / 원거리 28.2㎝  빔 6888/80스캔[0m
+1794590654.8531313 [map_controller-19] [0m[INFO] [1794590654.852128005] [map_controller]: [MAP] κ=1.193  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.00)[0m
+1794590654.9672012 [frenet_planner-15] [0m[INFO] [1794590654.965510983] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.93s  46.5ms  속도×0.71  [추월가능][0m
+1794590655.1962028 [map_controller-19] [33m[WARN] [1794590655.194664694] [map_controller]: [BUMP #2] 트리거 여유 20.5cm@+18° (선 21.5cm = 3cm + 선행 18.5cm, 75점) 속도 +0.92㎧ → BRAKING/path δ=+0.0° heading오차 +42° (뒤 좌 1.06 / 우 0.41m)[0m
+1794590655.4700007 [frenet_planner-15] [0m[INFO] [1794590655.468863862] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.09s  48.2ms  속도×0.71  [추월가능][0m
+1794590656.1025839 [frenet_planner-15] [0m[INFO] [1794590656.101691236] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.30s  137.5ms  속도×0.71  [추월가능][0m
+1794590656.4744155 [localization_monitor-10] [0m[INFO] [1794590656.472709594] [localization_monitor]: [loc:v0.4] 잔차 평균  14.2㎝  중앙  10.3㎝  90%  32.1㎝  근거리<2m 13.9㎝ / 원거리 19.2㎝  빔 7172/80스캔[0m
+1794590656.4773395 [localization_monitor-10] [33m[WARN] [1794590656.476406799] [localization_monitor]: [map] 잔차 공간분포 46칸: 중앙 19.4㎝ / 상위5 평균 59.1㎝ (비 3.0배) — **국소 불일치**: 아래 좌표의 벽이 맵과 다르다 (구조물 이동 의심)[0m
+1794590656.4785500 [localization_monitor-10] [33m[WARN] [1794590656.477824476] [localization_monitor]:   ( +2.20, +0.60)  잔차  84.7㎝  표본 188[0m
+1794590656.4794071 [localization_monitor-10] [33m[WARN] [1794590656.478861405] [localization_monitor]:   ( +3.00, -0.60)  잔차  57.9㎝  표본 376[0m
+1794590656.4893477 [localization_monitor-10] [33m[WARN] [1794590656.484500015] [localization_monitor]:   ( +2.20, +2.20)  잔차  55.3㎝  표본 848[0m
+1794590656.4918618 [localization_monitor-10] [33m[WARN] [1794590656.486052416] [localization_monitor]:   ( +1.40, +2.20)  잔차  50.0㎝  표본 66[0m
+1794590656.4928312 [localization_monitor-10] [33m[WARN] [1794590656.487150691] [localization_monitor]:   ( +1.80, +2.20)  잔차  47.4㎝  표본 447[0m
+1794590656.5718234 [map_controller-19] [0m[INFO] [1794590656.570785080] [map_controller]: [BUMP #2] 후진 끝: 여유 8.2cm + 관성 3.5cm ≥ 10cm  밀기 6.0cm/0.72s + 관성 35.8cm/0.66s heading오차 +42°→-6° 누적후진 41.8cm[0m
+1794590656.5754743 [map_controller-19] [0m[INFO] [1794590656.574991229] [map_controller]: [MAP] κ=3.835  L1=1.20  steer=11.8°  spd=1.40m/s  (실측 0.00)[0m
+1794590656.6045778 [frenet_planner-15] [0m[INFO] [1794590656.603346334] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.56s  60.9ms  속도×0.71  [추월가능][0m
+1794590657.0944738 [map_controller-19] [0m[INFO] [1794590657.093406954] [map_controller]: [MAP] κ=2.183  L1=1.20  steer=22.3°  spd=1.40m/s  (실측 0.52)[0m
+1794590657.1541302 [frenet_planner-15] [0m[INFO] [1794590657.152630235] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.97s  68.0ms  속도×0.71  [추월가능][0m
+1794590657.2909918 [map_controller-19] [33m[WARN] [1794590657.289938802] [map_controller]: [BUMP #3] 트리거 여유 24.7cm@-40° (선 28.3cm = 3cm + 선행 25.3cm, 91점) 속도 +1.26㎧ → BRAKING/path δ=+0.0° heading오차 -2° (뒤 좌 0.87 / 우 0.59m)[0m
+1794590657.6851237 [frenet_planner-15] [0m[INFO] [1794590657.683824764] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  53.6ms  속도×0.71  [추월가능][0m
+1794590658.2551897 [frenet_planner-15] [0m[INFO] [1794590658.253849449] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  123.6ms  속도×0.71  [추월가능][0m
+1794590658.4738877 [localization_monitor-10] [0m[INFO] [1794590658.472641681] [localization_monitor]: [loc:v1.1] 잔차 평균  10.7㎝  중앙   7.9㎝  90%  20.0㎝  근거리<2m 11.5㎝ / 원거리  8.0㎝  빔 7038/80스캔[0m
+1794590658.8217988 [frenet_planner-15] [0m[INFO] [1794590658.820842614] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.12s  54.6ms  속도×0.71  [추월가능][0m
+1794590659.0725129 [map_controller-19] [0m[INFO] [1794590659.071345450] [map_controller]: [BUMP #3] 후진 끝: 여유 3.0cm + 관성 13.1cm ≥ 10cm  밀기 10.3cm/0.94s + 관성 64.8cm/0.84s heading오차 -2°→-24° 누적후진 74.5cm[0m
+1794590659.0803003 [map_controller-19] [0m[INFO] [1794590659.079118208] [map_controller]: [MAP] κ=3.835  L1=1.20  steer=18.3°  spd=1.40m/s  (실측 0.00)[0m
+1794590659.3813429 [frenet_planner-15] [0m[INFO] [1794590659.380188306] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.64s  51.2ms  속도×0.71  [추월가능][0m
+1794590659.5938320 [map_controller-19] [0m[INFO] [1794590659.592402347] [map_controller]: [MAP] κ=0.097  L1=1.20  steer=16.1°  spd=1.40m/s  (실측 0.53)[0m
+1794590659.7642975 [map_controller-19] [33m[WARN] [1794590659.763296936] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 4회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590659.8149807 [map_controller-19] [33m[WARN] [1794590659.813860456] [map_controller]: [BUMP #4] 트리거 여유 26.5cm@-40° (선 29.0cm = 3cm + 선행 26.0cm, 33점) 속도 +1.30㎧ → BRAKING/path δ=+0.0° heading오차 -17° (뒤 좌 0.96 / 우 0.52m)[0m
+1794590659.9398208 [frenet_planner-15] [0m[INFO] [1794590659.938717141] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.19s  77.6ms  속도×0.71  [추월가능][0m
+1794590660.4680481 [localization_monitor-10] [0m[INFO] [1794590660.466762611] [localization_monitor]: [loc:정지] 잔차 평균   9.3㎝  중앙   7.7㎝  90%  17.4㎝  근거리<2m  9.9㎝ / 원거리  6.8㎝  빔 7066/80스캔[0m
+1794590660.5700798 [frenet_planner-15] [0m[INFO] [1794590660.568995253] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  173.4ms  속도×0.71  [추월가능][0m
+1794590661.1001365 [frenet_planner-15] [0m[INFO] [1794590661.099018770] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  62.6ms  속도×0.71  [추월가능][0m
+1794590661.6480520 [frenet_planner-15] [0m[INFO] [1794590661.646953383] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.39s  42.0ms  속도×0.71  [추월가능][0m
+1794590661.7113826 [map_controller-19] [0m[INFO] [1794590661.710197783] [map_controller]: [BUMP #4] 후진 끝: 여유 1.9cm + 관성 12.4cm ≥ 10cm  밀기 9.4cm/0.98s + 관성 68.7cm/0.92s heading오차 -17°→-23° 누적후진 78.0cm[0m
+1794590661.7150965 [map_controller-19] [0m[INFO] [1794590661.714461118] [map_controller]: [MAP] κ=2.716  L1=1.20  steer=17.6°  spd=1.40m/s  (실측 0.00)[0m
+1794590662.2160501 [map_controller-19] [0m[INFO] [1794590662.214997975] [map_controller]: [MAP] κ=1.917  L1=1.20  steer=14.3°  spd=1.40m/s  (실측 0.42)[0m
+1794590662.2312076 [frenet_planner-15] [0m[INFO] [1794590662.230051635] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.05s  60.0ms  속도×0.71  [추월가능][0m
+1794590662.4319005 [map_controller-19] [33m[WARN] [1794590662.431223663] [map_controller]: [BUMP #5] 트리거 여유 27.3cm@-40° (선 28.0cm = 3cm + 선행 25.0cm, 4점) 속도 +1.25㎧ → BRAKING/path δ=+0.0° heading오차 -13° (뒤 좌 0.70 / 우 0.52m)[0m
+1794590662.4812384 [localization_monitor-10] [0m[INFO] [1794590662.479935572] [localization_monitor]: [loc:v1.3] 잔차 평균  10.8㎝  중앙   8.8㎝  90%  20.4㎝  근거리<2m 11.8㎝ / 원거리  6.9㎝  빔 7038/79스캔[0m
+1794590662.7650502 [frenet_planner-15] [0m[INFO] [1794590662.762972781] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.03s  171.1ms  속도×0.71  [추월가능][0m
+1794590663.3518851 [frenet_planner-15] [0m[INFO] [1794590663.349791952] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.51  ttc=inf  61.1ms  속도×0.66  [추월가능][0m
+1794590663.4147797 [mission_manager-14] [0m[INFO] [1794590663.413563090] [mission_manager]: LAP 2 완료! (10.44s)[0m
+1794590663.8991914 [frenet_planner-15] [0m[INFO] [1794590663.898076016] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  52.3ms  속도×0.71  [추월가능][0m
+1794590664.2510846 [map_controller-19] [0m[INFO] [1794590664.250033934] [map_controller]: [BUMP #5] 후진 끝: 여유 5.1cm + 관성 6.0cm ≥ 10cm  밀기 6.5cm/0.96s + 관성 67.1cm/0.86s heading오차 -13°→-21° 누적후진 73.6cm[0m
+1794590664.2623329 [map_controller-19] [0m[INFO] [1794590664.261384533] [map_controller]: [MAP] κ=0.761  L1=1.20  steer=16.7°  spd=1.40m/s  (실측 0.00)[0m
+1794590664.4293852 [frenet_planner-15] [0m[INFO] [1794590664.428094159] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.40s  40.9ms  속도×0.71  [추월가능][0m
+1794590664.4754457 [localization_monitor-10] [0m[INFO] [1794590664.474219042] [localization_monitor]: [loc:정지] 잔차 평균   9.9㎝  중앙   8.3㎝  90%  18.1㎝  근거리<2m 10.5㎝ / 원거리  7.4㎝  빔 7108/80스캔[0m
+1794590664.7729480 [map_controller-19] [0m[INFO] [1794590664.771921420] [map_controller]: [MAP] κ=0.590  L1=1.20  steer=12.4°  spd=1.40m/s  (실측 0.63)[0m
+1794590664.9723167 [frenet_planner-15] [0m[INFO] [1794590664.971202508] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.18s  66.5ms  속도×0.71  [추월가능][0m
+1794590665.0317550 [map_controller-19] [33m[WARN] [1794590665.031347163] [map_controller]: [BUMP #6] 트리거 여유 28.3cm@-39° (선 30.3cm = 3cm + 선행 27.3cm, 21점) 속도 +1.37㎧ → BRAKING/path δ=+0.0° heading오차 -8° (뒤 좌 0.57 / 우 0.46m)[0m
+1794590665.4873533 [frenet_planner-15] [0m[INFO] [1794590665.486185584] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.49  ttc=inf  55.5ms  속도×0.67  [추월가능][0m
+1794590665.5942302 [map_controller-19] [0m[INFO] [1794590665.593181737] [map_controller]: [BUMP #6] 후진 끝: 여유 12.0cm + 관성 0.1cm ≥ 10cm  밀기 0.0cm/0.54s + 관성 0.0cm/0.02s heading오차 -8°→+17° 누적후진 0.0cm[0m
+1794590665.5987098 [map_controller-19] [0m[INFO] [1794590665.598127717] [map_controller]: [MAP] κ=0.562  L1=1.20  steer=-1.4°  spd=1.40m/s  (실측 0.00)[0m
+1794590666.0723605 [frenet_planner-15] [0m[INFO] [1794590666.071237532] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  54.2ms  속도×0.71  [추월가능][0m
+1794590666.1030245 [map_controller-19] [0m[INFO] [1794590666.101971625] [map_controller]: [MAP] κ=3.862  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.27)[0m
+1794590666.2535725 [map_controller-19] [33m[WARN] [1794590666.252540164] [map_controller]: [BUMP #7] 트리거 여유 15.3cm@-40° (선 16.0cm = 3cm + 선행 13.0cm, 8점) 속도 +0.65㎧ → BRAKING/free_side δ=+0.0° heading오차 +16° (뒤 좌 0.81 / 우 0.25m)[0m
+1794590666.4945307 [localization_monitor-10] [0m[INFO] [1794590666.492036029] [localization_monitor]: [loc:v1.0] 잔차 평균   8.4㎝  중앙   6.9㎝  90%  14.6㎝  근거리<2m  8.0㎝ / 원거리 10.3㎝  빔 7099/80스캔[0m
+1794590666.5853529 [frenet_planner-15] [0m[INFO] [1794590666.583734194] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  79.1ms  속도×0.71  [추월가능][0m
+1794590667.0941072 [frenet_planner-15] [0m[INFO] [1794590667.093030786] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  39.2ms  속도×0.71  [추월가능][0m
+1794590667.3162003 [map_controller-19] [33m[WARN] [1794590667.314014802] [map_controller]: AMCL 보정 2cm / 1° 를 1cm / 0° 로 제한 (누적 5회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590667.6346793 [frenet_planner-15] [0m[INFO] [1794590667.632610001] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  59.7ms  속도×0.71  [추월가능][0m
+1794590667.8564954 [map_controller-19] [0m[INFO] [1794590667.855474044] [map_controller]: [BUMP #7] 후진 끝: 여유 8.7cm + 관성 2.1cm ≥ 10cm  밀기 2.9cm/0.87s + 관성 61.4cm/0.73s heading오차 +16°→-21° 누적후진 64.7cm[0m
+1794590667.8608041 [map_controller-19] [0m[INFO] [1794590667.858905576] [map_controller]: [MAP] κ=0.423  L1=1.20  steer=19.7°  spd=1.40m/s  (실측 0.00)[0m
+1794590668.1851623 [frenet_planner-15] [0m[INFO] [1794590668.183983413] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.41  ttc=inf  49.2ms  속도×0.71  [추월가능][0m
+1794590668.3755908 [map_controller-19] [0m[INFO] [1794590668.374558819] [map_controller]: [MAP] κ=1.980  L1=1.20  steer=20.7°  spd=1.40m/s  (실측 0.39)[0m
+1794590668.4725528 [localization_monitor-10] [0m[INFO] [1794590668.471342105] [localization_monitor]: [loc:v0.9] 잔차 평균   8.2㎝  중앙   4.7㎝  90%  17.9㎝  근거리<2m  7.0㎝ / 원거리 19.1㎝  빔 7100/80스캔[0m
+1794590668.7205296 [frenet_planner-15] [0m[INFO] [1794590668.719405537] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  71.1ms  속도×0.71  [추월가능][0m
+1794590668.8762980 [map_controller-19] [0m[INFO] [1794590668.875240963] [map_controller]: [MAP] κ=1.466  L1=1.20  steer=27.2°  spd=1.28m/s  (실측 1.61)[0m
+1794590669.3435841 [map_controller-19] [33m[WARN] [1794590669.342701065] [map_controller]: AMCL 보정 1cm / 1° 를 1cm / 0° 로 제한 (누적 10회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590669.3453996 [frenet_planner-15] [0m[INFO] [1794590669.343433312] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  82.5ms  속도×0.71  [추월가능][0m
+1794590669.3945379 [map_controller-19] [0m[INFO] [1794590669.393480272] [map_controller]: [MAP] κ=0.203  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.49)[0m
+1794590669.4159617 [map_controller-19] [33m[WARN] [1794590669.411971705] [map_controller]: [BUMP #8] 트리거 여유 30.3cm@-6° (선 32.9cm = 3cm + 선행 29.9cm, 55점) 속도 +1.49㎧ → BRAKING/path δ=+0.0° heading오차 +4° (뒤 좌 0.74 / 우 0.80m)[0m
+1794590669.8518531 [frenet_planner-15] [0m[INFO] [1794590669.850700658] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  67.8ms  속도×0.71  [추월가능][0m
+1794590670.3814876 [frenet_planner-15] [0m[INFO] [1794590670.380383529] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=11.57s  42.8ms  속도×0.78  [추월가능][0m
+1794590670.4746642 [localization_monitor-10] [0m[INFO] [1794590670.473338790] [localization_monitor]: [loc:v1.1] 잔차 평균   7.9㎝  중앙   4.4㎝  90%  13.6㎝  근거리<2m  7.0㎝ / 원거리 14.6㎝  빔 7015/80스캔[0m
+1794590670.8925157 [frenet_planner-15] [0m[INFO] [1794590670.891420978] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  52.4ms  속도×0.71  [추월가능][0m
+1794590671.0956762 [map_controller-19] [0m[INFO] [1794590671.094332614] [map_controller]: [BUMP #8] 후진 끝: 여유 2.4cm + 관성 11.5cm ≥ 10cm  밀기 9.6cm/0.93s + 관성 63.3cm/0.75s heading오차 +4°→-16° 누적후진 72.8cm[0m
+1794590671.1046593 [map_controller-19] [0m[INFO] [1794590671.102413382] [map_controller]: [MAP] κ=4.588  L1=1.20  steer=16.9°  spd=1.40m/s  (실측 0.00)[0m
+1794590671.4120243 [frenet_planner-15] [0m[INFO] [1794590671.410708352] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.9ms  속도×0.78  [추월가능][0m
+1794590671.6144335 [map_controller-19] [0m[INFO] [1794590671.613411438] [map_controller]: [MAP] κ=2.504  L1=1.20  steer=18.2°  spd=1.40m/s  (실측 0.37)[0m
+1794590671.7308843 [map_controller-19] [33m[WARN] [1794590671.724681295] [map_controller]: AMCL 보정 1cm / 0° 를 0cm / 0° 로 제한 (누적 13회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590671.9076228 [map_controller-19] [33m[WARN] [1794590671.905718031] [map_controller]: [BUMP #9] 트리거 여유 27.4cm@-40° (선 28.5cm = 3cm + 선행 25.5cm, 21점) 속도 +1.28㎧ → BRAKING/path δ=+0.0° heading오차 -15° (뒤 좌 0.61 / 우 0.99m)[0m
+1794590671.9148116 [frenet_planner-15] [0m[INFO] [1794590671.911184700] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  89.1ms  속도×0.78  [추월가능][0m
+1794590672.2755728 [mission_manager-14] [0m[INFO] [1794590672.272382145] [mission_manager]: LAP 3 완료! (8.86s)[0m
+1794590672.4714553 [localization_monitor-10] [0m[INFO] [1794590672.470887114] [localization_monitor]: [loc:정지] 잔차 평균   9.0㎝  중앙   5.1㎝  90%  19.3㎝  근거리<2m  8.5㎝ / 원거리 12.2㎝  빔 6977/80스캔[0m
+1794590672.5405004 [frenet_planner-15] [0m[INFO] [1794590672.539479684] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  141.4ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590673.1292007 [frenet_planner-15] [0m[INFO] [1794590673.128277835] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  98.3ms  속도×0.71  [추월금지 추종 gap=infm][0m
+1794590673.6300440 [frenet_planner-15] [0m[INFO] [1794590673.628932237] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.03s  56.8ms  속도×0.25  [추월금지 추종 gap=1.94m][0m
+1794590673.7333784 [map_controller-19] [0m[INFO] [1794590673.731574844] [map_controller]: [BUMP #9] 후진 끝: 여유 -0.9cm + 관성 13.3cm ≥ 10cm  밀기 10.6cm/0.97s + 관성 65.3cm/0.86s heading오차 -15°→-20° 누적후진 75.7cm[0m
+1794590673.7361333 [map_controller-19] [0m[INFO] [1794590673.735524953] [map_controller]: [MAP] κ=2.336  L1=1.20  steer=17.8°  spd=1.40m/s  (실측 0.00)[0m
+1794590674.1625638 [frenet_planner-15] [0m[INFO] [1794590674.161475936] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.1ms  속도×0.78  [추월가능][0m
+1794590674.2539918 [map_controller-19] [0m[INFO] [1794590674.253023985] [map_controller]: [MAP] κ=0.480  L1=1.20  steer=15.7°  spd=1.40m/s  (실측 0.57)[0m
+1794590674.4616232 [map_controller-19] [33m[WARN] [1794590674.461202924] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 15회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590674.4736369 [map_controller-19] [33m[WARN] [1794590674.472235209] [map_controller]: [BUMP #10] 트리거 여유 26.6cm@-36° (선 29.0cm = 3cm + 선행 26.0cm, 50점) 속도 +1.30㎧ → BRAKING/path δ=+0.0° heading오차 -13° (뒤 좌 0.49 / 우 0.51m)[0m
+1794590674.5022843 [localization_monitor-10] [0m[INFO] [1794590674.501085818] [localization_monitor]: [loc:v1.3] 잔차 평균   8.5㎝  중앙   5.1㎝  90%  16.5㎝  근거리<2m  8.1㎝ / 원거리 16.0㎝  빔 6989/79스캔[0m
+1794590674.6212583 [mission_manager-14] [0m[INFO] [1794590674.620179283] [mission_manager]: LAP 4 완료! (2.35s)[0m
+1794590674.7697964 [frenet_planner-15] [0m[INFO] [1794590674.768685006] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  82.7ms  속도×0.71  [추월가능][0m
+1794590675.2957952 [frenet_planner-15] [0m[INFO] [1794590675.294646417] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=21.44s  40.4ms  속도×0.71  [추월가능][0m
+1794590675.8819253 [frenet_planner-15] [0m[INFO] [1794590675.880834439] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  84.2ms  속도×0.71  [추월가능][0m
+1794590676.3531077 [map_controller-19] [0m[INFO] [1794590676.351976644] [map_controller]: [BUMP #10] 후진 끝: 여유 -0.9cm + 관성 11.8cm ≥ 10cm  밀기 8.0cm/1.00s + 관성 69.7cm/0.88s heading오차 -13°→-13° 누적후진 78.0cm[0m
+1794590676.3562722 [map_controller-19] [0m[INFO] [1794590676.355773660] [map_controller]: [MAP] κ=3.602  L1=1.20  steer=14.0°  spd=1.40m/s  (실측 0.00)[0m
+1794590676.4211617 [frenet_planner-15] [0m[INFO] [1794590676.420072655] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  69.0ms  속도×0.78  [추월가능][0m
+1794590676.4789789 [localization_monitor-10] [0m[INFO] [1794590676.477780625] [localization_monitor]: [loc:정지] 잔차 평균   7.3㎝  중앙   4.8㎝  90%  14.7㎝  근거리<2m  6.8㎝ / 원거리 24.1㎝  빔 7072/81스캔[0m
+1794590676.4826481 [localization_monitor-10] [33m[WARN] [1794590676.481615370] [localization_monitor]: [map] 잔차 공간분포 64칸: 중앙 11.7㎝ / 상위5 평균 66.6㎝ (비 5.7배) — **국소 불일치**: 아래 좌표의 벽이 맵과 다르다 (구조물 이동 의심)[0m
+1794590676.4857669 [localization_monitor-10] [33m[WARN] [1794590676.482786095] [localization_monitor]:   ( +2.20, +0.60)  잔차  84.7㎝  표본 188[0m
+1794590676.4862516 [localization_monitor-10] [33m[WARN] [1794590676.484477189] [localization_monitor]:   ( -0.20, -1.40)  잔차  77.8㎝  표본 258[0m
+1794590676.4871802 [localization_monitor-10] [33m[WARN] [1794590676.485468740] [localization_monitor]:   ( +0.20, -1.00)  잔차  61.1㎝  표본 76[0m
+1794590676.4877763 [localization_monitor-10] [33m[WARN] [1794590676.486417186] [localization_monitor]:   ( +2.20, +2.20)  잔차  55.3㎝  표본 848[0m
+1794590676.4888766 [localization_monitor-10] [33m[WARN] [1794590676.487378369] [localization_monitor]:   ( -0.20, -1.00)  잔차  54.2㎝  표본 669[0m
+1794590676.8640034 [map_controller-19] [0m[INFO] [1794590676.862967150] [map_controller]: [MAP] κ=1.604  L1=1.20  steer=17.6°  spd=1.40m/s  (실측 0.52)[0m
+1794590677.0112832 [frenet_planner-15] [0m[INFO] [1794590677.010100958] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  57.0ms  속도×0.78  [추월가능][0m
+1794590677.0567462 [map_controller-19] [33m[WARN] [1794590677.055727650] [map_controller]: [BUMP #11] 트리거 여유 22.8cm@-38° (선 26.6cm = 3cm + 선행 23.6cm, 72점) 속도 +1.18㎧ → BRAKING/path δ=+0.0° heading오차 -1° (뒤 좌 0.43 / 우 0.52m)[0m
+1794590677.0727377 [mission_manager-14] [0m[INFO] [1794590677.071610329] [mission_manager]: LAP 5 완료! (2.45s)[0m
+1794590677.1827092 [map_controller-19] [33m[WARN] [1794590677.181690036] [map_controller]: AMCL 보정 3cm / 2° 를 1cm / 0° 로 제한 (누적 17회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590677.5899007 [frenet_planner-15] [0m[INFO] [1794590677.588774567] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  69.3ms  속도×0.71  [추월가능][0m
+1794590678.1628575 [frenet_planner-15] [0m[INFO] [1794590678.161694522] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=8.42s  50.8ms  속도×0.71  [추월가능][0m
+1794590678.4721422 [localization_monitor-10] [0m[INFO] [1794590678.470786703] [localization_monitor]: [loc:v0.8] 잔차 평균   6.6㎝  중앙   4.8㎝  90%  13.6㎝  근거리<2m  6.3㎝ / 원거리 21.1㎝  빔 6914/79스캔[0m
+1794590678.7406495 [frenet_planner-15] [0m[INFO] [1794590678.740144572] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  124.0ms  속도×0.71  [추월가능][0m
+1794590678.8905816 [map_controller-19] [0m[INFO] [1794590678.889621430] [map_controller]: [BUMP #11] 후진 끝: 여유 2.8cm + 관성 8.4cm ≥ 10cm  밀기 8.4cm/0.96s + 관성 65.4cm/0.88s heading오차 -1°→-8° 누적후진 73.8cm[0m
+1794590678.8931956 [map_controller-19] [0m[INFO] [1794590678.892694359] [map_controller]: [MAP] κ=1.873  L1=1.20  steer=11.1°  spd=1.40m/s  (실측 0.00)[0m
+1794590679.2519765 [frenet_planner-15] [0m[INFO] [1794590679.251232074] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=1.89s  65.7ms  속도×0.25  [추월금지 추종 gap=1.46m][0m
+1794590679.3595445 [mission_manager-14] [0m[INFO] [1794590679.355675603] [mission_manager]: LAP 6 완료! (2.28s)[0m
+1794590679.4013703 [map_controller-19] [0m[INFO] [1794590679.400369786] [map_controller]: [MAP] κ=3.113  L1=1.20  steer=18.0°  spd=1.40m/s  (실측 0.56)[0m
+1794590679.5537689 [map_controller-19] [33m[WARN] [1794590679.552216928] [map_controller]: [BUMP #12] 트리거 여유 23.0cm@-40° (선 25.3cm = 3cm + 선행 22.3cm, 25점) 속도 +1.12㎧ → BRAKING/path δ=+0.0° heading오차 +11° (뒤 좌 0.38 / 우 0.56m)[0m
+1794590679.6329751 [map_controller-19] [33m[WARN] [1794590679.632235908] [map_controller]: AMCL 보정 1cm / 0° 를 1cm / 0° 로 제한 (누적 19회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590679.7945144 [frenet_planner-15] [0m[INFO] [1794590679.793480595] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.20s  71.2ms  속도×0.71  [추월가능][0m
+1794590680.2979403 [frenet_planner-15] [0m[INFO] [1794590680.296827245] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=10.83s  51.6ms  속도×0.71  [추월가능][0m
+1794590680.4825635 [localization_monitor-10] [0m[INFO] [1794590680.481306075] [localization_monitor]: [loc:v0.4] 잔차 평균   5.9㎝  중앙   4.3㎝  90%  13.4㎝  근거리<2m  5.6㎝ / 원거리 22.6㎝  빔 7009/80스캔[0m
+1794590680.9020567 [frenet_planner-15] [0m[INFO] [1794590680.901000606] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.43s  83.3ms  속도×0.71  [추월가능][0m
+1794590681.4239771 [frenet_planner-15] [0m[INFO] [1794590681.422881763] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=2.90s  73.2ms  속도×0.71  [추월가능][0m
+1794590681.4512260 [map_controller-19] [0m[INFO] [1794590681.450199812] [map_controller]: [BUMP #12] 후진 끝: 여유 0.2cm + 관성 11.3cm ≥ 10cm  밀기 8.7cm/1.00s + 관성 71.7cm/0.90s heading오차 +11°→-37° 누적후진 80.8cm[0m
+1794590681.4560735 [map_controller-19] [0m[INFO] [1794590681.454255332] [map_controller]: [MAP] κ=0.837  L1=1.20  steer=15.4°  spd=1.40m/s  (실측 0.00)[0m
+1794590681.9593647 [map_controller-19] [0m[INFO] [1794590681.958296533] [map_controller]: [MAP] κ=1.500  L1=1.20  steer=7.6°  spd=1.40m/s  (실측 0.38)[0m
+1794590681.9772608 [frenet_planner-15] [0m[INFO] [1794590681.976262509] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  49.0ms  속도×0.78  [추월금지 추종 gap=1.42m][0m
+1794590682.0151689 [mission_manager-14] [0m[INFO] [1794590682.013984599] [mission_manager]: LAP 7 완료! (2.66s)[0m
+1794590682.1057491 [map_controller-19] [33m[WARN] [1794590682.104755888] [map_controller]: AMCL 보정 2cm / 0° 를 1cm / 0° 로 제한 (누적 21회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590682.4737198 [localization_monitor-10] [0m[INFO] [1794590682.472595530] [localization_monitor]: [loc:v1.6] 잔차 평균   7.1㎝  중앙   5.8㎝  90%  14.2㎝  근거리<2m  6.6㎝ / 원거리 23.6㎝  빔 6741/79스캔[0m
+1794590682.4758480 [map_controller-19] [0m[INFO] [1794590682.474701453] [map_controller]: [MAP] κ=0.313  L1=1.20  steer=26.9°  spd=1.28m/s  (실측 1.65)[0m
+1794590682.5447404 [frenet_planner-15] [0m[INFO] [1794590682.543690677] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.35s  71.3ms  속도×0.71  [추월가능][0m
+1794590682.7054152 [map_controller-19] [33m[WARN] [1794590682.704059016] [map_controller]: [BUMP #13] 트리거 여유 33.5cm@-28° (선 35.8cm = 3cm + 선행 32.8cm, 112점) 속도 +1.64㎧ → BRAKING/path δ=+0.0° heading오차 +20° (뒤 좌 0.75 / 우 0.65m)[0m
+1794590683.1168580 [frenet_planner-15] [0m[INFO] [1794590683.115652843] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=3.71s  81.6ms  속도×0.71  [추월금지 추종 gap=1.69m][0m
+1794590683.6397791 [frenet_planner-15] [0m[INFO] [1794590683.638659381] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=15.17s  44.8ms  속도×0.71  [추월금지 추종 gap=1.52m][0m
+1794590684.1977379 [frenet_planner-15] [0m[INFO] [1794590684.196620561] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=17.95s  65.3ms  속도×0.71  [추월금지 추종 gap=1.79m][0m
+1794590684.4746528 [map_controller-19] [0m[INFO] [1794590684.473655954] [map_controller]: [BUMP #13] 후진 끝: 여유 5.5cm + 관성 6.5cm ≥ 10cm  밀기 9.1cm/0.91s + 관성 61.6cm/0.86s heading오차 +20°→-21° 누적후진 70.5cm[0m
+1794590684.4794128 [map_controller-19] [0m[INFO] [1794590684.478714962] [map_controller]: [MAP] κ=0.491  L1=1.20  steer=19.1°  spd=1.40m/s  (실측 0.00)[0m
+1794590684.4885657 [localization_monitor-10] [0m[INFO] [1794590684.484718416] [localization_monitor]: [loc:정지] 잔차 평균   8.0㎝  중앙   6.4㎝  90%  14.7㎝  근거리<2m  7.8㎝ / 원거리 17.5㎝  빔 6327/80스캔[0m
+1794590684.7252970 [frenet_planner-15] [0m[INFO] [1794590684.724207820] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=19.09s  43.7ms  속도×0.71  [추월가능][0m
+1794590684.9957268 [map_controller-19] [0m[INFO] [1794590684.993697726] [map_controller]: [MAP] κ=3.983  L1=1.20  steer=19.2°  spd=1.40m/s  (실측 0.67)[0m
+1794590685.2372460 [frenet_planner-15] [0m[INFO] [1794590685.236186202] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=5.67s  62.3ms  속도×0.71  [추월가능][0m
+1794590685.5045631 [map_controller-19] [0m[INFO] [1794590685.502472198] [map_controller]: [MAP] κ=3.922  L1=1.20  steer=26.6°  spd=1.29m/s  (실측 1.61)[0m
+1794590686.4338670 [map_controller-19] [33m[WARN] [1794590685.734021895] [map_controller]: [BUMP #14] 트리거 여유 31.6cm@-37° (선 35.0cm = 3cm + 선행 32.0cm, 124점) 속도 +1.60㎧ → BRAKING/path δ=+0.0° heading오차 +10° (뒤 좌 0.73 / 우 0.68m)[0m
+1794590686.4354258 [map_controller-19] [33m[WARN] [1794590685.758047808] [map_controller]: AMCL 보정 3cm / 2° 를 4cm / 1° 로 제한 (누적 25회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590686.4394164 [frenet_planner-15] [0m[INFO] [1794590685.803094418] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.95s  65.8ms  속도×0.71  [추월가능][0m
+1794590686.4416165 [frenet_planner-15] [0m[INFO] [1794590686.351554466] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.64s  42.0ms  속도×0.71  [추월가능][0m
+1794590686.4845593 [mission_manager-14] [0m[INFO] [1794590686.483498899] [mission_manager]: LAP 8 완료! (4.46s)[0m
+1794590686.4871469 [localization_monitor-10] [0m[INFO] [1794590686.485957697] [localization_monitor]: [loc:v0.6] 잔차 평균  10.8㎝  중앙   8.8㎝  90%  20.3㎝  근거리<2m 11.0㎝ / 원거리  9.0㎝  빔 7139/80스캔[0m
+1794590686.9723856 [frenet_planner-15] [0m[INFO] [1794590686.971725329] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=0.85s  58.4ms  속도×0.71  [추월가능][0m
+1794590687.4177389 [map_controller-19] [0m[INFO] [1794590687.416888860] [map_controller]: [BUMP #14] 후진 끝: 여유 4.4cm + 관성 8.3cm ≥ 10cm  밀기 8.9cm/0.81s + 관성 60.3cm/0.88s heading오차 +10°→-19° 누적후진 69.5cm[0m
+1794590687.4216409 [map_controller-19] [0m[INFO] [1794590687.421140131] [map_controller]: [MAP] κ=3.303  L1=1.20  steer=5.2°  spd=1.40m/s  (실측 0.00)[0m
+1794590687.5479815 [frenet_planner-15] [0m[INFO] [1794590687.546882031] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=16.27s  75.5ms  속도×0.71  [추월금지 추종 gap=1.63m][0m
+1794590687.9321918 [map_controller-19] [0m[INFO] [1794590687.931229365] [map_controller]: [MAP] κ=0.803  L1=1.20  steer=14.9°  spd=1.40m/s  (실측 0.52)[0m
+1794590688.1643023 [frenet_planner-15] [0m[INFO] [1794590688.159596050] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=15.94s  80.6ms  속도×0.71  [추월금지 추종 gap=1.59m][0m
+1794590688.3718531 [map_controller-19] [33m[WARN] [1794590688.370782160] [map_controller]: [BUMP #15] 트리거 여유 34.4cm@-40° (선 34.5cm = 3cm + 선행 31.5cm, 2점) 속도 +1.57㎧ → BRAKING/path δ=+0.0° heading오차 -7° (뒤 좌 0.58 / 우 0.47m)[0m
+1794590688.4114311 [map_controller-19] [33m[WARN] [1794590688.409842436] [map_controller]: AMCL 보정 3cm / 1° 를 3cm / 1° 로 제한 (누적 26회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590688.4696872 [localization_monitor-10] [0m[INFO] [1794590688.467729196] [localization_monitor]: [loc:v1.6] 잔차 평균  29.8㎝  중앙  24.8㎝  90%  57.0㎝  근거리<2m 30.8㎝ / 원거리 26.4㎝  빔 6347/80스캔[0m
+1794590688.7561903 [frenet_planner-15] [0m[INFO] [1794590688.747113688] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.52  ttc=1.17s  65.0ms  속도×0.65  [추월가능][0m
+1794590688.8950546 [map_controller-19] [0m[INFO] [1794590688.893958849] [map_controller]: [BUMP #15] 후진 끝: 여유 42.5cm + 관성 0.0cm ≥ 10cm  밀기 0.0cm/0.53s + 관성 0.0cm/0.00s heading오차 -7°→+13° 누적후진 0.0cm[0m
+1794590688.9041543 [map_controller-19] [0m[INFO] [1794590688.903208006] [map_controller]: [MAP] κ=1.935  L1=1.20  steer=9.6°  spd=1.40m/s  (실측 0.00)[0m
+1794590689.3568292 [frenet_planner-15] [0m[INFO] [1794590689.355754971] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=13.11s  156.3ms  속도×0.71  [추월가능][0m
+1794590689.4142280 [map_controller-19] [0m[INFO] [1794590689.413235831] [map_controller]: [MAP] κ=0.231  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 0.22)[0m
+1794590689.8792171 [frenet_planner-15] [0m[INFO] [1794590689.876946830] [frenet_planner]: [frenet] TRACK  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=1.47s  65.4ms  속도×0.71  [추월가능][0m
+1794590689.9149992 [map_controller-19] [0m[INFO] [1794590689.913961474] [map_controller]: [MAP] κ=3.663  L1=1.20  steer=27.5°  spd=1.27m/s  (실측 1.30)[0m
+1794590690.4326513 [map_controller-19] [0m[INFO] [1794590690.431922543] [map_controller]: [MAP] κ=2.357  L1=1.20  steer=27.5°  spd=1.09m/s  (실측 1.41)[0m
+1794590690.7034378 [frenet_planner-15] [0m[INFO] [1794590690.436962799] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  100.7ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590690.7051992 [map_controller-19] [33m[WARN] [1794590690.444856904] [map_controller]: AMCL 보정 1cm / 1° 를 1cm / 0° 로 제한 (누적 29회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590690.7054029 [map_controller-19] [0m[INFO] [1794590690.461562265] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.12㎧[0m
+1794590690.7055485 [map_controller-19] [33m[WARN] [1794590690.598450023] [map_controller]: [BUMP #16] 트리거 여유 27.8cm@+19° (선 29.1cm = 3cm + 선행 26.1cm, 18점) 속도 +1.30㎧ → BRAKING/path δ=+0.0° heading오차 +7° (뒤 좌 0.98 / 우 0.56m)[0m
+1794590690.7060866 [localization_monitor-10] [0m[INFO] [1794590690.478572468] [localization_monitor]: [loc:v1.3] 잔차 평균  22.4㎝  중앙  20.0㎝  90%  37.4㎝  근거리<2m 22.1㎝ / 원거리 26.9㎝  빔 7091/80스캔[0m
+1794590690.9603007 [frenet_planner-15] [0m[INFO] [1794590690.959180034] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.41  ttc=inf  63.5ms  속도×0.70  [추월금지 추종 gap=2.17m][0m
+1794590691.5571861 [frenet_planner-15] [0m[INFO] [1794590691.556094675] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  64.9ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590692.0966861 [frenet_planner-15] [0m[INFO] [1794590692.095980503] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  59.2ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590692.3965964 [map_controller-19] [0m[INFO] [1794590692.394847405] [map_controller]: [BUMP #16] 후진 끝: 여유 -0.1cm + 관성 12.2cm ≥ 10cm  밀기 11.5cm/0.94s + 관성 68.8cm/0.86s heading오차 +7°→-16° 누적후진 80.2cm[0m
+1794590692.4052017 [map_controller-19] [0m[INFO] [1794590692.404396219] [map_controller]: [출발제한] 상한 1.39㎧²  1.40→1.31㎧[0m
+1794590692.4158235 [map_controller-19] [0m[INFO] [1794590692.413840870] [map_controller]: [MAP] κ=2.366  L1=1.20  steer=17.6°  spd=1.31m/s  (실측 0.00)[0m
+1794590692.4972615 [localization_monitor-10] [0m[INFO] [1794590692.480200891] [localization_monitor]: [loc:정지] 잔차 평균  22.0㎝  중앙  17.0㎝  90%  44.5㎝  근거리<2m 23.6㎝ / 원거리 11.5㎝  빔 6784/80스캔[0m
+1794590692.6488113 [frenet_planner-15] [0m[INFO] [1794590692.647943961] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  39.5ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590692.9199607 [map_controller-19] [0m[INFO] [1794590692.915407949] [map_controller]: [MAP] κ=2.320  L1=1.20  steer=21.0°  spd=1.40m/s  (실측 0.38)[0m
+1794590692.9924779 [map_controller-19] [33m[WARN] [1794590692.985987879] [map_controller]: AMCL 보정 10cm / 0° 를 1cm / 0° 로 제한 (누적 32회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590693.1902387 [map_controller-19] [33m[WARN] [1794590693.189256555] [map_controller]: [BUMP #17] 트리거 여유 28.2cm@-12° (선 29.4cm = 3cm + 선행 26.4cm, 26점) 속도 +1.32㎧ → BRAKING/path δ=+0.0° heading오차 -18° (뒤 좌 0.97 / 우 0.63m)[0m
+1794590693.2068732 [frenet_planner-15] [0m[INFO] [1794590693.205696339] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  72.4ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590693.7651072 [frenet_planner-15] [0m[INFO] [1794590693.764315465] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  91.3ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590694.3340056 [frenet_planner-15] [0m[INFO] [1794590694.332981693] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  76.8ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590694.4754031 [localization_monitor-10] [0m[INFO] [1794590694.474349272] [localization_monitor]: [loc:v1.3] 잔차 평균  11.4㎝  중앙   6.8㎝  90%  25.9㎝  근거리<2m 11.9㎝ / 원거리  8.1㎝  빔 6633/79스캔[0m
+1794590694.9613140 [frenet_planner-15] [0m[INFO] [1794590694.960196558] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  250.7ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590695.0961561 [map_controller-19] [0m[INFO] [1794590695.090461131] [map_controller]: [BUMP #17] 후진 끝: 여유 -3.1cm + 관성 15.0cm ≥ 10cm  밀기 12.8cm/1.05s + 관성 75.5cm/0.85s heading오차 -18°→-17° 누적후진 88.4cm[0m
+1794590695.1215198 [map_controller-19] [0m[INFO] [1794590695.114170585] [map_controller]: [MAP] κ=2.333  L1=1.20  steer=18.2°  spd=1.40m/s  (실측 0.00)[0m
+1794590695.5004182 [frenet_planner-15] [0m[INFO] [1794590695.499336188] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  57.9ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590695.6167016 [map_controller-19] [0m[INFO] [1794590695.615711617] [map_controller]: [MAP] κ=4.588  L1=1.20  steer=20.4°  spd=1.40m/s  (실측 0.38)[0m
+1794590695.8259399 [map_controller-19] [33m[WARN] [1794590695.821363024] [map_controller]: [BUMP #18] 트리거 여유 24.8cm@-26° (선 27.1cm = 3cm + 선행 24.1cm, 65점) 속도 +1.21㎧ → BRAKING/path δ=+0.0° heading오차 -20° (뒤 좌 0.94 / 우 0.70m)[0m
+1794590695.9784882 [map_controller-19] [33m[WARN] [1794590695.977477919] [map_controller]: AMCL 보정 0cm / 0° 를 1cm / 0° 로 제한 (누적 38회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590696.0448980 [frenet_planner-15] [0m[INFO] [1794590696.044126429] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  93.5ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590696.4675138 [localization_monitor-10] [0m[INFO] [1794590696.466745058] [localization_monitor]: [loc:정지] 잔차 평균   8.8㎝  중앙   4.6㎝  90%  18.4㎝  근거리<2m  9.4㎝ / 원거리  5.5㎝  빔 6845/80스캔[0m
+1794590696.4784346 [localization_monitor-10] [33m[WARN] [1794590696.470410294] [localization_monitor]: [map] 잔차 공간분포 72칸: 중앙 15.3㎝ / 상위5 평균 82.5㎝ (비 5.4배) — **국소 불일치**: 아래 좌표의 벽이 맵과 다르다 (구조물 이동 의심)[0m
+1794590696.4809794 [localization_monitor-10] [33m[WARN] [1794590696.471724511] [localization_monitor]:   ( +0.60, -1.40)  잔차  91.9㎝  표본 30[0m
+1794590696.4824424 [localization_monitor-10] [33m[WARN] [1794590696.472754432] [localization_monitor]:   ( +1.00, -1.00)  잔차  85.6㎝  표본 79[0m
+1794590696.4835942 [localization_monitor-10] [33m[WARN] [1794590696.473930821] [localization_monitor]:   ( +2.20, +0.60)  잔차  84.7㎝  표본 188[0m
+1794590696.4877000 [localization_monitor-10] [33m[WARN] [1794590696.474954758] [localization_monitor]:   ( -0.60, -1.40)  잔차  75.2㎝  표본 114[0m
+1794590696.4889889 [localization_monitor-10] [33m[WARN] [1794590696.475929829] [localization_monitor]:   ( -0.20, -1.40)  잔차  75.2㎝  표본 431[0m
+1794590696.5774655 [frenet_planner-15] [0m[INFO] [1794590696.576391825] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  79.3ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590697.1600528 [frenet_planner-15] [0m[INFO] [1794590697.158966207] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  111.8ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590697.6332812 [map_controller-19] [0m[INFO] [1794590697.629307819] [map_controller]: [BUMP #18] 후진 끝: 여유 -1.4cm + 관성 12.8cm ≥ 10cm  밀기 11.9cm/1.00s + 관성 67.1cm/0.82s heading오차 -20°→-18° 누적후진 78.9cm[0m
+1794590697.6350069 [map_controller-19] [0m[INFO] [1794590697.632823451] [map_controller]: [MAP] κ=4.588  L1=1.20  steer=18.3°  spd=1.40m/s  (실측 0.00)[0m
+1794590697.6643023 [frenet_planner-15] [0m[INFO] [1794590697.663251294] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  70.6ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590698.0085449 [map_controller-19] [33m[WARN] [1794590698.007655063] [map_controller]: AMCL 보정 0cm / 0° 를 1cm / 0° 로 제한 (누적 43회) — 맵과 실제가 어긋났을 수 있다[0m
+1794590698.1638880 [map_controller-19] [0m[INFO] [1794590698.154896461] [map_controller]: [MAP] κ=2.536  L1=1.20  steer=19.5°  spd=1.40m/s  (실측 0.55)[0m
+1794590698.2201860 [frenet_planner-15] [0m[INFO] [1794590698.219221218] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.40  ttc=inf  62.2ms  속도×0.78  [추월금지 추종 gap=2.17m][0m
+1794590698.3443103 [map_controller-19] [33m[WARN] [1794590698.343587236] [map_controller]: [BUMP #19] 트리거 여유 23.2cm@-39° (선 24.7cm = 3cm + 선행 21.7cm, 23점) 속도 +1.09㎧ → BRAKING/path δ=+0.0° heading오차 -19° (뒤 좌 0.80 / 우 0.78m)[0m
+1794590698.4839282 [localization_monitor-10] [0m[INFO] [1794590698.482246250] [localization_monitor]: [loc:v1.4] 잔차 평균   7.8㎝  중앙   4.4㎝  90%  16.0㎝  근거리<2m  8.2㎝ / 원거리  5.8㎝  빔 6930/80스캔[0m
+1794590698.7256637 [frenet_planner-15] [0m[INFO] [1794590698.724992560] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  84.7ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590699.2344382 [frenet_planner-15] [0m[INFO] [1794590699.229045289] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.08/1.40  ttc=inf  90.5ms  속도×0.77  [추월금지 추종 gap=2.17m][0m
+1794590699.7325430 [frenet_planner-15] [0m[INFO] [1794590699.731455373] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=0.99/1.40  ttc=inf  58.0ms  속도×0.71  [추월금지 추종 gap=2.17m][0m
+1794590699.9902322 [map_controller-19] [0m[INFO] [1794590699.989186446] [map_controller]: [BUMP #19] 후진 끝: 여유 2.5cm + 관성 9.8cm ≥ 10cm  밀기 11.7cm/0.81s + 관성 50.3cm/0.84s heading오차 -19°→-18° 누적후진 61.7cm[0m
+1794590700.0148523 [map_controller-19] [0m[INFO] [1794590699.997012070] [map_controller]: [MAP] κ=0.988  L1=1.20  steer=17.9°  spd=1.40m/s  (실측 0.00)[0m
+1794590700.2428656 [frenet_planner-15] [0m[INFO] [1794590700.242277500] [frenet_planner]: [frenet] FOLLOW  d=+0.00m  n_valid=1/13  n_obs=0  vmax=1.09/1.41  ttc=inf  44.9ms  속도×0.77  [추월금지 추종 gap=2.17m][0m
+1794590700.4814169 [localization_monitor-10] [0m[INFO] [1794590700.480243275] [localization_monitor]: [loc:v0.4] 잔차 평균   7.4㎝  중앙   4.5㎝  90%  16.6㎝  근거리<2m  7.4㎝ / 원거리  6.8㎝  빔 6945/80스캔[0m
+1794590700.5775950 [map_controller-19] [0m[INFO] [1794590700.497957468] [map_controller]: [MAP] κ=2.336  L1=1.20  steer=18.3°  spd=1.40m/s  (실측 0.42)[0m
+1794590700.6767421 [map_controller-19] [33m[WARN] [1794590700.675714137] [map_controller]: [BUMP #20] 트리거 여유 23.1cm@-40° (선 24.3cm = 3cm + 선행 21.3cm, 23점) 속도 +1.07㎧ → BRAKING/path δ=+0.0° heading오차 -17° (뒤 좌 0.63 / 우 1.03m)[0m
+1794590700.7581589 [WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+1794590701.2047930 [ackermann_mux-7] [0m[INFO] [1794590700.709517383] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2174175 [INFO] [static_transform_publisher-8]: process has finished cleanly [pid 53455]
+1794590701.2256370 [INFO] [ackermann_mux-7]: process has finished cleanly [pid 53451]
+1794590701.2417018 [vesc_driver_node-5] [0m[INFO] [1794590700.710118266] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2443998 [static_transform_publisher-8] [0m[INFO] [1794590700.710289888] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2460523 [urg_node_driver-6] [0m[INFO] [1794590700.710649611] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2470500 [vesc_to_odom_node-4] [0m[INFO] [1794590700.711039000] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2477493 [joy_node-1] [0m[INFO] [1794590700.711506374] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2483451 [ackermann_to_vesc_node-3] [0m[INFO] [1794590700.711652747] [rclcpp]: signal_handler(SIGINT/SIGTERM)[0m
+1794590701.2538447 [map_controller-19] [0m[INFO] [1794590700.842576509] [map_controller]: [run_log] 348점, /home/jetson/yax/logs/20261114_022500_race_map 에 저장[0m
+1794590701.2542164 [map_controller-19] Failed to publish log message to rosout: publisher's context is invalid, at ./src/rcl/publisher.c:389
+1794590701.2548764 [joystick_teleop-17] /home/jetson/f1tenth_ws/build/race_stack/race_stack/joystick_teleop.py:583: RuntimeWarning: coroutine 'Executor._make_handler.<locals>.handler' was never awaited
+1794590701.2551992 [joystick_teleop-17]   pass
+1794590701.2553647 [joystick_teleop-17] RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+1794590701.3758304 [joy_teleop-2] Traceback (most recent call last):
+1794590701.3783216 [joy_teleop-2]   File "/opt/ros/humble/lib/joy_teleop/joy_teleop", line 33, in <module>
+1794590701.3810558 [joy_teleop-2]     sys.exit(load_entry_point('joy-teleop==1.6.0', 'console_scripts', 'joy_teleop')())
+1794590701.3818521 [joy_teleop-2]   File "/opt/ros/humble/lib/python3.10/site-packages/joy_teleop/joy_teleop.py", line 442, in main
+1794590701.3862152 [joy_teleop-2]     rclpy.shutdown()
+1794590701.3869965 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1794590701.3872705 [joy_teleop-2]     _shutdown(context=context)
+1794590701.3874567 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1794590701.3876145 [joy_teleop-2]     return context.shutdown()
+1794590701.3878739 [joy_teleop-2]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1794590701.3882811 [joy_teleop-2]     self.__context.shutdown()
+1794590701.3884494 [joy_teleop-2] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1794590701.4923146 [INFO] [imu_odom-9]: process has finished cleanly [pid 53457]
+1794590701.6737189 [INFO] [vesc_driver_node-5]: process has finished cleanly [pid 53442]
+1794590701.6944916 [INFO] [vesc_to_odom_node-4]: process has finished cleanly [pid 53438]
+1794590701.6962464 [INFO] [ackermann_to_vesc_node-3]: process has finished cleanly [pid 53436]
+1794590701.7131128 [INFO] [cartographer_occupancy_grid_node-12]: process has finished cleanly [pid 53477]
+1794590701.7828009 [joystick_teleop-17] Traceback (most recent call last):
+1794590701.7856295 [joystick_teleop-17]   File "/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/joystick_teleop", line 33, in <module>
+1794590701.7889729 [joystick_teleop-17]     sys.exit(load_entry_point('race-stack', 'console_scripts', 'joystick_teleop')())
+1794590701.8006334 [joystick_teleop-17]   File "/home/jetson/f1tenth_ws/build/race_stack/race_stack/joystick_teleop.py", line 590, in main
+1794590701.8014090 [joystick_teleop-17]     rclpy.shutdown()
+1794590701.8015816 [joystick_teleop-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1794590701.8017414 [joystick_teleop-17]     _shutdown(context=context)
+1794590701.8018887 [joystick_teleop-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1794590701.8020918 [joystick_teleop-17]     return context.shutdown()
+1794590701.8022304 [joystick_teleop-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1794590701.8023956 [joystick_teleop-17]     self.__context.shutdown()
+1794590701.8025291 [joystick_teleop-17] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1794590701.8032517 [INFO] [urg_node_driver-6]: process has finished cleanly [pid 53448]
+1794590701.8205433 [INFO] [cartographer_localizer-13]: process has finished cleanly [pid 53496]
+1794590701.8586414 [ERROR] [joy_teleop-2]: process has died [pid 53434, exit code 1, cmd '/opt/ros/humble/lib/joy_teleop/joy_teleop --ros-args -r __node:=joy_teleop --params-file /home/jetson/f1tenth_ws/install/f1tenth_stack/share/f1tenth_stack/config/joy_teleop.yaml'].
+1794590701.8648877 [INFO] [cartographer_node-11]: process has finished cleanly [pid 53474]
+1794590701.8772225 [mission_manager-14] Traceback (most recent call last):
+1794590701.8799279 [mission_manager-14]   File "/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/mission_manager", line 33, in <module>
+1794590701.8838120 [mission_manager-14]     sys.exit(load_entry_point('race-stack', 'console_scripts', 'mission_manager')())
+1794590701.8857551 [mission_manager-14]   File "/home/jetson/f1tenth_ws/build/race_stack/race_stack/mission_manager.py", line 615, in main
+1794590701.8885620 [mission_manager-14]     rclpy.shutdown()
+1794590701.8892505 [mission_manager-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+1794590701.8913193 [mission_manager-14]     _shutdown(context=context)
+1794590701.8916821 [mission_manager-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+1794590701.8930383 [mission_manager-14]     return context.shutdown()
+1794590701.8933408 [mission_manager-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+1794590701.8950548 [mission_manager-14]     self.__context.shutdown()
+1794590701.8953509 [mission_manager-14] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+1794590701.9229553 [INFO] [joy_node-1]: process has finished cleanly [pid 53432]
+1794590702.0687513 [ERROR] [joystick_teleop-17]: process has died [pid 53653, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/joystick_teleop --ros-args -r __node:=joystick_teleop --params-file /tmp/launch_params_exl5fye9'].
+1794590702.1367395 [ERROR] [mission_manager-14]: process has died [pid 53498, exit code 1, cmd '/home/jetson/f1tenth_ws/install/race_stack/lib/race_stack/mission_manager --ros-args -r __node:=mission_manager --params-file /tmp/launch_params_dm3zhvc1'].
+1794590702.6717870 [INFO] [localization_monitor-10]: process has finished cleanly [pid 53470]
+1794590702.6727011 [INFO] [auto_localize-18]: process has finished cleanly [pid 53698]
+1794590702.6766138 [INFO] [frenet_planner-15]: process has finished cleanly [pid 53500]
+1794590702.6779461 [INFO] [map_controller-19]: process has finished cleanly [pid 53700]

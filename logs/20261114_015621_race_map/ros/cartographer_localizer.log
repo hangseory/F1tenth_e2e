@@ -1,0 +1,6 @@
+[INFO] [1794588921.986460114] [cartographer_localizer]: Cartographer 위치추정 준비: 저장 맵 로딩 후 초기 위치 적용
+[INFO] [1794588922.492669338] [cartographer_localizer]: Cartographer trajectory 1 시작 → /amcl_pose
+[INFO] [1794588926.792695352] [cartographer_localizer]: Cartographer trajectory 2 시작 → /amcl_pose
+[INFO] [1794588932.792407547] [cartographer_localizer]: Cartographer trajectory 3 시작 → /amcl_pose
+[INFO] [1794588939.692504134] [cartographer_localizer]: Cartographer trajectory 4 시작 → /amcl_pose
+[INFO] [1794588944.792771454] [cartographer_localizer]: Cartographer trajectory 5 시작 → /amcl_pose
