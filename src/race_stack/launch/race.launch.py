@@ -16,6 +16,12 @@ from launch.actions import (IncludeLaunchDescription, DeclareLaunchArgument,
                             TimerAction, ExecuteProcess)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
+
+# ★ 모든 노드 output='both' (2026-11-14). 'screen' 이면 파이썬 traceback 이
+#   **터미널로만** 나가고 어디에도 안 남는다. 11/13 밤 map_controller 가 두 번
+#   exit code 1 로 죽었는데 원인을 로그에서 못 찾고 재현으로 찾아야 했다.
+#   'both' 면 화면 출력은 그대로이고, 각 노드 stdout/stderr 가 ~/.ros/log/<런>/
+#   launch.log 에 [노드-N] 접두로 함께 남는다 → race.sh 가 logs/<런>/ros/ 로 모은다.
 from ament_index_python.packages import get_package_share_directory
 
 # ★ race 는 2026-08-13 부터 map 이다. gap_follower 는 레이싱라인을 **아예 안 쓰고**
@@ -67,6 +73,9 @@ def generate_launch_description():
     mode = cfg['mode']
     controller = cfg.get('controller', 'auto')
     bench = False
+    guard = False  # opt-in; 기존 실행의 AEB/명령 배관은 바꾸지 않는다.
+    recover = False
+    recover_explicit = False  # guard=true 의 기본값은 복구도 켬; 명시 false 는 유지.
     laps_arg = None      # laps:= 로 넘어오면 mission.laps 를 이긴다
     q1laps_arg = None    # q1laps:=/q2laps:= 로 넘어오면 시퀀서(quali)의
     q2laps_arg = None    #   seq_laps_q1/seq_laps_q2 를 이긴다 (quali-mini용)
@@ -80,6 +89,21 @@ def generate_launch_description():
             controller = a.split(':=')[1]
         elif a.startswith('bench:='):
             bench = a.split(':=')[1].lower() in ('true', '1', 'yes')
+        elif a.startswith('guard:='):
+            _guard_value = a.split(':=', 1)[1].lower()
+            if _guard_value not in ('true', 'false', '1', '0', 'yes', 'no'):
+                raise RuntimeError('guard:= must be true or false')
+            guard = _guard_value in ('true', '1', 'yes')
+            if not guard:
+                recover = False
+        elif a.startswith('recover:='):
+            recover_explicit = True
+            _recover_value = a.split(':=', 1)[1].lower()
+            if _recover_value not in ('true', 'false', '1', '0', 'yes', 'no'):
+                raise RuntimeError('recover:= must be true or false')
+            recover = _recover_value in ('true', '1', 'yes')
+            if recover:
+                guard = True
         elif a.startswith('laps:='):
             # ./race.sh 10laprace 처럼 **모드는 그대로 두고 바퀴수만** 바꾸는 경우.
             # yaml(mission.laps)을 건드리지 않는 게 핵심이다 — 대회장에서 모드를
@@ -96,6 +120,8 @@ def generate_launch_description():
             nobuffer_arg = a.split(':=')[1].lower() in ('true', '1', 'yes')
         elif a.startswith('trustpos:='):
             trustpos_arg = a.split(':=')[1].lower() in ('true', '1', 'yes')
+    if guard and not recover_explicit:
+        recover = True
     if mode not in DEFAULT_CONTROLLER:
         raise RuntimeError(f'race.launch.py: 잘못된 mode "{mode}"')
 
@@ -229,9 +255,24 @@ def generate_launch_description():
     nodes = []
 
     # ---------- 1. 차량 브링업 ----------
-    nodes.append(IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(f1tenth_share, 'launch', 'bringup_launch.py'))))
+    if guard:
+        _guard_geometry = cfg.get('pure_pursuit', {})
+        nodes.append(IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(race_share, 'launch', 'guarded_bringup.launch.py')),
+            launch_arguments={
+                'guard_config': os.path.join(race_cfg, 'collision_guard.yaml'),
+                'recover': str(recover).lower(),
+                'wheelbase': str(float(_guard_geometry.get('wheelbase', 0.33))),
+                'max_steer': str(float(_guard_geometry.get('max_steer', 0.36))),
+                'odom_topic': str(cfg.get('localization', {}).get('odom_topic', '/odom_imu')),
+                'bench': str(bench).lower(),
+                'enable_joystick': str(not bench).lower(),
+            }.items()))
+    else:
+        nodes.append(IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(f1tenth_share, 'launch', 'bringup_launch.py'))))
 
     # ---------- 1-1. odom TF 발행자 (IMU yaw 융합) ----------
     # ★ vesc.yaml 에서 vesc_to_odom_node.publish_tf: false 로 껐기 때문에
@@ -243,7 +284,7 @@ def generate_launch_description():
     odom_topic = str(loc.get('odom_topic', '/odom_imu'))
     nodes.append(Node(
         package='race_stack', executable='imu_odom', name='imu_odom',
-        output='screen',
+        output='both',
         parameters=[{
             'imu_yaw':             bool( loc.get('imu_yaw',             True)),
             'imu_topic':           str(  loc.get('imu_topic',           '/sensors/imu/raw')),
@@ -276,7 +317,7 @@ def generate_launch_description():
     if deskew_on:
         nodes.append(Node(
             package='race_stack', executable='scan_deskew', name='scan_deskew',
-            output='screen',
+            output='both',
             parameters=[{
                 'scan_in':       '/scan',
                 'scan_out':      scan_topic,
@@ -295,7 +336,7 @@ def generate_launch_description():
     if bool(loc.get('monitor', True)) and map_yaml:
         nodes.append(Node(
             package='race_stack', executable='localization_monitor',
-            name='localization_monitor', output='screen',
+            name='localization_monitor', output='both',
             parameters=[{
                 'map_yaml':    map_yaml,
                 'scan_topic':  scan_topic,
@@ -331,7 +372,7 @@ def generate_launch_description():
         _walls = False if trustpos_arg else bool(loc.get('align_use_walls', True))
         nodes.append(TimerAction(period=7.0, actions=[Node(
             package='race_stack', executable='auto_localize',
-            name='auto_localize', output='screen',
+            name='auto_localize', output='both',
             parameters=[{
                 'map_yaml':       map_yaml,
                 'scan_topic':     scan_topic,
@@ -374,11 +415,11 @@ def generate_launch_description():
         # ---------- 2a. 맵 서버 + AMCL + lifecycle ----------
         nodes.append(Node(
             package='nav2_map_server', executable='map_server', name='map_server',
-            output='screen',
+            output='both',
             parameters=[{'yaml_filename': map_yaml,
                          'topic_name': 'map', 'frame_id': 'map'}]))
         nodes.append(Node(
-            package='nav2_amcl', executable='amcl', name='amcl', output='screen',
+            package='nav2_amcl', executable='amcl', name='amcl', output='both',
             parameters=[amcl_yaml,
                         # ★ AMCL 만 마스킹된 스캔을 본다 (amcl_mask 켰을 때).
                         #   컨트롤러·AEB·회피는 원본 그대로 — 지운 스캔으로
@@ -395,7 +436,7 @@ def generate_launch_description():
         # (증상: RViz 에 맵이 안 뜨고 차 위치도 안 나옴. 실행할 때마다 되다 안 되다 함)
         nodes.append(TimerAction(period=5.0, actions=[Node(
             package='nav2_lifecycle_manager', executable='lifecycle_manager',
-            name='lifecycle_manager_localization', output='screen',
+            name='lifecycle_manager_localization', output='both',
             parameters=[{'autostart': True,
                          'bond_timeout': 10.0,
                          'attempt_respawn_reconnection': True,
@@ -450,7 +491,7 @@ def generate_launch_description():
                 f'→ 급하면 race_script.yaml 의 localization.mode 를 amcl 로 되돌릴 것.')
         nodes.append(Node(
             package='slam_toolbox', executable='localization_slam_toolbox_node',
-            name='slam_toolbox', output='screen',
+            name='slam_toolbox', output='both',
             parameters=[slam_loc_yaml,
                         {'map_file_name': pg_base,
                          # init_x/y/yaw 를 그대로 쓴다 → savepose 흐름이 유지된다.
@@ -511,7 +552,7 @@ def generate_launch_description():
     if bool(jc.get('manual_override', True)):
         nodes.append(TimerAction(period=4.0, actions=[Node(
             package='race_stack', executable='joystick_teleop',
-            name='joystick_teleop', output='screen',
+            name='joystick_teleop', output='both',
             parameters=[{
                 'axis_steer':       int(  jc.get('axis_steer',       0)),
                 'axis_speed':       int(  jc.get('axis_speed',       5)),
@@ -582,7 +623,7 @@ def generate_launch_description():
 
     nodes.append(Node(
         package='race_stack', executable='mission_manager',
-        name='mission_manager', output='screen',
+        name='mission_manager', output='both',
         parameters=[{'laps': laps,
                      'time_limit_sec': time_limit,
                      # ★ 2026-08-09: 예전엔 `and not bench` 로 bench 에서 출발
@@ -623,10 +664,10 @@ def generate_launch_description():
 
     # ---------- 4. 안전장치 (AEB) ----------
     s = cfg.get('safety', {})
-    if s.get('enabled', True):
+    if s.get('enabled', True) and not guard:
         nodes.append(Node(
             package='race_stack', executable='safety_node',
-            name='safety_node', output='screen',
+            name='safety_node', output='both',
             parameters=[{
                 'ttc_threshold':       float(s.get('ttc_threshold',       0.15)),
                 'hold_sec':            float(s.get('hold_sec',            1.0)),
@@ -655,7 +696,7 @@ def generate_launch_description():
         pp = cfg['pure_pursuit']
         ctrl = Node(
             package='race_stack', executable='pure_pursuit',
-            name='pure_pursuit', output='screen',
+            name='pure_pursuit', output='both',
             parameters=[{'mode': mode,
                          'waypoint_file': wp_csv,
                          'max_speed': max_speed, 'min_speed': min_speed,
@@ -710,7 +751,7 @@ def generate_launch_description():
 
         ctrl = Node(
             package='race_stack', executable='stanley_controller',
-            name='stanley_controller', output='screen',
+            name='stanley_controller', output='both',
             parameters=[{
                 'mode':            mode,
                 'waypoint_file':   wp_csv,
@@ -827,9 +868,10 @@ def generate_launch_description():
         frc = dict(_pc.get('map', {}))
         frc.update(_pc.get(mode, {}))
         st = cfg.get('stanley', {})
+        _bump = cfg.get('bump_reverse', {}) or {}
         ctrl = Node(
             package='race_stack', executable='map_controller',
-            name='map_controller', output='screen',
+            name='map_controller', output='both',
             parameters=[{
                 'mode':          mode,
                 'waypoint_file': wp_csv,
@@ -886,7 +928,19 @@ def generate_launch_description():
                 'frenet_enabled':    bool( fr.get('enabled', True)),
                 'frenet_timeout':    float(fr.get('timeout', 0.5)),
                 'frenet_shift_rate': float(fr.get('shift_rate', 0.9)),
+                # 범퍼 접촉 후진 — race_script.yaml [bump_reverse].
+                # ★ --guard 면 끈다: 가드가 음수 속도를 reverse_blind_zone 으로 막는다.
+                'bump_enabled':     bool(_bump.get('enabled', False)) and not guard,
+                'bump_scan_topic':  scan_topic,
+                # ★ 절에 있는 **숫자 키를 전부** 넘긴다 (2026-11-14). 손으로 쓴
+                #   목록에서 새 키가 빠지면 yaml 값이 조용히 안 먹는다. 노드는
+                #   BumpReverseConfig 의 float 필드만 선언하므로 오타 키는 무시된다.
+                **{'bump_' + k: float(v) for k, v in _bump.items()
+                   if k != 'enabled' and isinstance(v, (int, float))
+                   and not isinstance(v, bool)},
             }])
+        if _bump.get('enabled', False) and guard:
+            print('[race.launch] ⚠ bump_reverse 꺼짐 — --guard 가 후진 명령을 막는다')
 
         # ── Frenet 회피 노드 (컨트롤러 공용) ────────────────────────────
         # MAP 은 회피 로직을 직접 갖지 않는다. Stanley 가 쓰던 것과 **같은 코드**를
@@ -906,7 +960,7 @@ def generate_launch_description():
             l1m = float(mp.get('l1_min', 0.90))
             nodes.append(Node(
                 package='race_stack', executable='frenet_planner',
-                name='frenet_planner', output='screen',
+                name='frenet_planner', output='both',
                 parameters=[{
                     'mode':          mode,
                     # 단독 실행(./race.sh q1 등) 시의 기본값. 예선 시퀀서는
@@ -1048,7 +1102,7 @@ def generate_launch_description():
         gf = cfg['gap_follower']
         ctrl = Node(
             package='race_stack', executable='gap_follower',
-            name='gap_follower', output='screen',
+            name='gap_follower', output='both',
             parameters=[{'max_speed': max_speed, 'min_speed': min_speed,
                          # ★ bench 는 여기서 끝난다 — 컨트롤러가 발행 직전에 속도를 0 으로
                          #   못박는다. 중간 계산(클램프)에 얹지 말 것 (2026-08-09 사고).
@@ -1070,11 +1124,15 @@ def generate_launch_description():
     nodes.append(ExecuteProcess(
         cmd=['echo', f'[race.launch] mode={mode} controller={controller} '
                      f'max_speed={max_speed} map={cfg["map_name"]}'
+                     + (' COLLISION_GUARD' if guard else '')
+                     + (' RECOVERY' if recover else '')
                      + (' BENCH(바퀴 정지)' if bench else '')],
-        output='screen'))
+        output='both'))
 
     return LaunchDescription(
         [DeclareLaunchArgument('mode', default_value=mode),
          DeclareLaunchArgument('controller', default_value=controller),
+         DeclareLaunchArgument('guard', default_value=str(guard).lower()),
+         DeclareLaunchArgument('recover', default_value=str(recover).lower()),
          DeclareLaunchArgument('bench', default_value=str(bench).lower())]
         + nodes)

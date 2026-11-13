@@ -29,6 +29,7 @@ import cv2
 from PIL import Image
 from scipy.interpolate import splprep, splev
 import scipy.ndimage as ndimage
+from race_stack.steering_geometry import load_steering_geometry
 
 _PKG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if os.environ.get('RACE_WS'):
@@ -38,20 +39,9 @@ MAPS_DIR = os.path.join(_PKG_DIR, 'maps')
 WP_DIR   = os.path.join(_PKG_DIR, 'waypoints')
 
 
-def _car_min_radius(fallback=0.872):
-    for name in ('.vehicle_overlay.yaml',):
-        p = os.path.abspath(os.path.join(_PKG_DIR, '..', '..', 'config', name))
-        if not os.path.exists(p):
-            continue
-        try:
-            import yaml as _y
-            o = _y.safe_load(open(p))
-            ms = float(o['pure_pursuit']['max_steer'])
-            wb = float(o['pure_pursuit']['wheelbase'])
-            return wb / math.tan(ms)
-        except Exception:
-            pass
-    return fallback
+def _car_min_radius():
+    wb, ms = load_steering_geometry()
+    return wb / math.tan(ms)
 
 R_CAR_MIN = _car_min_radius()
 

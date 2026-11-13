@@ -25,32 +25,21 @@ from scipy.spatial import cKDTree
 import scipy.ndimage as ndimage
 import osqp
 import scipy.sparse as sp
+from race_stack.steering_geometry import load_steering_geometry
 
 _PKG_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # ★ 차량 최소회전반경 [m] — 라인이 아무리 빨라도 못 도는 건 소용없다.
-#   R = wheelbase / tan((servo_min − offset) / (−gain))
+#   R = wheelbase / tan(min(|좌 최대각|, |우 최대각|))
 #
 #   ★ 손으로 적지 않는다. config/vehicle_<차>.yaml 에서 읽어 계산한다 —
 #     예전엔 여기 0.856 이 박혀 있었는데 컨트롤러는 wheelbase 0.33 을 써서
 #     0.872 로 보고 있었다. 같은 값을 두 군데 적으면 반드시 갈라진다.
 #     차량 파일이 없으면(다른 기기에서 분석만 할 때) 아래 폴백을 쓴다.
-def _car_min_radius(fallback=0.872):
+def _car_min_radius():
     import math
-    for name in ('.vehicle_overlay.yaml',):
-        p = os.path.join(_PKG_DIR, '..', '..', 'config', name)
-        p = os.path.abspath(p)
-        if not os.path.exists(p):
-            continue
-        try:
-            import yaml as _y
-            o = _y.safe_load(open(p))
-            ms = float(o['pure_pursuit']['max_steer'])
-            wb = float(o['pure_pursuit']['wheelbase'])
-            return wb / math.tan(ms)
-        except Exception:
-            pass
-    return fallback
+    wb, ms = load_steering_geometry()
+    return wb / math.tan(ms)
 
 
 R_CAR_MIN = _car_min_radius()
@@ -784,6 +773,29 @@ def optimize_raceline(reftrack, outer, inner, *, w_veh, r_min, stepsize,
 # ══════════════════════════════════════════════════════════════════════════════
 # 6. 속도 프로파일 (전방/역방향 스윕)
 # ══════════════════════════════════════════════════════════════════════════════
+def apply_accel_brake_sweep(v, el, a_lon_acc, a_lon_brk):
+    """Apply the shared cyclic acceleration/braking limits to a speed profile."""
+    v = np.asarray(v, dtype=float).copy()
+    n = len(v)
+    # 역방향 스윕 (제동 한계)
+    for _ in range(3):
+        for i in range(n - 1, -1, -1):
+            j = (i + 1) % n
+            v_lim = math.sqrt(v[j]**2 + 2.0 * a_lon_brk * el[i])
+            if v[i] > v_lim:
+                v[i] = v_lim
+
+    # 전방향 스윕 (가속 한계)
+    for _ in range(3):
+        for i in range(n):
+            j = (i + 1) % n
+            v_lim = math.sqrt(v[i]**2 + 2.0 * a_lon_acc * el[i])
+            if v[j] > v_lim:
+                v[j] = v_lim
+
+    return v
+
+
 def calc_vel_profile(kappa:    np.ndarray,
                      el:       np.ndarray,
                      mu:       float,
@@ -804,21 +816,7 @@ def calc_vel_profile(kappa:    np.ndarray,
                      v_max)
     v = np.minimum(np.full(n, v_max), v_lat)
 
-    # 역방향 스윕 (제동 한계)
-    for _ in range(3):
-        for i in range(n - 1, -1, -1):
-            j = (i + 1) % n
-            v_lim = math.sqrt(v[j]**2 + 2.0 * a_lon_brk * el[i])
-            if v[i] > v_lim:
-                v[i] = v_lim
-
-    # 전방향 스윕 (가속 한계)
-    for _ in range(3):
-        for i in range(n):
-            j = (i + 1) % n
-            v_lim = math.sqrt(v[i]**2 + 2.0 * a_lon_acc * el[i])
-            if v[j] > v_lim:
-                v[j] = v_lim
+    v = apply_accel_brake_sweep(v, el, a_lon_acc, a_lon_brk)
 
     v = np.clip(v, v_min, v_max)
     lap_t = float(np.sum(el / np.maximum(v, 0.01)))
@@ -1139,7 +1137,7 @@ def main():
     p.add_argument('--brk',    type=float, default=8.0,  help='제동 (m/s²)')
     p.add_argument('--step',   type=float, default=0.1,  help='웨이포인트 간격 (m)')
     p.add_argument('--rmin',   type=float, default=1.0,
-                   help='최소 회전반경 (m). 차량 한계 0.856m 보다 크게 —'
+                   help=f'최소 회전반경 (m). 현재 차량 한계 {R_CAR_MIN:.3f}m 보다 크게 —'
                         ' 여유가 없으면 AMCL 오차·조향 지연을 흡수 못 한다')
     p.add_argument('--gridstep', type=float, default=0.5,
                    help='QP 격자 간격 (m). |α| 가 이 값에 근접하면 선형화가 깨진다')

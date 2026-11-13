@@ -324,9 +324,17 @@ class State:
         return self.proc is not None and self.proc.poll() is None
 
     def start(self, mode):
+        # ★ 이미 돌고 있으면 **먼저 정지하고** 시작한다 (2026-11-11).
+        #   전에는 "먼저 정지하세요" 로 거부했는데, 시작을 누른 것 자체가
+        #   "이걸 돌려라" 는 뜻이라 두 번 누르게 만들 이유가 없다.
+        #   ./race.sh stop 으로 정리하므로 고아 노드도 안 남는다.
+        #   ⚠ 주행 중에 누르면 그 주행이 끝난다 — 로그에 크게 남긴다.
+        if self.running():
+            self.log('panel', f'■ {self.mode} 실행 중 → 정지하고 {mode} 로 다시 시작합니다')
+            self.broadcast({'op': 'update', 'id': 'runstate',
+                            'text': f'{self.mode} 정지 중… 잠시 기다리세요'})
+            self.stop()
         with self.lock:
-            if self.running():
-                return f'{self.mode} 이(가) 이미 실행 중입니다. 먼저 정지하세요.'
             if mode not in [m[0] for m in MODES]:
                 return f'모르는 모드: {mode}'
             self.estop = False

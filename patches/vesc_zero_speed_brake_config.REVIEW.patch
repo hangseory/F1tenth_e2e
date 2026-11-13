@@ -1,0 +1,55 @@
+--- a/config/vehicle_car1.yaml
++++ b/config/vehicle_car1.yaml
+@@ -17,6 +17,8 @@
+   #   이때는 VESC Tool 에서 고쳤으므로 여기는 양수 그대로 둔다.
+   #   (2호차는 반대로 이 값이 음수(-4403)인 쪽으로 해결했다.)
+   speed_to_erpm_gain: 4203.0
++  # 검토값: 속도 0 요청 시 전후진 공통 능동 제동. 감속도 실측 필요.
++  zero_speed_brake_current: 20.0  # motor current A, not acceleration
+ 
+   # IMU 호주행 자동 캘리브레이션 (2026-07-16). 구 설정은 1.6배 과대조향이었다.
+   steering_angle_to_servo_gain: -0.761
+--- a/config/vesc_base.yaml
++++ b/config/vesc_base.yaml
+@@ -23,6 +23,7 @@
+     #     반대로 가는 것에 그치지 않고 SLAM 맵까지 깨진다 (2026-08-09 2호차).
+     speed_to_erpm_gain: __SPEED_TO_ERPM_GAIN__
+     speed_to_erpm_offset: 0.0
++    zero_speed_brake_current: __ZERO_SPEED_BRAKE_CURRENT__
+ 
+     # servo(0~1) = steering_angle_to_servo_gain × 조향각[rad] + offset
+     #   gain   — 링키지 비. IMU 호주행 캘리브레이션으로 잰다
+--- a/config/apply_vehicle.py
++++ b/config/apply_vehicle.py
+@@ -183,6 +183,11 @@
+         except KeyError:
+             sys.exit(f'✗ {vpath} 에 {key} 가 없습니다 (vesc_base.yaml 이 요구)')
+         body = body.replace(token, repr(float(val)))
++    # Optional: other cars retain the existing zero-RPM behavior.
++    brake_current = float(dig(v, 'vesc.zero_speed_brake_current', 0.0))
++    if not 0.0 <= brake_current <= 100.0:
++        sys.exit('zero_speed_brake_current must be within 0..100 A')
++    body = body.replace('__ZERO_SPEED_BRAKE_CURRENT__', repr(brake_current))
+     left, right, lim, rmin = steer_limits(v)
+     import math
+     header = (
+--- a/race.sh
++++ b/race.sh
+@@ -712,7 +712,7 @@
+     mkdir -p "$(dirname "$BAG_DIR")"
+     echo "[race.sh] ★ bag 녹화: $BAG_DIR"
+     ros2 bag record -o "$BAG_DIR" \
+-        /scan /odom /odom_imu /sensors/imu/raw /sensors/core \
++        /scan /odom /odom_imu /sensors/imu/raw /sensors/core /sensors/motor_brake_current_command \
+         /commands/servo/position /teleop >/dev/null 2>&1 &
+     BAG_PID=$!
+     # ★ joystick.launch.py 자체엔 imu_odom 이 없다(race.launch.py 만 띄움).
+@@ -1448,7 +1448,7 @@
+         /safety/motor_ready /safety/motor_watchdog/status \
+         /map /race/manual \
+         /safety/emergency_stop /commands/motor/speed /tf /tf_static \
+-        /sensors/core \
++        /sensors/core /sensors/motor_brake_current_command \
+         /commands/servo/position /race/enabled /diagnostics \
+         /particle_cloud \
+         /frenet/offset /frenet/status /frenet/speed_scale /frenet/diag \

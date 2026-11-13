@@ -53,13 +53,15 @@ import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from rcl_interfaces.msg import SetParametersResult
-from rclpy.qos import DurabilityPolicy, QoSProfile
+from rclpy.qos import DurabilityPolicy, QoSProfile, qos_profile_sensor_data
 
 from ackermann_msgs.msg import AckermannDriveStamped
+from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Point, PoseStamped, PoseWithCovarianceStamped
 from nav_msgs.msg import Odometry, Path
 from std_msgs.msg import Bool, ColorRGBA, Float32, Float64, Float64MultiArray
 
+from race_stack.bump_reverse import BumpReverse, BumpReverseConfig, BUMP_PARAM_KEYS
 from race_stack.speed_profile import (
     solve_profile, LaunchLimiter, preview_speed, steer_speed_limit)
 from visualization_msgs.msg import Marker
@@ -322,6 +324,15 @@ class MapController(Node):
         self.declare_parameter('init_y',   0.0)
         self.declare_parameter('init_yaw', 0.0)
 
+        # ── 범퍼 접촉 후진 (2026-11-13, race_script.yaml [bump_reverse]) ──
+        #   정면 콘에 범퍼+1cm 안으로 뭔가 오면 빡 후진 → 10cm 떨어지면 다시 전진.
+        #   로직은 bump_reverse.py (ROS 없음, 테스트 있음).
+        self.declare_parameter('bump_enabled', False)
+        self.declare_parameter('bump_scan_topic', '/scan')
+        _bdef = BumpReverseConfig()
+        for _k in BUMP_PARAM_KEYS:
+            self.declare_parameter('bump_' + _k, float(getattr(_bdef, _k)))
+
         self.mode = self.get_parameter('mode').value
 
         # ── 웨이포인트 로드 + 사전 계산 ─────────────────────────────────
@@ -386,6 +397,8 @@ class MapController(Node):
         # ── 실주행 경로 로그 ────────────────────────────────────────────
         self._trail_log = []
         self._last_trail = None
+        self._last_trail_t = None
+        self.speed_signed = 0.0
         self._run_t0 = self.get_clock().now()
         self._car_path = Path()
         self._car_path.header.frame_id = 'map'
@@ -426,6 +439,24 @@ class MapController(Node):
                                      self._frenet_diag_cb, 10)
         self.create_subscription(Float32, '/loc/residual',
                                  self._loc_residual_cb, 10)
+
+        # 범퍼 접촉 후진
+        self._bump = None
+        self._scan = None           # (ranges, angle_min, angle_inc)
+        self._scan_t = None
+        if bool(self.p('bump_enabled')):
+            _cfg = BumpReverseConfig(**{
+                k: float(self.p('bump_' + k)) for k in BUMP_PARAM_KEYS})
+            self._bump = BumpReverse(_cfg, float(self.p('max_steer')))
+            self.create_subscription(LaserScan, str(self.p('bump_scan_topic')),
+                                     self._scan_cb, qos_profile_sensor_data)
+            self.get_logger().info(
+                f'범퍼 후진 ON: 정면 ±{_cfg.trigger_fov_deg/2:.0f}°, 범퍼 윤곽 '
+                f'{_cfg.bumper_from_lidar:.2f}→{_cfg.bumper_corner_from_lidar:.2f}m '
+                f'+{_cfg.trigger_gap*100:.0f}cm (+속도×{_cfg.trigger_lead_time:.2f}s), '
+                f'{int(_cfg.trigger_min_points)}점 이상 → {_cfg.reverse_speed:.1f}㎧ 후진 '
+                f'(조향 ≤{_cfg.reverse_steer_frac*100:.0f}%), '
+                f'{_cfg.backoff_gap*100:.0f}cm 떨어지면 전진 (상한 {_cfg.max_reverse_time:.1f}s)')
 
         # 제어·발행을 50Hz 로 고정한다. AMCL 콜백에 걸어두면 주기가 들쭉날쭉하고
         # (2.5cm 이동마다) 정지 상태에서는 아예 돌지 않는다.
@@ -912,6 +943,10 @@ class MapController(Node):
 
     def odom_cb(self, msg: Odometry):
         self.speed = abs(float(msg.twist.twist.linear.x))
+        # ★ 부호 있는 속도는 **로그 전용**이다 (2026-11-13). 제어는 위 절댓값을
+        #   그대로 쓴다. 후진 복구를 시험하는데 driven_path.csv 의 speed 가
+        #   abs() 라 뒤로 갔는지 아무 흔적이 안 남았다.
+        self.speed_signed = float(msg.twist.twist.linear.x)
 
         p = msg.pose.pose
         t = msg.header.stamp.sec + msg.header.stamp.nanosec * 1e-9
@@ -1082,6 +1117,9 @@ class MapController(Node):
         self.pos = np.array([px, py])
         self.yaw = yaw
 
+        if self._bump is not None and self._bump_tick(px, py, yaw):
+            return
+
         v = max(self.speed, 0.3)
         L1 = self._l1(v)
 
@@ -1127,6 +1165,57 @@ class MapController(Node):
         #   예전엔 지령만 'speed' 열로 저장해서, 사후 분석에서 그걸 실측으로
         #   착각하면 '속도 추종 지연' 같은 없는 문제를 만들어낸다. 실제로 그랬다.
         self._update_car_trail(px, py, self.speed, steer, speed, near)
+
+    def _scan_cb(self, msg: LaserScan):
+        self._scan = (msg.ranges, msg.angle_min, msg.angle_increment)
+        self._scan_t = time.monotonic()
+
+    def _path_heading_err(self, px, py, yaw):
+        """최근접 웨이포인트의 경로 접선 − 차 yaw. 못 구하면 None."""
+        if self.wp is None or len(self.wp) < 2:
+            return None
+        n = len(self.wp)
+        d = np.linalg.norm(self.wp[:, :2] - np.array([px, py]), axis=1)
+        i = int(np.argmin(d))
+        if d[i] > 1.0:              # 경로에서 너무 멀면 접선을 못 믿는다
+            return None
+        t = self.wp[(i + 1) % n, :2] - self.wp[i, :2]
+        return _normalize(math.atan2(t[1], t[0]) - yaw)
+
+    def _bump_tick(self, px, py, yaw) -> bool:
+        """후진 중이면 명령을 내고 True. 컨트롤러 계산은 건너뛴다."""
+        fresh = (self._scan is not None and self._scan_t is not None
+                 and time.monotonic() - self._scan_t < 0.2)
+        odom_xy = (None if self._odom_last is None
+                   else (self._odom_last[1], self._odom_last[2]))
+        was = self._bump.active
+        out = self._bump.update(time.monotonic(), self._scan if fresh else None,
+                                odom_xy, self._path_heading_err(px, py, yaw),
+                                speed=float(getattr(self, 'speed_signed', 0.0)),
+                                forward_steer=self._steer_prev)
+        if self._bump.active != was:
+            # ★ 호출을 **두 줄로 나눈다** (2026-11-14). rclpy 는 로그 호출 위치마다
+            #   심각도를 기억해서, 같은 줄에서 warn → info 로 바꾸면
+            #   "ValueError: Logger severity cannot be changed between calls" 를
+            #   던진다. 예전엔 한 줄에서 골라 불러서, 트리거(warn)는 통과하고
+            #   **후진이 끝나는 순간(info) 컨트롤러가 죽었다** — 11/13 두 주행 모두
+            #   트리거 1.0s 뒤 exit code 1, 그래서 후진 후 다시 출발을 안 했다.
+            msg = f'[BUMP #{self._bump.count}] {self._bump.last_reason}'
+            if self._bump.active:
+                self.get_logger().warn(msg)
+            else:
+                self.get_logger().info(msg)
+                # 복구 직후 정속으로 튀지 않도록 기존 출발 가속 제한을 재시작.
+                self._launch.start(self.get_clock().now().nanoseconds * 1e-9,
+                                   self.speed)
+        if out is None:
+            return False
+        steer, speed = out
+        self._steer_prev = steer    # 끝나고 전진할 때 조향 필터가 튀지 않게
+        self._publish_cmd(steer, speed)
+        self._update_car_trail(px, py, self.speed, steer, speed,
+                               self._near_idx)
+        return True
 
     def _publish_cmd(self, steer: float, speed: float):
         """정지 중에도 계속 흘린다 — /drive 가 0.2s 끊기면 ackermann_mux 가
@@ -1199,17 +1288,25 @@ class MapController(Node):
           가릴 수 없었다 — 조향 신호가 없으면 제어 루프 진동인지 그립
           포화인지 구분이 안 되고, 지령속도가 없으면 추종 지연을 못 잰다.
         """
-        if self._last_trail is not None and \
-                math.hypot(x - self._last_trail[0], y - self._last_trail[1]) < 0.1:
-            return
-        self._last_trail = (x, y)
+        # ★ 0.1m 를 못 움직였어도 0.2s 가 지나면 한 줄 남긴다 (2026-11-13).
+        #   거리만 보면 **멈춰 있거나 조금씩 앞뒤로 움직이는 구간이 통째로
+        #   빠진다** — 후진 복구 시험 50초에 18행만 남아 무슨 일이 있었는지
+        #   알 수 없었다. 주행 중(1.5㎧ 면 0.1m = 0.07s)에는 거리 조건이 먼저
+        #   걸리므로 평소 밀도는 그대로다.
         now = self.get_clock().now()
         t = (now - self._run_t0).nanoseconds / 1e9
+        if self._last_trail is not None and \
+                math.hypot(x - self._last_trail[0], y - self._last_trail[1]) < 0.1 and \
+                (self._last_trail_t is not None and t - self._last_trail_t < 0.2):
+            return
+        self._last_trail = (x, y)
+        self._last_trail_t = t
         self._trail_log.append((
             t, x, y, float(speed_meas), float(steer),
             float(cmd_v), float(self.yaw), int(near),
-            dict(self._fr_diag), float(self._loc_residual)))
-        if len(self._trail_log) > 3000:
+            dict(self._fr_diag), float(self._loc_residual),
+            float(self.speed_signed)))
+        if len(self._trail_log) > 6000:
             self._trail_log.pop(0)
 
         ps = PoseStamped()
@@ -1238,17 +1335,20 @@ class MapController(Node):
                 # steer/cmd_v/yaw 는 2026-08-09 추가 — 진동(제어 루프)과
                 # 속도 추종 지연을 사후에 가리려면 지령 신호가 있어야 한다.
                 # speed = **실측**(odom), cmd_v = **지령**(프로파일). 헷갈리지 말 것.
+                # speed_signed 는 2026-11-13 추가 — speed 는 abs() 라 후진이 안 보인다.
+                #   맨 끝에 붙여 열 이름으로 읽는 기존 분석을 깨지 않는다.
                 w.writerow(
                     ['t', 'x', 'y', 'speed', 'steer', 'cmd_v', 'yaw', 'near',
-                     'loc_residual'] + list(FRENET_DIAG_KEYS))
+                     'loc_residual'] + list(FRENET_DIAG_KEYS) + ['speed_signed'])
                 for r in self._trail_log:
-                    t, x, y, spd, st, cv, yaw, near, diag, loc = r
+                    t, x, y, spd, st, cv, yaw, near, diag, loc, sps = r
                     row = [f'{t:.3f}', f'{x:.4f}', f'{y:.4f}',
                            f'{spd:.3f}', f'{st:.4f}', f'{cv:.3f}',
                            f'{yaw:.4f}', near, f'{loc:.4f}']
                     for k in FRENET_DIAG_KEYS:
                         v = (diag or {}).get(k, float('nan'))
                         row.append('' if v != v else f'{float(v):.4f}')  # NaN → 빈칸
+                    row.append(f'{sps:.3f}')
                     w.writerow(row)
 
             # ★ race_script.yaml + 차량 오버레이를 함께 남긴다.

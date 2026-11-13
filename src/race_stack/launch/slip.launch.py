@@ -41,23 +41,21 @@ def generate_launch_description():
             _deep(cfg, yaml.safe_load(f) or {})
 
     sl = cfg.get('slip', {})
-    vesc = os.path.join(os.path.dirname(os.path.dirname(share)), 'config', 'vesc.yaml')
-
-    # 서보 캘리브레이션은 config/vesc.yaml 이 원본이다. 여기서 다시 적지 않는다 —
-    # 두 곳에 적으면 반드시 갈라진다.
-    gain, offset = -0.761, 0.425
-    s_min, s_max = 0.15, 0.85       # 기구 스토퍼 — 이것도 vesc.yaml 이 원본이다
-    for p in (os.path.join(os.path.expanduser(os.environ.get('RACE_WS', '~/yax')),
-                           'config', 'vesc.yaml'), vesc):
-        try:
+    # 주행 브링업과 같은 차량 설정을 읽는다. 옛 중앙값으로 조용히 대체하지 않는다.
+    candidates = [
+        os.path.join(os.path.dirname(os.path.abspath(cfg_path)), 'config', 'vesc.yaml'),
+        os.path.join(get_package_share_directory('f1tenth_stack'), 'config', 'vesc.yaml'),
+    ]
+    for p in candidates:
+        if os.path.isfile(p):
             v = yaml.safe_load(open(p))['/**']['ros__parameters']
             gain = float(v['steering_angle_to_servo_gain'])
             offset = float(v['steering_angle_to_servo_offset'])
-            s_min = float(v.get('servo_min', s_min))
-            s_max = float(v.get('servo_max', s_max))
+            s_min = float(v['servo_min'])
+            s_max = float(v['servo_max'])
             break
-        except Exception:
-            continue
+    else:
+        raise RuntimeError('차량 조향 설정 vesc.yaml을 찾을 수 없습니다: ' + str(candidates))
 
     # ★ 슬립 리그는 조향·속도 상한을 **자기 것**으로 갖는다 (2026-08-06).
     #   예전엔 joystick.max_speed 와 pure_pursuit.max_steer 를 그대로 물려받아서,

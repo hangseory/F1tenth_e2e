@@ -1,0 +1,58 @@
+--- a/src/vesc_driver.cpp
++++ b/src/vesc_driver.cpp
+@@ -38,6 +38,8 @@
+ #include <cmath>
+ #include <memory>
+ #include <sstream>
++#include <cmath>
++#include <stdexcept>
+ #include <string>
+ 
+ namespace vesc_driver
+@@ -67,6 +69,14 @@
+ {
+   // get vesc serial port address
+   std::string port = declare_parameter<std::string>("port", "");
++
++  zero_speed_brake_current_ = declare_parameter<double>("zero_speed_brake_current", 0.0);
++  if (!std::isfinite(zero_speed_brake_current_) || zero_speed_brake_current_ < 0.0 ||
++    zero_speed_brake_current_ > 100.0)
++  {
++    throw std::invalid_argument("zero_speed_brake_current must be within 0..100 A");
++  }
++  brake_command_pub_ = create_publisher<Float64>("sensors/motor_brake_current_command", 10);
+ 
+   // attempt to connect to the serial port
+   try {
+@@ -308,7 +318,18 @@
+ void VescDriver::speedCallback(const Float64::SharedPtr speed)
+ {
+   if (driver_mode_ == MODE_OPERATING) {
+-    vesc_.setSpeed(speed_limit_.clip(speed->data));
++    const double rpm = speed_limit_.clip(speed->data);
++    Float64 brake;
++    // One serial command per callback: brake or speed, never competing publishers.
++    // Brake current magnitude opposes either direction of rotation inside the VESC.
++    if (!std::isfinite(rpm) || (zero_speed_brake_current_ > 0.0 && std::abs(rpm) < 1e-6)) {
++      brake.data = brake_limit_.clip(zero_speed_brake_current_);
++      vesc_.setBrake(brake.data);
++    } else {
++      brake.data = 0.0;
++      vesc_.setSpeed(rpm);
++    }
++    brake_command_pub_->publish(brake);
+   }
+ }
+ 
+--- a/include/vesc_driver/vesc_driver.hpp
++++ b/include/vesc_driver/vesc_driver.hpp
+@@ -91,6 +91,9 @@
+   CommandLimit position_limit_;
+   CommandLimit servo_limit_;
+ 
++  double zero_speed_brake_current_ = 0.0;
++  rclcpp::Publisher<Float64>::SharedPtr brake_command_pub_;
++
+   // ROS services
+   rclcpp::Publisher<VescStateStamped>::SharedPtr state_pub_;
+   rclcpp::Publisher<VescImuStamped>::SharedPtr imu_pub_;

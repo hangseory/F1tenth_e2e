@@ -1,0 +1,71 @@
+collision_guard:
+  ros__parameters:
+    # 별도 opt-in 설정. race_script.yaml 의 기존 safety.enabled 와 독립적이다.
+    input_topic: /safety/raw_drive
+    output_topic: /ackermann_cmd
+    odom_topic: /odom_imu
+    scan_topic: /scan
+    status_topic: /safety/collision_guard/status
+    base_frame: base_link
+    command_timeout: 0.2
+    scan_timeout: 0.2
+    odom_timeout: 0.2
+    # 독립 출력 watchdog 의 준비 heartbeat. false/미수신이면 정지한다.
+    motor_ready_timeout: 0.25
+    control_rate: 40.0
+    max_unknown_gap_deg: 5.0
+    min_valid_fraction: 0.2
+    required_forward_fov_deg: 180.0
+    # base_link 기준 잠정 치수 [m]. 범퍼/바퀴를 포함해 실측 후 조정할 것.
+    front: 0.50
+    rear: 0.15
+    half_width: 0.17
+    margin: 0.06
+    # race.launch 는 차량 overlay 의 wheelbase/max_steer 를 최종 덮어쓴다.
+    wheelbase: 0.33
+    max_steer: 0.4796
+    reaction_time: 0.45
+    brake_decel: 2.0
+    prediction_dt: 0.02
+    # 6m/s 에서 반응+제동시간=.45+6/2=3.45s 를 포함한다.
+    max_horizon: 4.0
+    max_speed: 6.0
+    release_margin: 0.15
+    release_hold: 0.5
+    restart_accel: 0.8
+    # 후방 중앙 사각지대 때문에 일반 후진 명령은 차단한다.
+    # 별도로 켠 지도 기반 복구 상태기에서 검증한 제한 후진만 예외다.
+    reverse_mode: block
+    # 가드 실행 기본값은 복구도 켬 (--guard / race-safe / --recover).
+    # 실행 옵션이 이 값을 덮어쓰며 --no-recover 는 false 로 지정한다.
+    # 일반 후진 명령은 위 reverse_mode 에 따라 계속 차단한다.
+    recovery_enabled: false
+    recovery_blocked_wait: 1.0
+    recovery_reverse_speed: 0.25
+    recovery_reverse_distance: 0.35
+    recovery_max_reverse_time: 3.0
+    recovery_stop_hold: 0.3
+    recovery_reentry_speed: 0.25
+    recovery_reentry_distance: 0.25
+    recovery_stopped_speed: 0.05
+    recovery_min_progress: 0.03
+    recovery_progress_timeout: 1.0
+    recovery_max_attempts: 2
+    recovery_reset_forward_distance: 1.0
+    recovery_sample_step: 0.02
+    recovery_forward_probe: 1.0
+    recovery_min_escape_gain: 0.05
+    recovery_occupancy_threshold: 65
+    recovery_map_topic: /map
+    recovery_pose_topic: /amcl_pose
+    recovery_map_frame: map
+    recovery_pose_timeout: 10.0
+    recovery_enabled_timeout: 1.2
+    recovery_teleop_timeout: 0.3
+    recovery_max_position_std: 0.25
+    recovery_max_yaw_std: 0.25
+    recovery_pose_jump_distance: 0.25
+    recovery_pose_jump_yaw: 0.25
+    recovery_scan_match_tolerance: 0.15
+    recovery_scan_match_fraction: 0.25
+    recovery_scan_match_min_points: 20

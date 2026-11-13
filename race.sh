@@ -18,6 +18,15 @@
 #                              컨트롤러 생략 시 yaml의 controller 값 사용
 #                              (auto | stanley | pure_pursuit | gap_follower | map)
 #                              예: ./race.sh q1 pure_pursuit
+#    ./race.sh race-safe [컨트롤러]  race + 예측 충돌 가드 + 짧은 후진 복구
+#    ./race.sh race-recover [컨트롤러] race + 가드 + 지도 기반 짧은 후진 복구
+#    ./race.sh <주행모드> --guard | --no-guard
+#                              --guard 는 후진 복구도 켬. 무옵션은 기존 동작 그대로.
+#                              예: ./race.sh q1 map --guard --bag
+#                                  ./race.sh box race --guard
+#    ./race.sh <주행모드> --recover | --no-recover
+#                              --recover 는 가드도 켬. --no-guard 는 둘 다 끔.
+#                              명시 플래그가 겹치면 지정 순서대로 적용한다.
 #    ./race.sh quali           ★ 예선 시퀀서 — Q1→buffer→Q2→buffer→Q3 를
 #                              한 프로세스로 이어간다 (Fully Autonomous 용,
 #                              사람이 단계마다 다시 누를 필요 없음)
@@ -218,6 +227,8 @@ export RACE_SCRIPT   # launch 파일이 이 env로 yaml 경로를 읽음
 # (2026-08-09: 고속 deskew 를 켤지 정하려는데 고속 주행 bag 이 하나도 없었다).
 RECORD_BAG=0
 WP_OVERRIDE=""
+GUARD_OVERRIDE=""
+RECOVERY_OVERRIDE=""
 _args=()
 # ★ --wp 는 값을 받으므로 for 가 아니라 while 로 돈다 (2026-11-11).
 #   위치 인자로 안 받는 이유: race 뒤 두 번째 인자는 이미 컨트롤러다
@@ -226,6 +237,10 @@ _args=()
 while [ $# -gt 0 ]; do
     case "$1" in
         --bag) RECORD_BAG=1 ;;
+        --guard) GUARD_OVERRIDE=true; RECOVERY_OVERRIDE=true ;;
+        --no-guard) GUARD_OVERRIDE=false; RECOVERY_OVERRIDE=false ;;
+        --recover) GUARD_OVERRIDE=true; RECOVERY_OVERRIDE=true ;;
+        --no-recover) RECOVERY_OVERRIDE=false ;;
         --wp)
             shift
             WP_OVERRIDE="${1:-}"
@@ -259,6 +274,15 @@ if [ -n "$WP_OVERRIDE" ]; then
 fi
 
 CMD=${1:-}
+COLLISION_GUARD=${GUARD_OVERRIDE:-false}
+COLLISION_RECOVERY=${RECOVERY_OVERRIDE:-false}
+# --guard 가 지원되지 않는 명령에서 조용히 무시되는 것을 막는다.
+if [ -n "$GUARD_OVERRIDE$RECOVERY_OVERRIDE" ]; then
+    case "$CMD" in
+        ""|q1|q2|q3|race|race-safe|race-recover|race2|quali|quali-mini|buffer|10laprace|box) ;;
+        *) echo "[race.sh] --guard/--recover 옵션은 주행 모드와 box 에서만 지원합니다."; exit 1 ;;
+    esac
+fi
 # ★ 차량 overlay 를 먼저 본다 — race.launch.py 와 같은 규약.
 #   mapping-joy 처럼 race.sh 가 직접 값을 읽어 -p 로 넘기는 경로가 있는데,
 #   여기서 overlay 를 안 보면 그 경로만 race_script.yaml 의 공용값으로 돈다
@@ -388,7 +412,75 @@ kill_bringup_joy () {
 }
 
 # logs/ (CSV + bag) 를 현재 브랜치에 커밋하고 푸시한다. 코드 WIP 는 안 건드린다.
+# ── 이번 주행의 ROS 노드 로그를 logs/<런>/ros/ 로 모은다 (2026-11-13) ──
+#   왜: race.sh 는 터미널 출력을 어디에도 저장하지 않는다. 그래서 출발 실패
+#   (11/10), 후진 복구 잠김(11/13) 의 원인을 사후에 볼 수 없었다. 그런데
+#   rclpy 노드는 get_logger() 출력을 ~/.ros/log/<실행파일>_<PID>_<시각>.log 에
+#   이미 남기고 있었다 — PID 로 흩어져 있어 아무도 안 봤을 뿐이다.
+#   여기서 launch.log 의 "process started with pid [N]" 으로 PID→노드 이름을
+#   맞춰 collision_guard.log / map_controller.log … 처럼 이름 붙여 모은다.
+#   가드의 상태 JSON(collision_guard_status_<PID>_*.jsonl)도 같이 온다.
+#   ★ launch 파이프를 안 건드린다 — 가드 모드는 Ctrl+C 때 정지 명령을 먼저
+#     보내려고 일부러 파이프 없이 띄우는데, tee 를 끼우면 tee 가 먼저 죽어
+#     launch 가 깨진 파이프로 죽을 수 있다. 끝난 뒤 파일을 줍는 쪽이 안전하다.
+#   ★ 실패해도 아무것도 안 막는다 (전부 || true). commit_logs 앞에서 돈다.
+collect_ros_logs () {
+    # 인자: [표식] [상한표식]. 기본은 이번 주행($RUN_MARK), 상한 없음.
+    #   상한이 있으면 그 표식보다 **새롭지 않은** 것만 — 남은 표식을 나중에
+    #   주울 때(sweep_orphan_marks) 다음 주행 것과 섞이지 않게 한다.
+    local mark="${1:-${RUN_MARK:-}}" upper="${2:-}"
+    [ -n "$mark" ] && [ -f "$mark" ] || return 0
+    local lim=()
+    [ -n "$upper" ] && [ -f "$upper" ] && lim=(! -newer "$upper")
+    local rosdir="${ROS_LOG_DIR:-${ROS_HOME:-$HOME/.ros}/log}"
+    [ -d "$rosdir" ] || { rm -f "$mark"; return 0; }
+    # 그 주행이 만든 런 디렉토리 (컨트롤러가 종료 시 만든다). 없으면 표식 시각으로.
+    local run
+    run=$(find "$SCRIPT_DIR/logs" -mindepth 1 -maxdepth 1 -type d -name '20*' \
+              -newer "$mark" "${lim[@]}" 2>/dev/null | sort | tail -1)
+    [ -n "$run" ] || run="$SCRIPT_DIR/logs/$(date -r "$mark" +%Y%m%d_%H%M%S 2>/dev/null || date +%Y%m%d_%H%M%S)_${MODE:-run}_ros"
+    local dst="$run/ros"
+    mkdir -p "$dst" 2>/dev/null || { rm -f "$mark"; return 0; }
+    local n=0 ld name pid f ext out
+    while IFS= read -r ld; do
+        [ -f "$ld/launch.log" ] || continue
+        # launch.log 에는 output='both' 노드의 stdout/stderr(= traceback)도 있다
+        tail -c 5000000 "$ld/launch.log" > "$dst/launch_$(basename "$ld").log" 2>/dev/null && n=$((n+1))
+        while read -r name pid; do
+            [ -n "$pid" ] || continue
+            while IFS= read -r f; do
+                ext="${f##*.}"
+                out="$dst/${name}.${ext}"
+                [ -e "$out" ] && out="$dst/${name}_${pid}.${ext}"   # 같은 노드 재시작
+                # git 에 들어가므로 5MB 넘으면 끝부분만
+                tail -c 5000000 "$f" > "$out" 2>/dev/null && n=$((n+1))
+            done < <(find "$rosdir" -maxdepth 1 -type f -name "*_${pid}_*" \
+                         -newer "$mark" "${lim[@]}" 2>/dev/null)
+        done < <(grep -oE '\[[A-Za-z0-9_]+-[0-9]+\]: process started with pid \[[0-9]+\]' \
+                     "$ld/launch.log" 2>/dev/null \
+                 | sed -E 's/^\[([A-Za-z0-9_]+)-[0-9]+\]: process started with pid \[([0-9]+)\]$/\1 \2/')
+    done < <(find "$rosdir" -mindepth 1 -maxdepth 1 -type d -newer "$mark" "${lim[@]}" 2>/dev/null)
+    [ "$n" -gt 0 ] && echo "[race.sh] ROS 노드 로그 ${n}개 → ${dst#"$SCRIPT_DIR"/}"
+    rm -f "$mark"
+    return 0
+}
+
+# ── 지난 주행이 남긴 표식을 줍는다 (2026-11-14) ──────────────────────────
+#   EXIT trap 이 안 돈 주행(터미널을 닫았거나, Ctrl+C 를 연타했거나)은 표식이
+#   /tmp 에 남고 로그도 안 모였다. 11/13 밤 세 주행이 그랬고, 마침 그때
+#   map_controller 가 죽어서 원인을 찾을 길이 없었다. 다음 실행을 띄우기
+#   **전**에 오래된 것부터, 다음 표식을 상한으로 삼아 하나씩 주워 담는다.
+sweep_orphan_marks () {
+    local marks=() i
+    mapfile -t marks < <(ls -tr /tmp/race_run_mark.* 2>/dev/null)
+    for ((i=0; i<${#marks[@]}; i++)); do
+        collect_ros_logs "${marks[$i]}" "${marks[$((i+1))]:-}" || true
+    done
+    return 0
+}
+
 commit_logs () {
+    collect_ros_logs || true
     cd "$SCRIPT_DIR" || return 0
     git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return 0
     local br; br=$(git rev-parse --abbrev-ref HEAD)
@@ -1065,10 +1157,15 @@ PYEOF
     esac
     echo "[race.sh] 1대1 경주 — ${LAPS}바퀴 완주 후 자동 정지 (mode=race)"
     ;;
-  q1|q2|q3|race|quali|buffer)
+  q1|q2|q3|race|race-safe|race-recover|quali|buffer)
     # quali  = Q1→buffer→Q2→buffer→Q3 시퀀서 (mission_manager 가 자동 진행)
     # buffer = 단계 사이 저속 이동 랩만 단독 테스트할 때
     MODE=$CMD
+    if [ "$CMD" = "race-safe" ] || [ "$CMD" = "race-recover" ]; then
+        MODE=race
+        COLLISION_GUARD=${GUARD_OVERRIDE:-true}
+        COLLISION_RECOVERY=${RECOVERY_OVERRIDE:-true}
+    fi
     CTRL=${2:-}   # 두 번째 인자로 컨트롤러 오버라이드 (yaml 수정 불필요)
     case "$CTRL" in
       ""|auto|stanley|pure_pursuit|gap_follower|map) ;;
@@ -1133,9 +1230,17 @@ if [ -n "$(running_pids)" ]; then
     esac
 fi
 
+# ── 이번 주행의 ROS 로그를 고르기 위한 표식 (2026-11-13) ──────────────
+#   주행 끝에 collect_ros_logs 가 이 파일보다 **새** ~/.ros/log 항목만 모은다.
+#   /tmp 에 두는 이유: logs/ 안에 두면 commit_logs 의 git add 에 딸려 간다.
+sweep_orphan_marks || true
+RUN_MARK=$(mktemp /tmp/race_run_mark.XXXXXX 2>/dev/null || true)
+
 echo "============================================"
 echo "  RoboRacer 2026  |  MODE = $MODE${CTRL:+  |  CONTROLLER = $CTRL}"
 echo "  config: $RACE_SCRIPT"
+echo "  collision guard: $COLLISION_GUARD (이번 실행)"
+echo "  collision recovery: $COLLISION_RECOVERY (이번 실행)"
 if [ -n "${RACE_WAYPOINTS:-}" ]; then
 echo "  ★ 웨이포인트 = $RACE_WAYPOINTS   (--wp. race_script.yaml 의 waypoints: 무시)"
 fi
@@ -1156,12 +1261,50 @@ export PYTHONUNBUFFERED=1
 export RCUTILS_LOGGING_BUFFERED_STREAM=0
 export RCUTILS_COLORIZED_OUTPUT=1     # 파이프라 TTY 판정이 꺼지는 것을 되돌린다
 
+run_guarded_launch() {
+  # Ctrl+C 가 driver 를 먼저 닫지 않도록 주행 스택을 별도 process group 에 둔다.
+  # bag/로그용 EXIT trap 은 그대로 두고 이 함수가 INT/TERM 만 잠시 담당한다.
+  local guarded_pid guarded_status=0 guarded_stopping=0
+  local guarded_old_int guarded_old_term
+  guarded_old_int=$(trap -p INT)
+  guarded_old_term=$(trap -p TERM)
+
+  guarded_stop_launch() {
+    [ "$guarded_stopping" = "0" ] || return 0
+    guarded_stopping=1
+    echo "[race.sh] collision guard: 정지 명령을 먼저 전달한 뒤 종료합니다."
+    timeout --kill-after=1s 4s ros2 run race_stack collision_stop || true
+    kill -INT -- "-$guarded_pid" 2>/dev/null || true
+  }
+
+  # statusline 파이프가 Ctrl+C 로 먼저 닫히지 않게 guarded 모드는 원본 로그 출력.
+  setsid ros2 launch race_stack race.launch.py guard:=true "recover:=$COLLISION_RECOVERY" "$@" &
+  guarded_pid=$!
+  trap guarded_stop_launch INT TERM
+  wait "$guarded_pid" || guarded_status=$?
+  if [ "$guarded_stopping" = "1" ]; then
+    # trap 때문에 wait 가 중단됐을 수 있다. 노드들이 정리될 때까지 회수한다.
+    wait "$guarded_pid" 2>/dev/null || true
+  else
+    # launch 가 예외로 끝난 경우에도 남아 있는 driver 에 마지막 정지를 보낸다.
+    guarded_stop_launch
+  fi
+  if [ -n "$guarded_old_int" ]; then eval "$guarded_old_int"; else trap - INT; fi
+  if [ -n "$guarded_old_term" ]; then eval "$guarded_old_term"; else trap - TERM; fi
+  unset -f guarded_stop_launch
+  return "$guarded_status"
+}
+
 run_launch() {
   # exec 를 쓰면 안 된다 — 셸이 교체돼 trap(로그 커밋)이 안 걸린다.
+  if [ "$COLLISION_GUARD" = "true" ]; then
+    run_guarded_launch "$@" || true
+    return
+  fi
   if [ "${RACE_STATUSLINE:-1}" = "0" ] || [ ! -t 1 ]; then
-    ros2 launch race_stack race.launch.py "$@" || true
+    ros2 launch race_stack race.launch.py "guard:=$COLLISION_GUARD" "recover:=$COLLISION_RECOVERY" "$@" || true
   else
-    ros2 launch race_stack race.launch.py "$@" 2>&1 \
+    ros2 launch race_stack race.launch.py "guard:=$COLLISION_GUARD" "recover:=$COLLISION_RECOVERY" "$@" 2>&1 \
       | python3 "$SCRIPT_DIR/statusline.py" || true
   fi
 }
@@ -1277,7 +1420,9 @@ elif [ "$RECORD_BAG" = "1" ]; then
     #   (rosbag2 는 SIGINT 를 받아야 메타데이터를 쓴다. 그냥 죽이면 db3 만 남아
     #    읽을 수 없다).
     # box --bag 조합에서도 bench 안전장치가 빠지면 안 된다 (아래 bench 분기 참고).
-    [ -n "${BENCH:-}" ] && bench_kill_joy &
+    if [ -n "${BENCH:-}" ] && [ "$COLLISION_GUARD" != "true" ]; then
+        bench_kill_joy &
+    fi
     BAG_DIR="$SCRIPT_DIR/logs/bags/$(date +%Y%m%d_%H%M%S)_${MODE}_${CTRL:-auto}"
     mkdir -p "$(dirname "$BAG_DIR")"
     echo "[race.sh] ★ bag 녹화: $BAG_DIR"
@@ -1299,6 +1444,10 @@ elif [ "$RECORD_BAG" = "1" ]; then
     #   둘 다 여유가 있는데 못 따라가면 뒷바퀴가 미끄러지는 것이다.
     ros2 bag record -o "$BAG_DIR" \
         /scan /scan_deskewed /odom /odom_imu /amcl_pose /drive /sensors/imu/raw \
+        /safety/raw_drive /ackermann_cmd /safety/collision_guard/status \
+        /safety/motor_ready /safety/motor_watchdog/status \
+        /map /race/manual \
+        /safety/emergency_stop /commands/motor/speed /tf /tf_static \
         /sensors/core \
         /commands/servo/position /race/enabled /diagnostics \
         /particle_cloud \
@@ -1323,13 +1472,18 @@ elif [ -n "${BENCH:-}" ]; then
     # bench 는 컨트롤러 속도를 0 으로 못박지만(각 컨트롤러의 발행 직전), bringup 이
     # 함께 띄우는 joy_node+joy_teleop 은 /teleop 으로 따로 나가 그 경로를 우회한다.
     # 그래서 조이스틱 노드 자체를 죽인다 — box 는 조이스틱을 쓸 이유가 없다.
-    ros2 launch race_stack race.launch.py mode:=$MODE \
-        ${CTRL:+controller:=$CTRL} bench:=true ${LAPS:+laps:=$LAPS} \
-        ${Q1LAPS:+q1laps:=$Q1LAPS} ${Q2LAPS:+q2laps:=$Q2LAPS} ${NOBUFFER:+nobuffer:=true} ${TRUSTPOS:+trustpos:=true} &
-    LAUNCH_PID=$!
-    trap "kill $LAUNCH_PID 2>/dev/null; pkill -9 -f '[j]oy_teleop' 2>/dev/null" EXIT
-    bench_kill_joy
-    wait $LAUNCH_PID
+    if [ "$COLLISION_GUARD" = "true" ]; then
+        run_launch mode:=$MODE ${CTRL:+controller:=$CTRL} bench:=true ${LAPS:+laps:=$LAPS} \
+            ${Q1LAPS:+q1laps:=$Q1LAPS} ${Q2LAPS:+q2laps:=$Q2LAPS} ${NOBUFFER:+nobuffer:=true} ${TRUSTPOS:+trustpos:=true}
+    else
+        ros2 launch race_stack race.launch.py mode:=$MODE guard:=false recover:=false \
+            ${CTRL:+controller:=$CTRL} bench:=true ${LAPS:+laps:=$LAPS} \
+            ${Q1LAPS:+q1laps:=$Q1LAPS} ${Q2LAPS:+q2laps:=$Q2LAPS} ${NOBUFFER:+nobuffer:=true} ${TRUSTPOS:+trustpos:=true} &
+        LAUNCH_PID=$!
+        trap "kill $LAUNCH_PID 2>/dev/null; pkill -9 -f '[j]oy_teleop' 2>/dev/null" EXIT
+        bench_kill_joy
+        wait $LAUNCH_PID
+    fi
 else
     # exec 하면 셸이 교체돼 Ctrl+C 뒤 로그 커밋을 못 한다.
     trap commit_logs EXIT

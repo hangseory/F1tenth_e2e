@@ -36,6 +36,7 @@ from race_stack.gen_raceline import (
     apply_accel_brake_sweep, save_overlay,
 )
 from race_stack.paths import repo_root
+from race_stack.steering_geometry import load_steering_geometry
 
 DEFAULT_LUT = os.path.join(repo_root(), 'docs', 'lut_grip040', 'lut_grip0.40.csv')
 
@@ -72,8 +73,9 @@ def opt_min_curv_iqp(reftrack_u: np.ndarray,
         _, _, M_spl, normvec = calc_splines(path_cl)
 
         cur_reftrack = np.column_stack([path, w_right, w_left])
-        alpha_full = opt_min_curv(cur_reftrack, normvec, M_spl, w_veh=w_veh,
-                                  kappa_max=kappa_max)
+        alpha_full = opt_min_curv(
+            cur_reftrack, normvec, M_spl, w_veh=w_veh,
+            r_min=1.0 / kappa_max if kappa_max is not None else 0.9)
         alpha = damping * alpha_full
 
         path    = path + alpha[:, None] * normvec
@@ -254,6 +256,7 @@ def calc_vel_profile_lut(kappa:    np.ndarray,
 # main
 # ══════════════════════════════════════════════════════════════════════════════
 def main():
+    wheelbase, max_steer = load_steering_geometry()
     p = argparse.ArgumentParser(description='TUMFTM 최소 곡률(IQP) 레이싱라인 생성기')
     p.add_argument('--map',        default=None,  help='맵 이름 (생략 시 대화형 선택)')
     p.add_argument('--vmax',       type=float, default=8.0,  help='최대 속도 (m/s)')
@@ -266,8 +269,8 @@ def main():
     p.add_argument('--iqp-iters',  type=int,   default=8,    help='IQP 최대 반복 횟수')
     p.add_argument('--iqp-thresh', type=float, default=0.005, help='IQP 수렴 판정 max|α| (m)')
     p.add_argument('--damping',    type=float, default=0.5,  help='IQP 라운드당 α 적용 비율 (선형근사 유효범위 유지용)')
-    p.add_argument('--wheelbase',  type=float, default=0.33, help='축간거리 (m) — race_script.yaml pure_pursuit.wheelbase 와 맞출 것')
-    p.add_argument('--max-steer',  type=float, default=0.36, help='최대 조향각 (rad) — race_script.yaml pure_pursuit.max_steer 와 맞출 것')
+    p.add_argument('--wheelbase',  type=float, default=wheelbase, help='축간거리 (m) — 생략 시 현재 차량 overlay')
+    p.add_argument('--max-steer',  type=float, default=max_steer, help='최대 조향각 (rad) — 생략 시 현재 차량 overlay')
     p.add_argument('--lut',        default=DEFAULT_LUT, help='그립 LUT csv 경로')
     p.add_argument('--no-lut',     action='store_true', help='LUT 대신 상수 mu 속도 프로파일 사용')
     p.add_argument('--mu',         type=float, default=0.40, help='--no-lut 일 때 쓸 마찰 계수')
