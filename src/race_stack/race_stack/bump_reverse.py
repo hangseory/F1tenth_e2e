@@ -65,6 +65,7 @@ class BumpReverseConfig:
     coast_decel: float = 0.9          # 타력 감속도 [㎧²] (실측 0.85~1.2)
     stop_speed: float = 0.05          # |v| 이 이하면 멈춘 것으로 본다 [㎧]
     hold_max_time: float = 1.5        # 정지 대기 상한 [s]
+    relaunch_speed: float = 0.8       # 복구 끝난 뒤 출발 제한 시작 속도 [㎧] (0 이면 모터 데드밴드에서 1s 정지)
 
 
 

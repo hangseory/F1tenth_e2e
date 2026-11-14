@@ -1171,9 +1171,24 @@ class MapController(Node):
         self._scan_t = time.monotonic()
 
     def _path_heading_err(self, px, py, yaw):
-        """최근접 웨이포인트의 경로 접선 − 차 yaw. 못 구하면 None."""
+        """후진 정렬 기준: 전진 조준점(L1) 방향 − 차 yaw. 못 구하면 None.
+
+        ★ 2026-11-14 02:49 주행: 예전엔 **최근접 웨이포인트 접선**을 썼다.
+          급코너에선 그 접선이 코너 *진입* 방향이라, 전진은 좌(+19°)로 꺾는데
+          후진도 좌(+19°)로 꺾어 앞코를 도로 오른쪽으로 돌려놨다(yaw −15→−45°).
+          그대로 다시 전진 → 같은 벽, 18번 연속(#10~#28).
+          조준점 방향을 쓰면 후진 조향이 전진과 반대가 돼 앞코가 출구 쪽으로
+          돈다 — 3점 턴. 조준점을 못 구할 때만 접선으로 폴백."""
         if self.wp is None or len(self.wp) < 2:
             return None
+        try:
+            goal, _ = self._find_lookahead(np.array([px, py]), self._l1(0.3), yaw)
+        except Exception:
+            goal = None
+        if goal is not None:
+            dx, dy = goal[0] - px, goal[1] - py
+            if math.hypot(dx, dy) > 1e-3:
+                return _normalize(math.atan2(dy, dx) - yaw)
         n = len(self.wp)
         d = np.linalg.norm(self.wp[:, :2] - np.array([px, py]), axis=1)
         i = int(np.argmin(d))
@@ -1206,8 +1221,11 @@ class MapController(Node):
             else:
                 self.get_logger().info(msg)
                 # 복구 직후 정속으로 튀지 않도록 기존 출발 가속 제한을 재시작.
+                # ★ 0 이 아니라 relaunch_speed 부터 (2026-11-14 02:49): 0 부터 0.8㎧²
+                #   로 올리면 모터가 안 도는 0~0.6㎧ 지령 구간에서 매번 평균 1.16s
+                #   멈춰 서 있었다 ("박고 나서 멈춘다").
                 self._launch.start(self.get_clock().now().nanoseconds * 1e-9,
-                                   self.speed)
+                                   max(self.speed, self._bump.cfg.relaunch_speed))
         if out is None:
             return False
         steer, speed = out

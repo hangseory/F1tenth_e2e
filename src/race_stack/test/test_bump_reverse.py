@@ -337,3 +337,47 @@ def test_scan_loss_cancels_reverse_counter_command_even_after_scan_returns():
     assert br.update(.2, scan(front=.175), (-.05, 0.), .2, speed=-.6)[1] == 1.5
     assert br.update(.3, None, (-.10, 0.), .2, speed=-.4)[1] == 0.
     assert br.update(.4, scan(front=.25), (-.11, 0.), .2, speed=-.2)[1] == 0.
+
+
+# ── 2026-11-14 02:49 주행 뒤 추가: 후진 정렬 기준 = 전진 조준점 방향 ────────
+
+def _heading_err_from(goal, nearest_tangent_yaw, px=0.0, py=0.0, yaw=0.0):
+    """MapController._path_heading_err 를 노드 없이 부른다."""
+    from types import SimpleNamespace
+    from race_stack.map_controller import MapController
+    wp = np.array([[px, py], [px + math.cos(nearest_tangent_yaw),
+                              py + math.sin(nearest_tangent_yaw)]])
+    fake = SimpleNamespace(wp=wp, _l1=lambda v: 0.6,
+                           _find_lookahead=lambda pos, L1, yw: (goal, 0))
+    return MapController._path_heading_err(fake, px, py, yaw)
+
+
+def test_reverse_heading_uses_lookahead_not_nearest_tangent():
+    # 02:49 상황: 최근접 접선은 오른쪽(-21°) 인데 조준점은 왼쪽 앞(+40°)
+    he = _heading_err_from(goal=(0.5, 0.42), nearest_tangent_yaw=math.radians(-21))
+    assert he > 0
+    # → 후진 조향은 우(δ<0): 뒤로 가며 앞코가 왼쪽(조준점 쪽)으로 돈다 = 3점 턴
+    br = make()
+    steer, _ = br.update(0., scan(front=0.175), (0, 0), he)
+    assert br.mode == 'path' and steer < 0
+
+
+def test_reverse_heading_falls_back_to_tangent_without_goal():
+    he = _heading_err_from(goal=None, nearest_tangent_yaw=math.radians(-21))
+    assert abs(he - math.radians(-21)) < 1e-6
+
+
+def test_three_point_turn_gains_heading_each_cycle():
+    """전진(좌 조향)으로 벽에 막힌 뒤 후진 → 다시 전진 했을 때 yaw 가
+    순환마다 **늘어야** 한다(진척). 예전(같은 쪽 조향)은 매번 0 으로 돌아왔다."""
+    L, dt = 0.33, 0.02
+    yaw = 0.0
+    goal_bearing = math.radians(60)          # 출구는 왼쪽
+    for _ in range(3):
+        y0 = yaw
+        # 후진 0.4s @ -1.0㎧, 조향은 BumpReverse 가 고른 값
+        br = make()
+        steer, _ = br.update(0., scan(front=0.175), (0, 0), goal_bearing - yaw)
+        for _k in range(20):
+            yaw += -1.0 * math.tan(steer) / L * dt
+        assert yaw > y0                       # 후진 중에도 앞코가 출구 쪽으로
